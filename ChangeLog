@@ -2,6 +2,12 @@
 
 	* Released version 0.96.8
 
+	* authenticate/authvlib.cc (set_user): Call pwentry::export_env
+	instead of doing it manually.
+
+	* lib/misc/pwentry_export_env.cc (export_env): Added this routine
+	to export USER and HOME for a real user.
+
 	* commands/vcheckquota.cc (link_softquota_message): Fixed bug in
 	multiple use of atoi.
 

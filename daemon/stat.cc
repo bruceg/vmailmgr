@@ -81,10 +81,8 @@ CMD(stat)
     RETURN(err, "Failed to stat cur dir");
   
   mystring info =
-    "new"           + mystring::NUL +
     utoa(new_count) + mystring::NUL +
     utoa(new_size)  + mystring::NUL + 
-    "cur"           + mystring::NUL + 
     utoa(cur_count) + mystring::NUL +
     utoa(cur_size);
 

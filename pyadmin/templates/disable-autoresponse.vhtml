@@ -1,5 +1,5 @@
-<? if vmailmgr.autoresponse_disable() ?>
-<p>Disabling the autoresponse succeeded:<br>%(response)s</p>
+<? if last_response ?>
+<p>Disabling the autoresponse succeeded:<br>%(last_response)s</p>
 <? else ?>
-<p>Disabling the autoresponse failed:<br>%(response)s</p>
+<p>Disabling the autoresponse failed:<br>%(last_response)s</p>
 <? end ?>

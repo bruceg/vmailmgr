@@ -1,4 +1,5 @@
 <? vmailmgr.lookup_user() ?>
+<form>
 <p>Lookup results for user '%(USERNAME)s@%(DOMAIN)s':
 <ul>
 <li>Mailbox: %(mailbox)s
@@ -9,10 +10,11 @@
 <li>Message Size Limit: %(message_size_limit)s
 <li>Creation Time: %(creation_time)s
 <li>Personal Info: %(personal)s
-<li>Mailbox Enabled? %(mailbox_enabled)s
+<li>Mailbox Enabled? %(mailbox_enabled.html('mailbox_enabled'))s
 <li>Expiry Time: %(expiry_time)s
 </ul>
 </p>
+</form>
 
 <? status = vmailmgr.autoresponse_status() ?>
 <p>Autoresponse status: %(status)s
@@ -30,14 +32,16 @@
 Subject: put your subject here
 
 Your message goes here
-</textarea>
+</textarea><br>
 <input type=submit value="Create Autoresponse">
 <? else ?>
   <? autoresponse = vmailmgr.autoresponse_read() ?>
-  <textarea rows=9 cols=70 name=message>%(autoresponse)s</textarea>
+  <textarea rows=9 cols=70 name=message>%(autoresponse)s</textarea><br>
   <input type=submit value="Modify Autoresponse">
 <? end ?>
 </p>
 </form>
+
+<p><a href="confirm-deluser?username=%(USERNAME)s">Delete this user?</a></p>
 
 <p><a href="">Main menu</a></p>

@@ -80,16 +80,6 @@ def redirect(path):
 def set_cookie(var,val):
     sys.stdout.write("Set-Cookie: %s=%s\n" % (var, val))
 
-def trap_vmailmgr_call(fn, args):
-    try:
-        return (1, apply(fn, args))
-    except vmailmgr_lib.Error, msg:
-        return (0, msg)
-    except vmailmgr_lib.Econn, msg:
-        return (0, msg)
-    except vmailmgr_lib.Bad, msg:
-        return (0, msg)
-
 def load_file(filename):
     fullpath = os.path.join(template_dir, filename)
     return open(fullpath, 'r').read()
@@ -209,7 +199,8 @@ def trap_vmailmgr_call(fn, args):
 
 def trap_vmailmgr_response(context, fn, args):
     (ok,resp) = trap_vmailmgr_call(fn, args)
-    context['response'] = resp
+    context['last_response'] = resp
+    content['last_status'] = ok
     return ok
 
 class VmailmgrWrapper:
@@ -267,10 +258,14 @@ class VmailmgrWrapper:
         return trap_vmailmgr_response(self.context, vmailmgr_lib.deluser, (
             self.domain, self.username, self.password ) )
 
-    def adduser(self, newpass, forwards):
+    def adduser(self, newpass, has_mailbox, forwards):
+        if has_mailbox:
+            mailbox = self.username
+        else:
+            mailbox = None
         return trap_vmailmgr_response(self.context, vmailmgr_lib.adduser, (
             self.domain, self.username, self.password, newpass,
-            None, forwards ) )
+            mailbox, forwards ) )
 
     def chattr(self, attribute, *value):
         return trap_vmailmgr_response(self.context, vmailmgr_lib.adduser, (

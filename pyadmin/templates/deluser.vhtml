@@ -1,0 +1,7 @@
+<? if vmailmgr.deluser() ?>
+<p>Deleting the user succeeded.  <a href="">Go back</a></p>
+<? else ?>
+<p>Deleting the user failed:<br>
+%(last_response)s<br>
+<a href="user?username=%(USERNAME)s">Go back</a></p>
+<? end ?>

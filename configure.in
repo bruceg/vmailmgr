@@ -64,8 +64,6 @@ AC_CHECK_LIB(crypt, crypt)
 AC_CHECK_LIB(inet, socket)
 AC_CHECK_LIB(socket, socket)
 AC_CHECK_LIB(xnet, socket)
-#AC_CHECK_LIB(pthread, pthread_create)
-#AC_CHECK_LIB(thread, pthread_create)
 
 dnl Checks for header files.
 AC_HEADER_DIRENT

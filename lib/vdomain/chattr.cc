@@ -87,6 +87,10 @@ response vdomain::chattr(const vpwentry* vpw, unsigned attr, mystring newval)
   case ATTR_MSGCOUNT:          CHATTR(newpw.msgcount,unsigned); break;
   case ATTR_EXPIRY:            CHATTR(newpw.expiry,unsigned); break;
   case ATTR_MAILBOX_ENABLED:   CHATTR(newpw.is_mailbox_enabled,bool); break;
+  case ATTR_PERSONAL:
+    newpw.personal = newval;
+    okmsg = "Personal information changed.";
+    break;
   default:
     RETURN(bad, "Invalid attribute type");
   }

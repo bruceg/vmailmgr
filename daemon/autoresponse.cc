@@ -52,24 +52,26 @@ response autoresponse_write(const mystring& location, const mystring& msg)
 
 response autoresponse_disable(const mystring& location)
 {
+  if(!is_exist(location.c_str()))
+    RETURN(ok, "Autoresponse file did not exist");
   mystring locationbak = location + ".disabled";
-  if(is_exist(location.c_str())) {
-    if(rename(location.c_str(), locationbak.c_str()))
-      RETURN(err, "Unable to rename autoresponse file");
-    RETURN(ok, "Autoresponse file sucessfully moved");
-  }
-  RETURN(ok, "Autoresponse file did not exist");
+  if(is_exist(locationbak.c_str()))
+    RETURN(err, "Disabled autoresponse file already exists");
+  if(rename(location.c_str(), locationbak.c_str()))
+    RETURN(err, "Unable to rename autoresponse file");
+  RETURN(ok, "Autoresponse file sucessfully disabled");
 }  
 
 response autoresponse_enable(const mystring& location)
 {
+  if(is_exist(location.c_str()))
+    RETURN(ok, "Autoresponse is already enabled");
   mystring locationbak = location + ".disabled";
-  if(is_exist(locationbak.c_str())) {
-    if(rename(locationbak.c_str(), location.c_str()))
-      RETURN(err, "Unable to rename previously disabled autoresponse file");
-    RETURN(ok, "Autoresponse file sucessfully restored");
-  }
-  RETURN(err, "Disabled dutoresponse file did not exist");
+  if(!is_exist(locationbak.c_str()))
+    RETURN(err, "Disabled autoresponse file did not exist");
+  if(rename(locationbak.c_str(), location.c_str()))
+    RETURN(err, "Unable to rename previously disabled autoresponse file");
+  RETURN(ok, "Autoresponse file sucessfully restored");
 }  
 
 response autoresponse_read(const mystring& location, int fd)

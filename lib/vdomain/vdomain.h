@@ -50,6 +50,7 @@ public:
   static const unsigned ATTR_MSGCOUNT = 6;
   static const unsigned ATTR_EXPIRY = 7;
   static const unsigned ATTR_MAILBOX_ENABLED = 8;
+  static const unsigned ATTR_PERSONAL = 9;
 };
 
 #endif // VMAILMGR__VDOMAIN__H__

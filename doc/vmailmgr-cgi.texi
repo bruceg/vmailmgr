@@ -360,6 +360,9 @@ The account's expiry time.
 Set to zero to disable delivery to the account's mailbox (without
 deleting the account).
 Set to non-zero to enable delivery.
+@item 9
+The personal information string.
+@end table
 @item Syntax:
 @samp{<input type=hidden name=attribute value=2>}
 @end table

@@ -1,3 +1,15 @@
+2000-04-19  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* doc/vchattr.pod: Added note regarding personal information.
+
+	* doc/vmailmgr-cgi.texi (Top): Added note regarding personal
+	information.
+
+	* commands/vchattr.cc: Allow changing the personal information.
+
+	* lib/vdomain/chattr.cc (chattr): Added code to handle changing
+	the personal information.
+
 2000-04-18  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* doc/FAQ.texi (Does vmailmgr support IMAP?): Updated to describe

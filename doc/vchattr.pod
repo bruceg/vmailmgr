@@ -50,6 +50,12 @@ larger (but not larger than the hard quota), incoming messages will be
 both bounced and received.
 As well, an error message will be added to the user's mailbox.
 
+=item -p "string"
+
+=item --personal "string"
+
+Set the user's personal information string.
+
 =item -Q kbytes
 
 =item --hardquota kbytes

@@ -5,15 +5,13 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Add tests for the new autoresponse command.
+- Add CGI for new autoresponse daemon command (partially done in Python).
 
 - Document the Python interface.
 
 - Build sample HTML for the Python interface.
 
-- Add support for changing the personal information
-
-- Add options to the vmailmgr programs to expand its output.
+- Add options to the listvdomain programs to expand their output.
 
 - Expand the record format to include a "last modified" field.
 

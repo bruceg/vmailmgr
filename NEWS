@@ -4,7 +4,8 @@ Changes in version 0.96.6
 New Features:
 - Updated PHP code from Mike Bell.
 - Added autoresponse command to daemon, modified from code submitted by
-  Mike Bell.
+  Mike Bell.  This allows the user to upload a autoresponse file to
+  their virtual mailbox, to be used by an autoresponder (not included).
 
 Internal Changes:
 - The necessary parts of the Courier IMAP "authlib" library is now

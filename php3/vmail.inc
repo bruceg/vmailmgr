@@ -122,8 +122,8 @@ function listdomain_parse($output){
    parsed as stated in listdomain_parse */
 
 function listdomain($domain, $password){
-if ($domain=="") return array(0, "Empty domain");
-if ($password=="") return array(0, "Empty domain password");
+if ($domain=="") return array(1, "Empty domain");
+if ($password=="") return array(1, "Empty domain password");
 	$command=array("listdomain",$domain, $password);
 	$temp=vm_daemon_raw(array("listdomain", $domain, $password));
 	if (is_array($temp)) return $temp;
@@ -135,10 +135,10 @@ return listdomain_parse($temp);
    integer exit code and message. */
 
 function vadduser($domain, $password, $username, $userpass, $forwards){
-if ($domain=="") return array(0, "Empty domain");
-if ($password=="") return array(0, "Empty domain password");
-if ($username=="") return array(0, "Empty username");
-if ($userpass=="") return array(0, "No user password supplied");
+if ($domain=="") return array(1, "Empty domain");
+if ($password=="") return array(1, "Empty domain password");
+if ($username=="") return array(1, "Empty username");
+if ($userpass=="") return array(1, "No user password supplied");
 	$command=array("adduser2", $domain, $username, $password,
 	               $userpass, $username);
 	for ($x=0; $x < sizeof($forwards); $x++)
@@ -154,9 +154,9 @@ return $temp;
    alias with no password will be created. */
 
 function vaddalias($domain, $password, $username, $userpass, $forwards){
-if ($domain=="") return array(0, "Empty domain");
-if ($password=="") return array(0, "Empty domain password");
-if ($username=="") return array(0, "Empty username");
+if ($domain=="") return array(1, "Empty domain");
+if ($password=="") return array(1, "Empty domain password");
+if ($username=="") return array(1, "Empty username");
 	$command=array("adduser2", $domain, $username, $password,
 	               $userpass, "");
 	for ($x=0; $x < sizeof($forwards); $x++)
@@ -170,9 +170,9 @@ return $temp;
    consisting of an integer exit code and message. */
 
 function vdeluser($domain, $password, $username){
-if ($domain=="") return array(0, "Empty domain");
-if ($password=="") return array(0, "Empty domain password");
-if ($username=="") return array(0, "Empty username");
+if ($domain=="") return array(1, "Empty domain");
+if ($password=="") return array(1, "Empty domain password");
+if ($username=="") return array(1, "Empty username");
 	$command=array("deluser", $domain, $username, $password);
 	$temp=vm_daemon_raw($command);
 return $temp;
@@ -185,10 +185,10 @@ return $temp;
    these are equal*/
 
 function vchpass($domain, $password, $username, $newpass){
-if ($domain=="") return array(0, "Empty domain");
-if ($password=="") return array(0, "Empty domain password");
-if ($username=="") return array(0, "Empty username");
-if ($newpass=="") return array(0, "Empty new password");
+if ($domain=="") return array(1, "Empty domain");
+if ($password=="") return array(1, "Empty domain password");
+if ($username=="") return array(1, "Empty username");
+if ($newpass=="") return array(1, "Empty new password");
 	$command=array("chattr", $domain, $username, $password, "1", $newpass);
 	$temp=vm_daemon_raw($command);
 return $temp;
@@ -201,9 +201,9 @@ return $temp;
    one is using the patched vmailmgrd present in 0.96.2 and later */
 
 function vchforward($domain, $password, $username, $forwards){
-if ($domain=="") return array(0, "Empty domain");
-if ($password=="") return array(0, "Empty domain password");
-if ($username=="") return array(0, "Empty username");
+if ($domain=="") return array(1, "Empty domain");
+if ($password=="") return array(1, "Empty domain password");
+if ($username=="") return array(1, "Empty username");
 	$command=array("chattr", $domain, $username, $password, "2");
 	for ($x=0; $x< sizeof($forwards); $x++)
 		if ($forwards[$x] != "") $command[]=$forwards[$x];

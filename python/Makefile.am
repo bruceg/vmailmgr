@@ -1,6 +1,6 @@
 cgi_SCRIPTS = vcommand
 pythonlib_DATA = vmailmgr.py vmailmgr.pyc vmailmgr.pyo
-EXTRA_DIST = vcommand.py vmailmgr.py.in
+EXTRA_DIST = vcommand.in vmailmgr.py.in
 CLEANFILES = vcommand vmailmgr.py *.pyo *.pyc
 
 SUFFIXES = .py .pyc .pyo .in .py.in

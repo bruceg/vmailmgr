@@ -107,7 +107,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc doc/ChangeLog* AUTHORS COPYING NEWS doc/TODO doc/YEAR2000
+%doc AUTHORS ChangeLog COPYING NEWS TODO doc/ChangeLog* doc/YEAR2000
 %doc doc/*.txt doc/*.html doc/*.sgml
 %doc scripts/autoresponder.sh
 %dir /etc/vmailmgr

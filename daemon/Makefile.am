@@ -2,7 +2,7 @@ sbin_PROGRAMS = vmailmgrd
 EXTRA_DIST = init run-log run-svc
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
-INCLUDES = -I../include
+INCLUDES = -I../lib -I../lib/config -I../lib/fdbuf -I../lib/misc -I../lib/mystring -I../lib/vpw
 
 vmailmgrd_SOURCES = daemon.h \
 	addalias.cc \

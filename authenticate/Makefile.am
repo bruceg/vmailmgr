@@ -8,7 +8,7 @@ EXTRA_DIST = authvmailmgr.cc
 bin_PROGRAMS = $(CIPROGS) checkvpw vauthenticate
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
-INCLUDES = -I../include
+INCLUDES = -I../lib -I../lib/config -I../lib/fdbuf -I../lib/misc -I../lib/mystring -I../lib/vpw
 
 checkvpw_SOURCES = checkvpw.cc authvlib.cc authvlib.h
 checkvpw_LDADD = ../lib/libvmailmgr.a

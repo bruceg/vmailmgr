@@ -1,5 +1,5 @@
 noinst_LIBRARIES = libmisc.a
-INCLUDES = -I../../include
+INCLUDES = -I.. -I../cdb++ -I../config -I../fdbuf -I../mystring -I../vpw
 EXTRA_DIST = krbauth.c
 
 if KRB5
@@ -42,18 +42,4 @@ libmisc_a_SOURCES = $(KRB5_SRCS) \
 	vdomain_lookup.cc \
 	vdomain_set.cc \
 	vdomain_userdir.cc \
-	vdomain_validate.cc \
-	vpwentry.h \
-	vpwentry.cc \
-	vpwentry_auth.cc \
-	vpwentry_defaults.cc \
-	vpwentry_from.cc \
-	vpwentry_from_old.cc \
-	vpwentry_from_ver1.cc \
-	vpwentry_to.cc \
-	vpwtable.cc \
-	vpwtable_del.cc \
-	vpwtable_exists.cc \
-	vpwtable_get.cc \
-	vpwtable_getbyname.cc \
-	vpwtable_put.cc
+	vdomain_validate.cc

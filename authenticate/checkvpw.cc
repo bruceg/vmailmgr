@@ -61,7 +61,7 @@ struct auth_data
 
 auth_data* getdata()
 {
-  static char buf[513];
+  char buf[513];
   unsigned buflen = 0;
   while(buflen < sizeof(buf)) {
     int r;

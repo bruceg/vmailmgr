@@ -4,11 +4,9 @@ To get the pieces not included in this CVS tree, you need to run:
 	cvs co lib/cdb++
 	cvs co lib/fdbuf
 	cvs co lib/mystring
+	cvs co lib/ac
 
-	cd include
-	cvs co -d ac lib/ac
-	ln -s ../lib/*/*.h .
-	cd ..
+	( cd lib/config && sh build-config.sh )
 
 	aclocal
 	autoheader

@@ -1,5 +1,18 @@
+2000-04-03  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* authenticate/vauthenticate.cc (getdata): Buffer doesn't need to
+	be static.
+
+	* authenticate/checkvpw.cc (getdata): buffer doesn't need to be
+	static.
+
+	* lib/vpw/vpwtable.h (class vpwtable): Moved the vpwtable class
+	definition into this file.
+
 2000-04-01  Bruce Guenter  <bruceg@daedalus.bfsmedia.com>
 
+	* Released version 0.96.2
+	
 	* daemon/state.cc: Since the daemon always forks, remove all of
 	the uid/gid saved state, and never restore it.  This class should
 	be renamed, since it does not really "save" any significant state.

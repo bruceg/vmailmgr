@@ -1,5 +1,5 @@
-AC_INIT(include/configrc.h)
-AM_INIT_AUTOMAKE(vmailmgr, 0.96.2)
+AC_INIT(lib/mergelib.sh)
+AM_INIT_AUTOMAKE(vmailmgr, 0.96.3)
 AM_CONFIG_HEADER(config.h)
 AC_PROG_MAKE_SET
 
@@ -111,4 +111,5 @@ AC_OUTPUT(Makefile
 	  lib/fdbuf/Makefile
 	  lib/misc/Makefile
 	  lib/mystring/Makefile
+	  lib/vpw/Makefile
 	  python/Makefile)

@@ -15,19 +15,16 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
-#include "vpwentry.h"
+#include "mystring.h"
+#include "fdbuf.h"
+#include "configio.h"
 
-bool vpwentry::from_record(vpwentry& vpw,
-			   const mystring& name,
-			   const mystring& text)
+bool config_read(const mystring& dir, const mystring& name, mystring& result)
 {
-  vpw.name = name;
-  switch(text[0]) {
-  case 1:
-    return from_ver1_record(vpw, text);
-  case ':':
-    return from_old_record(vpw, text);
-  default:
+  mystring fullname = dir + "/" + name;
+  fdibuf in(fullname.c_str());
+  if(!in.getline(result))
     return false;
-  }
+  result = result.strip();
+  return result.length() > 0;
 }

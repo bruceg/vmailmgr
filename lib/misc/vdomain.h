@@ -4,7 +4,7 @@
 #include "mystring.h"
 #include "configrc.h"
 #include "pwentry.h"
-#include "vpwentry.h"
+#include "vpwtable.h"
 #include "response.h"
 
 class vdomain

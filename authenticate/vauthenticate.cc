@@ -37,7 +37,7 @@ void fail_temporary(const char*)
 
 static void getdata(mystring& domain, mystring& user, mystring& pass)
 {
-  static char buf[513];
+  char buf[513];
   unsigned buflen = 0;
   while(buflen < 512) {
     int r;

@@ -34,3 +34,7 @@ vmailmgr-pyadmin: make-pymain
 	python -c 'import $*'
 .py.pyo:
 	python -O -c 'import $*'
+
+dist-hook:
+	mkdir $(distdir)/templates
+	cp -a templates/*.http templates/*.html $(distdir)/templates

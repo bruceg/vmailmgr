@@ -25,9 +25,6 @@ FOR VERSION 0.97:
 
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
-
-- Remove vcheckquota and vpopbull, and point at the new vmailmgr-tools
-  package.
 -------------------------------------------------------------------------------
 FOR VERSION 0.97.1:
 

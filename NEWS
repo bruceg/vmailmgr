@@ -12,6 +12,8 @@ Internal Changes:
 - Renamed adduser2 daemon function to adduser3 and added extra
   has-mailbox parameter.
 - New CDB library that uses mmap instead of file reads for efficiency.
+- Removed the vcheckquota and vpopbull tools that are now part of the
+  vmailmgr-tools package.
 
 Bug Fixes:
 - Fixed a bug in Python library that caused the listdomain command to fail

@@ -1,14 +1,12 @@
 bin_PROGRAMS = listvdomain vadduser vaddusers vchattr vchforwards \
-	vcheckquota vdeliver vdeluser vpasswd vpasswds vpopbull \
-	vrehash vsetup vupgrade
+	vdeliver vdeluser vpasswd vpasswds vrehash vsetup vupgrade
 bin_SCRIPTS = vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
 
 noinst_PODS = \
 	listvdomain.pod vadduser.pod vadduser.pod vchattr.pod \
-	vchforwards.pod vcheckquota.pod vdeliver.pod vdeluser.pod \
-	vpasswd.pod vpasswds.pod vpopbull.pod vrehash.pod vsetup.pod \
-	vupgrade.pod
+	vchforwards.pod vdeliver.pod vdeluser.pod \
+	vpasswd.pod vpasswds.pod vrehash.pod vsetup.pod vupgrade.pod
 noinst_HTMLS = $(noinst_PODS:.pod=.html)
 man_MANS = $(noinst_PODS:.pod=.1)
 
@@ -45,9 +43,6 @@ vaddusers_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 vchattr_SOURCES = vchattr.cc vcommand.cc
 vchattr_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
-vcheckquota_SOURCES = vcheckquota.cc
-vcheckquota_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
-
 vchforwards_SOURCES = vchforwards.cc vcommand.cc
 vchforwards_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
@@ -65,9 +60,6 @@ vpasswds_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vupgrade_SOURCES = vupgrade.cc vcommand.cc
 vupgrade_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
-
-vpopbull_SOURCES = vpopbull.cc vcommand.cc
-vpopbull_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vsetup_SOURCES = vsetup.cc vcommand.cc
 vsetup_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

@@ -1,5 +1,7 @@
 2004-03-15  Bruce.Guenter.dyndns.org  <bruce@lorien.untroubled.org>
 
+	* cgi/vadduser.cc, cgi/vaddalias.cc: Fixed several one-off bugs.
+
 	* commands/vupgrade.cc (open_table): Fixed up the test to see if
 	the new vpwtable reader is valid.
 

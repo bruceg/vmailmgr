@@ -33,7 +33,7 @@ CGI_MAIN
   if(newpass1 != newpass2)
     error("The passwords you entered do not match");
   else {
-    server_call call("adduser2", dests + 6);
+    server_call call("adduser3", dests + 6);
     call.operand(0, vdomain);
     call.operand(1, username);
     call.operand(2, password);
@@ -43,7 +43,7 @@ CGI_MAIN
 
     unsigned i = 0;
     for(mystring_iter iter(destination, ','); i < dests && iter; ++iter, ++i)
-      call.operand(i+5, *iter);
+      call.operand(i+6, *iter);
 
     response resp = call.call();
     if(!resp)

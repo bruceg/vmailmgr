@@ -5,8 +5,11 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Add note to FAQ regarding PHP error code 255 meaning the daemon is not
-  running properly (once it's been confirmed).
+- Make all virtual users have a directory -- distinguish between the
+  directory and the mailbox in it.
+
+- Expand the record format to include a "last modified" field, and to
+  change the flag values from binary 0/1 to ASCII.
 
 - Make vdeliver write to both the output file and the queue
   simultaneously, to avoid needing to do rewinds:
@@ -32,12 +35,6 @@ can keep the development periods shorter.
 
 - Convert existing TeXinfo documentation to SGML
 
-- Make all virtual users have a directory -- distinguish between the
-  directory and the mailbox in it.
-
-- Expand the record format to include a "last modified" field, and to
-  change the flag values from binary 0/1 to ASCII.
-
 - Add the necessary code for NDBM, MySQL, and PostgreSQL password tables.
 
 - Add more complete tests to verify correct operation of "vaddusers"
@@ -46,6 +43,9 @@ can keep the development periods shorter.
 - Add Courier IMAP support to the bulletin facility
 
 - Use the vpwtable writer to support a more portable version of vrehash
+
+- Add note to FAQ regarding PHP error code 255 meaning the daemon is not
+  running properly (once it's been confirmed).
 
 RELEASE TARGET 0.97
 

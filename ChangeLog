@@ -1,3 +1,8 @@
+2000-10-10  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/stat.cc: Added a rewritten version of this support from
+	Eugene Miretskiy to retrieve statistics about a maildir.
+
 2000-10-07  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* commands/vpasswd2db.cc: Converted to use new vpwtable_writer

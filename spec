@@ -33,7 +33,6 @@ Courier IMAP.
 
 %package daemon
 Summary: Vmailmgr daemon for CGIs
-Requires: daemontools >= 0.61
 Requires: supervise-scripts >= 2.2
 Requires: ucspi-unix
 Group: Utilities/System
@@ -77,9 +76,9 @@ done
 make prefix=$RPM_BUILD_ROOT/usr \
 	cgidir=$RPM_BUILD_ROOT/home/httpd/cgi-bin \
 	pythonlibdir=$RPM_BUILD_ROOT/usr/lib/python1.5 install-strip
-install -m 755 daemon/init $RPM_BUILD_ROOT/etc/rc.d/init.d/vmailmgrd
-install -m 755 daemon/run-svc $RPM_BUILD_ROOT/var/service/vmailmgrd/run
-install -m 755 daemon/run-log $RPM_BUILD_ROOT/var/service/vmailmgrd/log/run
+install -m 755 scripts/vmailmgrd.init $RPM_BUILD_ROOT/etc/rc.d/init.d/vmailmgrd
+install -m 755 scripts/vmailmgrd.svc $RPM_BUILD_ROOT/var/service/vmailmgrd/run
+install -m 755 scripts/vmailmgrd.log $RPM_BUILD_ROOT/var/service/vmailmgrd/log/run
 pushd $RPM_BUILD_ROOT/etc/rc.d
 ln -s ../init.d/vmailmgrd rc0.d/K35vmailmgrd
 ln -s ../init.d/vmailmgrd rc1.d/K35vmailmgrd

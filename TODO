@@ -5,29 +5,24 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+See pyadmin/TODO for notes on vmailmgr-pyadmin.
+
 - Add note to FAQ(?) about enforcing quotas.
 
 - Add note to FAQ regarding PHP error code 255 meaning the daemon is not
   running properly (once it's been confirmed).
 
-- Add tests for:
+- Add or modify tests for:
   - new lookup command
+  - new check command
   - authvmailmgr
   - execution of presetuid and postsetuid hooks in authvmailmgr
 
 - Fix checkvpw to set MAILDIR before executing postsetuid somehow
 
-- Complete the remainder of the commands in vmailmgr.py
-
 - Convert existing TeXinfo documentation to SGML
 
 - Add a mailbox size daemon command
-
-- Document the new pyadmin interface.
-
-- Build sample HTML for the Python interface.
-
-- Add options to the listvdomain programs to expand their output.
 
 - Expand the record format to include a "last modified" field, and to
   change the flag values from binary 0/1 to ASCII.

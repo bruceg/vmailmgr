@@ -1,3 +1,22 @@
+2000-09-12  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* pyadmin/vmailmgr_lib.py (Flag.html): Added this method to print
+	out a HTML select list with the correct item selected.
+
+	* pyadmin/vmailmgr_sessiond.py: New program set up to track
+	session status in memory instead of on disk.
+
+	* pyadmin/vmailmgr_pyadmin.py (cgi_main): Create a Context object
+	for passing in to format_page.
+
+	* pyadmin/vmailmgr_parser.py (Context): Defined this context
+	object that wraps context data.  This will be extended to stack
+	contexts.  When doing a __getitem__, if the key is not found in
+	the context dictionary, that key is evaluated as an expression
+	with the dictionary as local variables.
+	(Foreach.do_end): Pass the formatted sections to
+	stack.append_or_print instead of printing them directly.
+
 2000-09-11  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* Removed all old Python support code, replace by the new

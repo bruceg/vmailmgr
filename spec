@@ -148,6 +148,6 @@ fi
 %doc php/vmail.features
 /home/httpd/php/*
 
-%files pyadmin
+%files python
 %defattr(-,root,root)
 /usr/lib/python1.5/vmailmgr

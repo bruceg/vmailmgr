@@ -10,7 +10,7 @@ noinst_PODS = vmailmgr.pod
 noinst_MISC = translation.ps
 EXTRA_DIST = ChangeLog-pre-vmailmgr ChangeLog-pre-0.70 \
 	changelog2html.pl news2html.pl \
-	TODO YEAR2000 translation.fig translation.ps \
+	YEAR2000 translation.fig translation.ps \
 	$(man_MANS) \
 	$(noinst_PODS) \
 	$(noinst_SGMLS) \

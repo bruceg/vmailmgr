@@ -1,3 +1,7 @@
+2000-09-23  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* Released version 0.96.9
+
 2000-09-15  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* authenticate/authvlib.cc (check): Always set VUSER, even if

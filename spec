@@ -79,8 +79,8 @@ make	prefix=$RPM_BUILD_ROOT/usr \
 	phpdir=$RPM_BUILD_ROOT/home/httpd/php \
 	install-strip
 install -m 755 scripts/vmailmgrd.init $RPM_BUILD_ROOT/etc/rc.d/init.d/vmailmgrd
-install -m 755 scripts/vmailmgrd.svc $RPM_BUILD_ROOT/var/service/vmailmgrd/run
-install -m 755 scripts/vmailmgrd.log $RPM_BUILD_ROOT/var/service/vmailmgrd/log/run
+install -m 755 scripts/vmailmgrd.run $RPM_BUILD_ROOT/var/service/vmailmgrd/run
+install -m 755 scripts/vmailmgrd-log.run $RPM_BUILD_ROOT/var/service/vmailmgrd/log/run
 pushd $RPM_BUILD_ROOT/etc/rc.d
 ln -s ../init.d/vmailmgrd rc0.d/K35vmailmgrd
 ln -s ../init.d/vmailmgrd rc1.d/K35vmailmgrd

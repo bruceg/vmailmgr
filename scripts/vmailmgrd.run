@@ -6,4 +6,4 @@ else
   socket_file=/tmp/.vmailmgrd
 fi
 
-exec unixserver -v $socket_file vmailmgrd
+exec unixserver -v -- $socket_file vmailmgrd -D -V 2>&1

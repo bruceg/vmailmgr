@@ -27,6 +27,8 @@ can keep the development periods shorter.
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
 
+- Add Courier IMAP support to the bulletin facility
+
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd
   - creates the new user directory

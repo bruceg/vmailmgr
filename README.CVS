@@ -1,0 +1,16 @@
+To get the pieces not included in this CVS tree, you need to run:
+	cvs co lib/cgi
+	cvs co lib/cli
+	cvs co lib/cdb++
+	cvs co lib/fdbuf
+	cvs co lib/mystring
+
+	cd include
+	cvs co -d ac lib/ac
+	ln -s ../lib/*/*.h .
+	cd ..
+
+	aclocal
+	autoheader
+	automake -a
+	autoconf

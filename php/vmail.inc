@@ -23,9 +23,9 @@ function vm_daemon_raw($arg)
         $vmailfile = "/tmp/.vmailmgrd";
 	if (file_exists("/etc/vmailmgr/socket-file"))
 		$socketfile = (file ("/etc/vmailmgr/socket-file"));
-		$socketfile = trim($socketfile[0]);
-		if ($socketfile != "")
-			$vmailfile = $socketfile;
+	$socketfile = trim($socketfile[0]);
+	if ($socketfile != "")
+		$vmailfile = $socketfile;
 		
 
         $vmailsock = fsockopen ($vmailfile, 0, $errno, $errstr, 4);
@@ -70,7 +70,7 @@ function vm_daemon_raw($arg)
 		return $out;
 	}
 
-	$message = fgets ($vmailsock, $length);
+	$message = fread ($vmailsock, $length);
 
 /*	Close the socket	*/
 	fclose($vmailsock);
@@ -83,13 +83,20 @@ return array($value, $message);
    are ignored, but this is easy to fix if anybody cared about them */
 
 function listdomain_parse_line($line){
+	//Grab the user's name
 	$position = strpos($line, chr(0));
 	$username=substr($line, 0, $position);
+	//Grab the protocol version
+	$ver=ord(substr($line, $position+1, $position+2));
+	if ($ver != 2) die("Protocol version is $ver, not the 2 as this script expects.");
+	//Thow away everything already done
 	$line=substr($line, $position+2);
+	//Grab the flags
 	while (substr($line, 0, 1) != chr(0)){
-		$flags[]=ord(substr($line, 1, 1));
+		$flags[ord(substr($line, 0, 1))]=ord(substr($line, 1, 1));
 		$line=substr($line, 2);
 	};
+	//Explode the remainder into an array based on the NULs used to end the fields
 	$user=explode(chr(0), $line);
 	$x=1;
 	if ($user[$x++]!=("*")) $password="Set";
@@ -148,10 +155,8 @@ if ($userpass=="") return array(1, "No user password supplied");
 	$command=array("adduser2", $domain, $username, $password,
 	               $userpass, $username);
 	for ($x=0; $x < sizeof($forwards); $x++)
-		if ($forwards[$x]!="")
-			$command[]=$forwards[$x];
-	$temp=vm_daemon_raw($command);
-return $temp;
+		if ($forwards[$x]!="") $command[]=$forwards[$x];
+return vm_daemon_raw($command);
 }
 
 /* vaddalias, takes domain name, password, username, userpassword, and an
@@ -168,8 +173,7 @@ if ($username=="") return array(1, "Empty username");
 	for ($x=0; $x < sizeof($forwards); $x++)
 		if ($forwards[$x]!="")
 			$command[]=$forwards[$x];
-	$temp=vm_daemon_raw($command);
-return $temp;
+return vm_daemon_raw($command);
 }
 
 /* vdeluser, takes domain name, password, and username, returns an array
@@ -180,8 +184,7 @@ if ($domain=="") return array(1, "Empty domain");
 if ($password=="") return array(1, "Empty domain password");
 if ($username=="") return array(1, "Empty username");
 	$command=array("deluser", $domain, $username, $password);
-	$temp=vm_daemon_raw($command);
-return $temp;
+return vm_daemon_raw($command);
 }
 
 /* vchpass, takes domain name, password, username and a new password,
@@ -196,15 +199,12 @@ if ($password=="") return array(1, "Empty domain password");
 if ($username=="") return array(1, "Empty username");
 if ($newpass=="") return array(1, "Empty new password");
 	$command=array("chattr", $domain, $username, $password, "1", $newpass);
-	$temp=vm_daemon_raw($command);
-return $temp;
+return vm_daemon_raw($command);
 }
 
 /* vchforward, takes domain name, password, username and an array of
    forwarding addresses, returns an array consisting of an integer exit code
-   and message. Due to a bug in PHP when dealing with array values
-   containing NULs, vchforward will not handle multiple destinations unless
-   one is using the patched vmailmgrd present in 0.96.2 and later */
+   and message. */ 
 
 function vchforward($domain, $password, $username, $forwards){
 if ($domain=="") return array(1, "Empty domain");
@@ -214,8 +214,46 @@ if ($username=="") return array(1, "Empty username");
 	for ($x=0; $x< sizeof($forwards); $x++)
 		if ($forwards[$x] != "") $command[]=$forwards[$x];
 	if (sizeof($forwards) == 0) $command[] = "";
-	$temp=vm_daemon_raw($command);
-return $temp;
+return vm_daemon_raw($command);
 }
+
+/* v*/
+
+function vchattr($domain, $password, $username, $attr, $value){
+	$ATTR = array(
+		"PASS" => "1",
+		"DEST" => "2",
+		"HARDQUOTA" => "3",
+		"SOFTQUOTA" => "4",
+		"MSGSIZE" => "5",
+		"MSGCOUNT" => "6",
+		"EXPIRY" => "7",
+		"MAILBOX_ENABLED" => "8",
+		"PERSONAL" => "9"
+	);
+	$command = array ("chattr", $domain, $username, $password, $ATTR[$attr], $value);
+return vm_daemon_raw($command);
+}
+
+function vwriteautoresponse($domain, $password, $username, $message){
+	$command = array("autoresponse", $domain, $username, $password, "write", $message);
+return vm_daemon_raw($command);
+}
+
+function vreadautoresponse($domain, $password, $username){
+	$command = array("autoresponse", $domain, $username, $password, "read");
+return vm_daemon_raw($command);
+}
+
+function vdisableautoresponse($domain, $password, $username){
+	$command = array("autoresponse", $domain, $username, $password, "disable");
+return vm_daemon_raw($command);
+}
+
+function venableautoresponse($domain, $password, $username){
+        $command = array("autoresponse", $domain, $username, $password, "enable");
+return vm_daemon_raw($command);
+}
+
 
 ?>

@@ -23,6 +23,9 @@
 #include "misc/stat_fns.h"
 #include "authvlib.h"
 
+const mystring exec_presetuid = "checkvpw-presetuid";
+const mystring exec_postsetuid = "checkvpw-postsetuid";
+
 void fail(const char* msg, const char* execfile, int code)
 {
   presetenv("CHECKVPW_ERROR=", msg);
@@ -147,9 +150,6 @@ int main(int argc, const char* argv[])
 
   set_maildirarg(argc, argv, udata);
   
-  if(execute("checkvpw-postsetuid"))
-    fail_temporary("Execution of checkvpw-postsetuid failed");
-
   if(execute_one(argv+1))
     fail_temporary("Execution of command line arguments failed");
 

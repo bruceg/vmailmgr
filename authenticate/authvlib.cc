@@ -55,8 +55,8 @@ void set_user(const pwentry* pw)
 {
   presetenv("USER=", pw->name);
   presetenv("HOME=", pw->home);
-  if(execute("checkvpw-presetuid"))
-    fail_temporary("Execution of checkvpw-presetuid failed");
+  if(!!exec_presetuid && execute(exec_presetuid))
+    fail_temporary("Execution of presetuid failed");
   if(setgid(pw->gid) == -1 ||
      setuid(pw->uid) == -1 ||
      chdir(pw->home.c_str()) == -1)
@@ -106,5 +106,8 @@ user_data* authenticate(mystring name, mystring pass, mystring domain,
     if(!!baseuser)
       name = baseuser + "-" + name;
   }
-  return check(name, pass, virtual_only);
+  user_data* result = check(name, pass, virtual_only);
+  if(result && !!exec_postsetuid && execute(exec_postsetuid))
+    fail_temporary("Execution of presetuid failed");
+  return result;
 }

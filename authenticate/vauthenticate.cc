@@ -20,6 +20,9 @@
 #include "authvlib.h"
 #include "fdbuf/fdbuf.h"
 
+const mystring exec_presetuid = 0;
+const mystring exec_postsetuid = 0;
+
 void fail_login(const char*)
 {
   exit(1);

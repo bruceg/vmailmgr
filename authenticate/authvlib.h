@@ -30,9 +30,11 @@ user_data* authenticate(mystring name, mystring pass, mystring domain,
 			bool virtual_only = false);
 void set_user(const pwentry* pw);
 
-// The following three routines must be defined by the authentication module.
-void fail_login(const char* msg);
-void fail_baddata(const char* msg);
-void fail_temporary(const char* msg);
+// The following must be defined by the authentication module.
+extern const mystring exec_presetuid;
+extern const mystring exec_postsetuid;
+extern void fail_login(const char* msg);
+extern void fail_baddata(const char* msg);
+extern void fail_temporary(const char* msg);
 
 #endif // VMAILMGR__VMAILMGR_AUTH_LIBRARY__H__

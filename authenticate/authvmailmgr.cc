@@ -27,6 +27,9 @@ static mystring domain;
 static int global_argc;
 static char** global_argv;
 
+const mystring exec_presetuid = "authvmailmgr-presetuid";
+const mystring exec_postsetuid = "authvmailmgr-postsetuid";
+
 void fail(const char* msg, const char* execfile)
 {
   presetenv("AUTHVMAILMGR_ERROR=", msg);

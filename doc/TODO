@@ -5,9 +5,6 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Make note in configuration doc about authvmailmgr-presetuid,
-  authvmailmgr-postsetuid, VUSER in -loginfail.
-
 - Extending lookup to require a password and to detail more.
 
 - Add a "status" autoresponse daemon command

@@ -162,6 +162,10 @@ The virtual user's total size soft quota (in bytes, or "-" if not applicable).
 Each of the following sections identifies a single configuration file
 
 @menu
+* authvmailmgr-error::          
+* authvmailmgr-loginfail::      
+* authvmailmgr-postsetuid::     
+* authvmailmgr-presetuid::      
 * autoresponse-dir::            
 * autoresponse-file::           
 * bulletin-dir::                
@@ -196,7 +200,83 @@ Each of the following sections identifies a single configuration file
 @end menu
 
 @c ============================================================================
-@node autoresponse-dir, autoresponse-file, Configuration Files, Configuration Files
+@node authvmailmgr-error, authvmailmgr-loginfail, Configuration Files, Configuration Files
+@section authvmailmgr-error
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+authvmailmgr
+@item Description
+This is executed by authvmailmgr if any error occurrs other than those
+caught by @file{authvmailmgr-loginfail} below.
+The environment variable @code{AUTHVMAILMGR_ERROR} will contain an error
+message.
+This can be used to output logging messages about errors in authvmailmgr.
+@end table
+
+@c ============================================================================
+@node authvmailmgr-loginfail, authvmailmgr-postsetuid, authvmailmgr-error, Configuration Files
+@section authvmailmgr-loginfail
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+authvmailmgr
+@item Description
+This is executed by authvmailmgr if the user's login fails.
+The environment variable @code{AUTHVMAILMGR_ERROR} will contain an error
+message.
+The environment variable @code{VUSER} will be set to the virtual user
+name if it has been determined.
+This can be used to output logging messages about login failures or to
+throttle hackers.
+@end table
+
+@c ============================================================================
+@node authvmailmgr-postsetuid, authvmailmgr-presetuid, authvmailmgr-loginfail, Configuration Files
+@section authvmailmgr-postsetuid
+
+@table @strong
+@item Type
+executable
+@item Default
+@samp {vpopbull}
+@item Used By
+authvmailmgr
+@item Description
+This is executed by authvmailmgr after a user is successfully authenticated.
+@end table
+
+@c ============================================================================
+@node authvmailmgr-presetuid, autoresponse-dir, authvmailmgr-postsetuid, Configuration Files
+@section authvmailmgr-presetuid
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+authvmailmgr
+@item Description
+This list is executed by authvmailmgr before changing user away from root,
+and before authenticating a virtual user.
+Note: The environment variable @samp{MAILDIR} is not set since the
+virtual user has not yet been authenticated, or even looked up
+at this point.
+For the same reason, @samp{VUSER} is not authenticated and is under
+complete control of the invoking user.
+@end table
+
+@c ============================================================================
+@node autoresponse-dir, autoresponse-file, authvmailmgr-presetuid, Configuration Files
 @section autoresponse-dir
 
 @table @strong
@@ -255,8 +335,8 @@ Empty
 @item Used By
 checkvpw
 @item Description
-This list is executed if any error occurrs other than those caught by
-@file{checkvpw-loginfail} below.
+This is executed by checkvpw if any error occurrs other than those
+caught by @file{checkvpw-loginfail} below.
 The environment variable @code{CHECKVPW_ERROR} will contain an error
 message.
 This can be used to output logging messages about errors in checkvpw.
@@ -274,9 +354,11 @@ Empty
 @item Used By
 checkvpw
 @item Description
-This list is executed if the user's login fails.
+This is executed by checkvpw if the user's login fails.
 The environment variable @code{CHECKVPW_ERROR} will contain an error
 message.
+The environment variable @code{VUSER} will be set to the virtual user
+name if it has been determined.
 This can be used to output logging messages about login failures or to
 throttle hackers.
 @end table
@@ -293,7 +375,7 @@ Empty
 @item Used By
 checkvpw
 @item Description
-This list is executed after the subcommand successfully completes.
+This is executed by checkvpw after the subcommand successfully completes.
 @end table
 
 @c ============================================================================
@@ -308,7 +390,7 @@ executable
 @item Used By
 checkvpw
 @item Description
-This list is executed after a user is successfully authenticated.
+This is executed by checkvpw after a user is successfully authenticated.
 @end table
 
 @c ============================================================================
@@ -323,8 +405,8 @@ Empty
 @item Used By
 checkvpw
 @item Description
-This list is executed before changing user away from root, and before
-authenticating a virtual user.
+This list is executed by checkvpw before changing user away from root,
+and before authenticating a virtual user.
 Note: The environment variable @samp{MAILDIR} is not set since the
 virtual user has not yet been authenticated, or even looked up
 at this point.

@@ -2,6 +2,26 @@ bin_PROGRAMS = checkvpw vauthenticate
 authlib_PROGRAMS = authvmailmgr
 authlibdir = ${prefix}/lib/courier-imap/libexec/authlib/
 
+noinst_PODS = checkvpw.pod vauthenticate.pod
+noinst_HTMLS = $(noinst_PODS:.pod=.html)
+man_MANS = $(noinst_PODS:.pod=.1)
+
+CLEANFILES = $(man_MANS) $(noinst_HTMLS) \
+	pod2html-dircache pod2html-itemcache
+EXTRA_DIST = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS)
+
+all: docs
+
+docs: $(noinst_HTMLS) $(noinst_TXTS)
+
+dist-hook:
+	touch $(distdir)/*.html
+	touch $(distdir)/*.txt
+	touch $(distdir)/*.[123456789]
+
+%.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
+%.html: %.pod; $(POD2HTML) $< >$@
+
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = $(CIINCLUDES) -I../lib
 
@@ -13,4 +33,3 @@ authvmailmgr_LDADD = ../lib/libvmailmgr.a -L../lib/courier-authlib -lauthmod
 
 vauthenticate_SOURCES = vauthenticate.cc authvlib.cc authvlib.h
 vauthenticate_LDADD = ../lib/libvmailmgr.a
-

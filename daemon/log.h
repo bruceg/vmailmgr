@@ -13,5 +13,6 @@ extern void logresponse(const response&);
 extern const mystring LOG_PASSWORD;
 extern const mystring LOG_NEWPASS;
 extern const mystring LOG_ADMINPASS;
+extern const mystring LOG_MESSAGE;
 
 #endif // VMAILMGRD__DAEMON__LOG__H__

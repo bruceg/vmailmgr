@@ -2,10 +2,14 @@
 Changes in version 0.96.6
 
 New Features:
-- Updated PHP code from Mike Bell.
 - Added autoresponse command to daemon, modified from code submitted by
   Mike Bell.  This allows the user to upload a autoresponse file to
   their virtual mailbox, to be used by an autoresponder (not included).
+- Added autoresponse CGI written in Python, as well as updated Python
+  library code.
+- Updated PHP code from Mike Bell.
+- Replaced the FAQ and HOWTO documents with the revised ones by Dan
+  Kuykendall.
 
 Internal Changes:
 - The necessary parts of the Courier IMAP "authlib" library is now
@@ -16,7 +20,8 @@ Internal Changes:
 Bug Fixes:
 - Fixed a problem with converting from old records that didn't set the
   virtual user flags properly.
-- Fixed a problem with the virtual user creation not being set properly.
+- Fixed a problem with the virtual user creation time field not being
+  set properly.
 - Fixed a bug in vdeliver that would cause any error from the predeliver
   script to be treated as a temporary failure.
 -------------------------------------------------------------------------------

@@ -25,6 +25,7 @@ extern pid_t forked_pid;
 const mystring LOG_PASSWORD = "<password>";
 const mystring LOG_NEWPASS = "<newpass>";
 const mystring LOG_ADMINPASS = "<adminpass>";
+const mystring LOG_MESSAGE = "<message>";
 
 static const char* request_str = "Request: ";
 

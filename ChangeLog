@@ -1,4 +1,48 @@
+2000-05-31  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* python/vmailmgr.py.in (VUser.from_binary): Fixed some bugs in
+	the conversion of flags.
+
+2000-05-25  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* python/vmailmgr_cgi.py.in (print_html): Added code to print out
+	a HTML error if the requested file could not be printed.
+	(wrap_print): Print out basename+"-success" on success, and
+	provide a default error response if the error file does not
+	exist.
+
+	* daemon/daemon.h (CMD): Removed a bogus "const" from the
+	declarations of the CMD and CMD_FD macros.
+
+	* daemon/autoresponse.cc (CMD_FD): Added proper command logging to
+	this command.
+	(CMD_FD): Fixed type -- a virtual user's password is acceptable.
+
+	* daemon/log.cc: Added a new LOG_MESSAGE constant.
+
+	* doc/FAQ.sgml: Added a brief section on how to configure
+	qmail+patches for use with vmailmgr.
+
+	* doc/configuration.texi (qmail-root): Added this missing section.
+
 2000-05-24  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* python/vmailmgr_cgi.py.in (cgi_main): Trap trying to run the
+	program outside of a CGI environment.
+
+	* python/vmailmgr.py.in (VUser): Added this class to represent the
+	data associated with a virtual user.  A special __getitem__
+	routine allows the data to be read as a dictionary.
+	(Daemon): More code reorganization in this class.
+	(listdomain): Added this command, which returns a dictionary of
+	all the users in the domain.
+	(adduser): Added this command to add a virtual user.
+	(autoresponse): Added this command, which executes the daemon
+	"autoresponse" command.
+
+	* python/vmailmgr_cgi.py.in (wrap_print): Added this new routine,
+	which wraps a call to a vmailmgr command in a try/except block,
+	and prints an output file based on the results.
 
 	* Added SGML documentation from Dan Kuykendall.
 

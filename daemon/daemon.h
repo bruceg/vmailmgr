@@ -37,8 +37,8 @@ typedef unsigned char uchar;
 // from dispatch.cc
 extern response dispatch_cmd(command& args, int fd);
 
-#define CMD(NAME) response NAME##_cmd (const command& args, int)
-#define CMD_FD(NAME) response NAME##_cmd (const command& args, int fd)
+#define CMD(NAME) response NAME##_cmd (command& args, int)
+#define CMD_FD(NAME) response NAME##_cmd (command& args, int fd)
 
 // from lookup.cc
 extern bool lookup_baseuser(mystring, pwentry*&, mystring&);

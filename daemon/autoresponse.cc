@@ -98,11 +98,18 @@ CMD_FD(autoresponse)
 
   mystring user = args[0];
   mystring pass = args[1];
+  args[1] = LOG_PASSWORD;
   mystring action = args[2];
+  mystring message;
+  if(args.count() == 4) {
+    message = args[3];
+    args[3] = LOG_MESSAGE;
+  }
+  logcommand(args);
 
   pwentry* pw;
   vpwentry* vpw;
-  OK_RESPONSE(lookup_and_validate(user, pw, vpw, pass, true, false));
+  OK_RESPONSE(lookup_and_validate(user, pw, vpw, pass, true, true));
 
   mystring filename = vpw->mailbox + "/" + config->autoresponse_file();
 
@@ -110,10 +117,10 @@ CMD_FD(autoresponse)
   if(action == "enable")  return autoresponse_enable(filename);
   if(action == "read")  return autoresponse_read(filename, fd);
   if(action == "write")
-    if(args.count() != 4)
+    if(!message)
       RETURN(bad, "Missing autoresponse message argument");
     else
-      return autoresponse_write(filename, args[3]);
+      return autoresponse_write(filename, message);
   
   RETURN(err, "Unrecognized command");
 }

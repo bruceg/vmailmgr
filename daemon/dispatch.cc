@@ -57,7 +57,7 @@ CMD(fecho)
 struct dispatch 
 {
   const char* name;
-  response (*function)(const command&, int);
+  response (*function)(command&, int);
   unsigned arg_min;
   unsigned arg_max;
   bool decode_virtual;

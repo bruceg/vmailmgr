@@ -1,3 +1,15 @@
+2000-10-13  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* Most code was restructured to accomodate the below two changes.
+
+	* lib/vpwtable/vpwtable.h (class vpwtable_reader): Modified this
+	interface to return a vpwentry*.
+
+	* lib/vpwentry/vpwentry.h (struct vpwentry ): Modified this data
+	structure to rename "mailbox" to "directory", and add a
+	"has_mailbox" flag.  Also made the default constructor and
+	set_defaults protected.
+
 2000-10-10  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* daemon/stat.cc: Added a rewritten version of this support from

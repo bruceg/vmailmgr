@@ -28,12 +28,8 @@ AC_ARG_WITH(vpwtable,
 	LIBS="$LIBS -lgdbm";;
  *)    AC_MSG_ERROR(bad value ${withval} for --with-vpwtable);;
  esac],[AC_DEFINE(VPWTABLE_CDB)
-	CDBPROGS="vrehash"
-	CDBSCRIPTS="allvpasswd2cdb"
 	dbtype=cdb])
 
-AC_SUBST(CDBPROGS)
-AC_SUBST(CDBSCRIPTS)
 AM_CONDITIONAL(VPWTABLE_CDB, test $dbtype = cdb)
 AM_CONDITIONAL(VPWTABLE_GDBM, test $dbtype = gdbm)
 
@@ -45,8 +41,8 @@ AC_PROG_CXX
 CXX_NO_RTTI
 CXX_NO_EXCEPTIONS
 
-CFLAGS="$CFLAGS -Wall -W"
-CXXFLAGS="$CXXFLAGS -Wall -W"
+CFLAGS="$CFLAGS -Wall"
+CXXFLAGS="$CXXFLAGS -Wall"
 
 AC_PROG_INSTALL
 AC_PROG_RANLIB

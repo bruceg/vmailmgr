@@ -33,6 +33,19 @@ const int cli_args_min = 0;
 const int cli_args_max = 0;
 int opt_log_all = true;
 int opt_verbose = false;
+
+// This program is the local server that controls the operation of many
+// parts of this package.
+// It is currently used to handle password checking and virtual user
+// lookups, but will eventually contain the functionality to handle adding
+// and deleting users and aliases, and changing passwords.
+//
+// F<vmailmgrd> logs its activity to standard output, and as such
+// requires its output to be piped through a tool to
+// record those logs, such as F<accustamp> and F<cyclog> (from the
+// F<daemontools> package), or
+// F<splogger> (included with the F<qmail> package).
+
 cli_option cli_options[] = {
   { 'd', 0, cli_option::flag, 0, &opt_log_all,
     "Log only requests that fail", 0 },
@@ -42,7 +55,14 @@ cli_option cli_options[] = {
     "Log non-verbosely (default)", 0 },
   { 'V', 0, cli_option::flag, 1, &opt_verbose,
     "Log verbosely", 0 },
-  {0} };
+  // Log verbose messages regarding the system's status.
+  // Note that this flag implies C<-D>.
+  {0}
+};
+
+// SEE ALSO
+//
+// vdeliver(1), checkvpw(8)
 
 #define TIMEOUT 1
 

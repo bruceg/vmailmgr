@@ -61,6 +61,17 @@ class Flag:
         return 'false'
     def __repr__(self):
         return "Flag(%s)" % repr(self.value)
+    def html(self, fieldname):
+        if self.value:
+            strue = ' selected'
+            sfalse = ''
+        else:
+            strue = ''
+            sfalse = ' selected'
+        return ("<select name='%s'>"
+                "<option value=1%s>True"
+                "<option value=0%s>False"
+                "</select>" % ( fieldname, strue, sfalse ) )
 
 class Time:
     def __init__(self, value):

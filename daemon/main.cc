@@ -25,12 +25,12 @@
 #include "cli/cli.h"
 #include "daemon.h"
 
-const char* cli_program = "clitest";
-const char* cli_help_prefix = "Does nothing but set flags\n";
+const char* cli_program = "vmailmgrd";
+const char* cli_help_prefix = "vmailmgr support daemon\n";
 const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
-const int cli_args_max = -1;
+const int cli_args_max = 0;
 int opt_log_all = true;
 int opt_verbose = false;
 cli_option cli_options[] = {

@@ -77,6 +77,14 @@ else
 fi
 AC_SUBST(HTML2TXT)
 
+TODAY=`date +%Y-%m-%d`
+POD2MAN="pod2man --release='vmailmgr ${VERSION}' --center='VMailMgr Tools Documentation' --date='${TODAY}'"
+POD2HTML="pod2html --noindex"
+SUFFIXES="$SUFFIXES .1 .5 .7 .8 .pod .html .texi .txt .ps .fig .sgml .py .pyc .pyo .in .py.in"
+AC_SUBST(POD2MAN)
+AC_SUBST(POD2HTML)
+AC_SUBST(SUFFIXES)
+
 dnl Checks for libraries.
 AC_CHECK_LIB(crypt, crypt)
 AC_CHECK_LIB(inet, socket)

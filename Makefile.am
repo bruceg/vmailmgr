@@ -10,3 +10,5 @@ dist-hook:
 
 docs:
 	$(MAKE) -C doc all
+	$(MAKE) -C daemon docs
+	$(MAKE) -C commands docs

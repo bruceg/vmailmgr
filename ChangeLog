@@ -1,3 +1,11 @@
+2000-08-15  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/deluser.cc (CMD): Use new form of vdomain::deluser.
+
+	* lib/vpwtable/reader.cc (vpwtable_reader): Removed the call to
+	end here, which produced a missing reference to
+	vpwtable_reader::end.
+
 2000-08-13  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* commands/*.cc: Moved all the POD man page documentation into the

@@ -5,10 +5,11 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Add note to FAQ(?) about enforcing quotas.
+
 - Complete integrating the POD documentation into the source files.
 
-- Figure out a simple way of doing lists in the CLI docs and fixup
-  vpopbull.
+- Fix up lists in vpopbull.
 
 - Add tests for:
   - new lookup command
@@ -39,40 +40,11 @@ can keep the development periods shorter.
 
 - Add Courier IMAP support to the bulletin facility
 
-- Figure out some way of embeding formattable documentation into the
-  source code, especially for the "commands".
-
 - Add support to the vpwtable template that allows writing a batch of
   users in a more efficient manner
   - start writing (locks the table for other writes, enter nosync mode)
   - append record (check for prior existance of record, add it)
   - stop writing (sync data and unlock the table)
-
-- add a "vadddomain" command that:
-  - adds a new user to /etc/passwd
-  - creates the new user directory
-  - su's to that user and runs vsetup
-  - fixes the user's home directory permissions
-  - adds entries to control/virtualdomains
-  - adds entries to control/rcpthosts
-
-- dynamic information per mailbox:
-  - total number of emails and bytes received
-  - number of emails and bytes currently
-  - time of first and last messages
-  - last access time via POP3
-  - text file named "data"
-  - one line per datum, using "key=value" format
-
-- Write library routines, interfaced through vpwentry, that can
-  get/set the dynamic data.
-
-- Per-user quotas, implemented as a program to be called by the above
-
-? Modifiy the pop bulletin command to take the bulletin directory on the
-  command line.
-
-- Continue to seperate the "misc" library directory into modules.
 
 RELEASE TARGET 0.97
 
@@ -110,6 +82,33 @@ RELEASE TARGET 0.99
 - Bug fixes and clean-ups, and documentation improvements
 
 RELEASE TARGET 1.00
+
+- add a "vadddomain" command that:
+  - adds a new user to /etc/passwd
+  - creates the new user directory
+  - su's to that user and runs vsetup
+  - fixes the user's home directory permissions
+  - adds entries to control/virtualdomains
+  - adds entries to control/rcpthosts
+
+- dynamic information per mailbox:
+  - total number of emails and bytes received
+  - number of emails and bytes currently
+  - time of first and last messages
+  - last access time via POP3
+  - text file named "data"
+  - one line per datum, using "key=value" format
+
+- Write library routines, interfaced through vpwentry, that can
+  get/set the dynamic data.
+
+- Modifiy the pop bulletin command to take the bulletin directory on the
+  command line?
+
+- Continue to seperate the "misc" library directory into modules.
+
+- Add a daemon command to list all the configuration for a virtual
+  domain.
 
 - document vchattr, vchforwards
 

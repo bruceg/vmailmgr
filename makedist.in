@@ -16,7 +16,7 @@ NOARCH=
 
 # Set DOCS to the list of files that should go into the "docs" directory
 # in the destination site.
-DOCS="doc/TODO doc/YEAR2000 doc/*.html doc/*.ps doc/*.txt"
+DOCS="doc/TODO doc/YEAR2000 */*.html doc/*.ps doc/*.txt"
 
 # Set EXTRAS to a list of any other extra files that should go into the
 # base directory in the destination site.
@@ -45,4 +45,4 @@ LIST=vmailmgr@lists.em.ca
 
 # Run any extra commands to prepare the source tree (such as making
 # documentation) here.
-make -C doc
+make docs

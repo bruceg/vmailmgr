@@ -1,7 +1,7 @@
-checkvpw and friends
-version 0.52, beta.
-1997-09-15
-Bruce Guenter, bruceg@qcc.sk.ca
+vmailmgr
+version 0.96.7
+2000-06-25
+Bruce Guenter <bruceg@em.ca>
 
 checkvpw is a password checking utility designed specifically for
 use with qmail-popup and qmail-pop3d.  On a host with no virtual

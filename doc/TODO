@@ -5,8 +5,6 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Set up scripts for using autoresponder with vmailmgr.
-
 - Complete the remainder of the commands in vmailmgr.py
 
 - Convert existing TeXinfo documentation to SGML

@@ -152,7 +152,7 @@ typing
   By default, it will try to create the socket file `<tt>/tmp/.vmailmgrd</tt>'. You must ensure that `<tt>/tmp</tt>' is writable, or that the socket is created in
   some other place by setting `<tt>socket-file</tt>' in the configuration. 
 </p>
-<sect>Miscelaneous
+<sect>Miscellaneous
 <sect1>How do I get in contact with other users?
 <p>
   There is a mailing list run by the author. To subscribe, send an e-mail (content and subject line is ignored) to

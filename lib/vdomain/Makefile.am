@@ -1,8 +1,9 @@
 noinst_LIBRARIES = libvdomain.a
 INCLUDES = -I..
+EXTRA_DIST = vdomain.h
 
 libvdomain_a_SOURCES = \
-	vdomain.h vdomain.cc \
+	vdomain.cc \
 	chattr.cc \
 	deluser.cc \
 	lookup.cc \

@@ -17,7 +17,7 @@
 #include <config.h>
 #include "config/configrc.h"
 #include "vpwentry/vpwentry.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "fdbuf/fdbuf.h"
 #include "vcommand.h"
 

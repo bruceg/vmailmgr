@@ -22,7 +22,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <unistd.h>
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "daemon.h"
 
 const char* cli_program = "vmailmgrd";

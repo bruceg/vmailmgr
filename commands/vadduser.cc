@@ -23,7 +23,7 @@
 #include "config/configrc.h"
 #include "misc/pwcrypt.h"
 #include "vcommand.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 
 const char* cli_program = "vadduser";
 const char* cli_help_prefix = "Add a user to a virtual domain\n";

@@ -20,7 +20,7 @@
 #include "fdbuf/fdbuf.h"
 #include "config/configrc.h"
 #include "misc/stat_fns.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "misc/exec.h"
 #include "vcommand.h"
 

@@ -25,8 +25,8 @@ docs: $(noinst_HTMLS) $(man_MANS)
 dist-hook:
 	touch $(distdir)/*.html $(distdir)/*.[123456789]
 
-%.pod: %.cc ../configure.in ../lib/cli/cli2pod.pl
-	perl ../lib/cli/cli2pod.pl $< >$@
+%.pod: %.cc ../configure.in ../lib/cli++/cli++topod.pl
+	perl ../lib/cli++/cli++topod.pl $< >$@
 %.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@
 

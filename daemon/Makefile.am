@@ -15,8 +15,8 @@ docs: $(noinst_HTMLS) $(noinst_TXTS)
 dist-hook:
 	touch $(distdir)/*.html $(distdir)/*.[123456789]
 
-vmailmgrd.pod: main.cc ../configure.in ../lib/cli/cli2pod.pl
-	perl ../lib/cli/cli2pod.pl $< >$@
+vmailmgrd.pod: main.cc ../configure.in ../lib/cli++/cli++topod.pl
+	perl ../lib/cli++/cli++topod.pl $< >$@
 %.8: %.pod ../configure.in; $(POD2MAN) --section=8 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@
 
@@ -37,4 +37,4 @@ vmailmgrd_SOURCES = daemon.h \
 	main.cc \
 	stat.cc \
 	state.h state.cc
-vmailmgrd_LDADD = ../lib/libvmailmgr.a ../lib/cli/libcli.a
+vmailmgrd_LDADD = ../lib/libvmailmgr.a ../lib/cli++/libcli++.a

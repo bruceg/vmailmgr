@@ -23,7 +23,7 @@
 #include "ac/wait.h"
 #include <signal.h>
 #include "fdbuf/fdbuf.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "vcommand.h"
 #include "misc/itoa.h"
 #include "misc/stat_fns.h"

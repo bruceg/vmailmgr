@@ -26,7 +26,7 @@
 #include "config/configrc.h"
 #include "vcommand.h"
 #include "misc/stat_fns.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 
 const char* cli_program = "vrehash";
 const char* cli_help_prefix = "Reorganize users directory\n"

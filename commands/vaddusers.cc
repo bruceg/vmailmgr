@@ -21,7 +21,7 @@
 #include "mystring/mystring.h"
 #include "misc/pwcrypt.h"
 #include "config/configrc.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "vcommand.h"
 
 const char* cli_program = "vaddusers";

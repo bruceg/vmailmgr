@@ -1,6 +1,6 @@
 To get the pieces not included in this CVS tree, you need to run:
 	cvs co lib/cgi
-	cvs co lib/cli
+	cvs co lib/cli++
 	cvs co lib/cdb++
 	cvs co lib/fdbuf
 	cvs co lib/mystring

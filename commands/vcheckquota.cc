@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "config/configrc.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "fdbuf/fdbuf.h"
 #include "vcommand.h"
 #include "ac/dirent.h"

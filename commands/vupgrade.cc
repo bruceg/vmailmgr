@@ -16,7 +16,7 @@
 
 #include <config.h>
 #include <string.h>
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "config/configrc.h"
 #include "fdbuf/fdbuf.h"
 #include "mystring/mystring.h"

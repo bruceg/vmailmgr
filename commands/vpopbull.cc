@@ -27,7 +27,7 @@
 #include "mystring/mystring.h"
 #include "config/configrc.h"
 //#include "misc/debug.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "fdbuf/fdbuf.h"
 #include "vcommand.h"
 

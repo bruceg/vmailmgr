@@ -17,7 +17,7 @@
 #include <config.h>
 #include "fdbuf/fdbuf.h"
 #include "config/configrc.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "vcommand.h"
 
 const char* cli_program = "vdeluser";

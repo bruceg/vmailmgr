@@ -20,7 +20,7 @@
 #include "mystring/mystring.h"
 #include "misc/passwdfn.h"
 #include "config/configrc.h"
-#include "cli/cli.h"
+#include "cli++/cli++.h"
 #include "vcommand.h"
 
 const char* cli_program = "vchattr";

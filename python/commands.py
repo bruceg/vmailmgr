@@ -39,7 +39,7 @@ def listdomain(domain, password):
 def adduser(domain, newuser, password, newpass, maildir=None, forwards=[]):
     return daemon.execute('adduser2',
                           (domain, newuser, password, newpass,
-                           maildir or newuser) + tuple(forwards))
+                           maildir or '') + tuple(forwards))
 
 def lookup(domain, username, password):
     return types.VUser(execute('lookup', domain, username, password))

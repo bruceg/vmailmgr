@@ -15,6 +15,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -174,8 +175,13 @@ void deliver_partial()
       continue;
     else {
       fdobuf out(tmpfile.c_str(), fdobuf::create | fdobuf::excl, 0600);
-      if(!out)
+      if(!out) {
+#ifdef EDQUOT
+	if(out.error_number() == EDQUOT)
+	  die_fail("Delivery failed due to system quota violation");
+#endif
 	continue;
+      }
       if(!dump(out, true))
 	die_temp("Error writing the output file.");
       return;

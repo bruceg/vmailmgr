@@ -132,7 +132,7 @@ void set_maildirarg(int argc, const char* argv[], user_data* udata)
   presetenv("MAILDIR=", udata->maildir);
 
   char* str = new char[udata->maildir.length()+1];
-  memcpy(str, udata->maildir.c_str(), udata->length()+1);
+  memcpy(str, udata->maildir.c_str(), udata->maildir.length()+1);
   argv[maildirarg] = str;
 }
 

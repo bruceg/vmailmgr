@@ -1,6 +1,9 @@
-2000-09-23  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+2000-09-30  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* Released version 0.96.9
+
+	* python/commands.py (adduser): Fixed a typo that prevents users
+	without a mailbox from being added.
 
 2000-09-15  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 

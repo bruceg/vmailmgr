@@ -95,12 +95,14 @@ static RETSIGTYPE handle_alrm(int)
 {
   signal(SIGALRM, handle_alrm);
   abortreq("Timed out waiting for remote");
+  exit(1);
 }
 
 static RETSIGTYPE handle_pipe(int) 
 {
   signal(SIGPIPE, handle_pipe);
   abortreq("Connection to client lost");
+  exit(1);
 }
 
 static RETSIGTYPE handle_intr(int)

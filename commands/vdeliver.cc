@@ -116,6 +116,11 @@ void exit_msg(const char* msg1, const mystring& msg2, int code)
 void die_fail(const char* msg) { exit_msg(msg, 100); }
 void die_temp(const char* msg) { exit_msg(msg, 111); }
 
+void fail_quota()
+{
+  die_fail("Delivery failed due to system quota violation");
+}
+
 mystring read_me()
 {
   static mystring me;
@@ -178,12 +183,17 @@ void deliver_partial()
       if(!out) {
 #ifdef EDQUOT
 	if(out.error_number() == EDQUOT)
-	  die_fail("Delivery failed due to system quota violation");
+	  fail_quota();
 #endif
 	continue;
       }
-      if(!dump(out, true))
+      if(!dump(out, true)) {
+#ifdef EDQUOT
+	if(out.error_number() == EDQUOT)
+	  fail_quota();
+#endif
 	die_temp("Error writing the output file.");
+      }
       return;
     }
   }

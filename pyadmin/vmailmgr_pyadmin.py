@@ -77,6 +77,9 @@ def redirect(path):
         fullpath, fullpath ) )
     sys.exit(0)
 
+def set_cookie(var,val):
+    sys.stdout.write("Set-Cookie: %s=%s\n" % (var, val))
+
 def trap_vmailmgr_call(fn, args):
     try:
         return (1, apply(fn, args))
@@ -93,8 +96,8 @@ def load_file(filename):
 
 def format_page(basename, form):
     basename = string.replace(basename, '.', ':')
-    httpname = basename + '.http'
-    htmlname = basename + '.html'
+    httpname = basename + '.vhttp'
+    htmlname = basename + '.vhtml'
     try:
         vmailmgr_parser.format(load_file(httpname), form)
     except IOError:
@@ -155,8 +158,12 @@ def new_session(dict):
     s.write(data)
     return string.strip(s.readline())
 
+def del_session(key):
+    #s = sessiond_cmd("del %s" % key)
+    pass
+
 ###############################################################################
-# Login actions
+# Login/out actions
 
 def do_login_failed(form, reason):
     if reason:
@@ -177,9 +184,15 @@ def do_login(form):
     session['username'] = username
     session['password'] = password
     key = new_session(session)
-    sys.stdout.write("Set-Cookie: SESSION=%s\n" % key)
+    set_cookie(SESSION, key)
     form[SESSION] = key
     return session
+
+def do_logout(form):
+    if form.has_key(SESSION):
+        set_cookie(SESSION, None)
+        del_session(form[SESSION])
+    redirect('')
 
 ###############################################################################
 # vmailmgr function wrapper class
@@ -289,6 +302,9 @@ def cgi_main(form):
         return redirect('')
     page = string.split(path, '/')[-1]
     form[PAGE] = page
+
+    if page == 'logout':
+        return do_logout(form)
 
     try:
         session = set_session(form)

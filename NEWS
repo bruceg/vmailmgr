@@ -20,6 +20,9 @@ Bug Fixes:
 - Fixed a bug in the subprogram execution code that would cause the
   wrong exit status to be returned.
 - vdeliver now rewinds standard input before executing postdeliver.
+- The autoresponse daemon command will now read the disabled
+  autoresponse file if the enabled one does not exist.
+- Fixed note on setting up a domain in the HOWTO.
 -------------------------------------------------------------------------------
 Changes in version 0.96.7
 

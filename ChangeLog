@@ -1,3 +1,25 @@
+2000-08-10  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* Released version 0.96.8
+
+	* commands/vcheckquota.cc (link_softquota_message): Fixed bug in
+	multiple use of atoi.
+
+	* doc/HOWTO.sgml: Added a note on vsetup.
+
+2000-08-04  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* doc/FAQ.sgml: Added notes on location of qmail-autoresponder and
+	the CVS repository.
+
+	* daemon/autoresponse.cc (autoresponse_read): If the normal
+	autoresponse file can't be read, try the disabled file.
+	(autoresponse_status): Added status command.
+
+	* commands/vcheckquota.cc (link_softquota_message): Added code to
+	symlink in warning message if softquota fails.  This will link the
+	message in each time soft quota fails.
+
 2000-08-03  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* commands/vdeliver.cc (cli_main): Make sure to rewind stdin

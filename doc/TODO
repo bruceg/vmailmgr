@@ -5,9 +5,10 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Extending lookup to require a password and to detail more.
-
-- Add a "status" autoresponse daemon command
+- Add tests for:
+  - new lookup command
+  - authvmailmgr
+  - execution of presetuid and postsetuid hooks in authvmailmgr
 
 - Complete the remainder of the commands in vmailmgr.py
 
@@ -15,6 +16,8 @@ can keep the development periods shorter.
   vpopmail.
 
 - Convert existing TeXinfo documentation to SGML
+
+- Add a mailbox size daemon command
 
 - Add option to vdeluser to prevent deleting users that have a mailbox.
 

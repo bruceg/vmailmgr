@@ -1,16 +1,14 @@
 vmailmgr
-version 0.96.7
-2000-06-25
+version 0.96.8
+2000-08-10
 Bruce Guenter <bruceg@em.ca>
 
-checkvpw is a password checking utility designed specifically for
-use with qmail-popup and qmail-pop3d.  On a host with no virtual
-domains, it behaves much the same (in fact, it should be identical) to
-the standard checkpassword by D. J. Bernstein.
+Vmailmgr provides a virtualizing password-checking interface to
+qmail-pop3d and courier IMAP as well as both a delivery agent to
+automatically deliver mail within a virtual domain and a set of tools
+to manage such a domain from either the command line or from the web.
 
-See checkpassword for more details.  A link to it should be available
-from http://www.qmail.org/  The man page for each program contained in
-this package describe its operation.
-
-This program was based on checkpassword by D. J. Bernstein, which in
-turn was based on code contributed by Russ Nelson.
+This program is Copyright(C) 2000 Bruce Guenter, and may be copied
+according to the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 or a later
+version.  A copy of this license is included with this package.  This
+package comes with no warranty of any kind.

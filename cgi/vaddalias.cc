@@ -31,18 +31,10 @@ CGI_MAIN
     error("The passwords you entered do not match");
   else {
     mystring errmsg;
-    if(!newpass1) {
-      response resp = server_call("addalias", vdomain, username, password,
-				  destination).call();
-      if(!resp)
-	errmsg = resp.msg;
-    }
-    else {
-      response resp = server_call("addaliasp", vdomain, username, password,
-				  newpass1, destination).call();
-      if(!resp)
-	errmsg = resp.msg;
-    }
+    response resp = server_call("adduser2", vdomain, username, password,
+				newpass1, "", destination).call();
+    if(!resp)
+      errmsg = resp.msg;
     if(!errmsg)
       success("The alias was succesfully added.");
     else

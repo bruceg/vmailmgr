@@ -146,10 +146,6 @@ command* decode_data(uchar* ptr, ssize_t length)
       delete cmd;
       FAIL("Error decoding a command parameter");
     }
-    if((*cmd)[i].empty()) {
-      delete cmd;
-      FAIL("Empty command parameter");
-    }
   }
   return cmd;
 }

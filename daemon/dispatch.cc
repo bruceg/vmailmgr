@@ -22,6 +22,7 @@
 extern CMD(addalias);
 extern CMD(addaliasp);
 extern CMD(adduser);
+extern CMD(adduser2);
 extern CMD(chattr);
 extern CMD(check);
 extern CMD(deluser);
@@ -70,10 +71,8 @@ dispatch dispatch_table[] = {
   ENTRY(lookup,     2,  2, true),
   ENTRY(check,      3,  3, true),
   ENTRY(chattr,     5, -1, true),
-  ENTRY(adduser,    4, -1, true),
+  ENTRY(adduser2,   5, -1, true),
   ENTRY(deluser,    3,  3, true),
-  ENTRY(addalias,   4, -1, true),
-  ENTRY(addaliasp,  5, -1, true),
   ENTRY(listdomain, 2,  2, false),
   ENTRY(forkstat,   0,  0, false),
 #ifdef TEST_DAEMON

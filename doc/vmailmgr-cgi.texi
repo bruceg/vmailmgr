@@ -280,6 +280,21 @@ and may be any combination of letters, digits, or punctuation symbols.
 @samp{<input type=password name=newpass1><input type=password name=newpass1>}
 @end table
 
+@c ----------------------------------------------------------------------------
+@subsection Optional Form Fields
+
+@table @strong
+@item Field:
+        userdir
+@item Description:
+This field can be used to specify the user mail directory name relative
+to the virtual domain's users directory.
+If this field is not present, the directory name will be the same as the
+user name.
+@item Syntax:
+@samp{<input type=text name=userdir>}
+@end table
+
 @c ****************************************************************************
 @chapter vchalias
 

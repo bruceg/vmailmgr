@@ -23,14 +23,17 @@ CGI_MAIN
   CGI_INPUT(username);
   CGI_INPUT(newpass1);
   CGI_INPUT(newpass2);
+  CGI_OPTINPUT(userdir);
   
   username = username.lower();
 
+  if(!userdir)
+    userdir = username;
   if(newpass1 != newpass2)
     error("The passwords you entered do not match");
   else {
-    response resp = server_call("adduser", vdomain, username, password,
-				newpass1).call();
+    response resp = server_call("adduser2", vdomain, username, password,
+				newpass1, userdir).call();
     if(!resp)
       error(resp.msg);
     else

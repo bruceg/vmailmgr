@@ -1,8 +1,33 @@
 2000-04-04  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
+	* doc/vmailmgr-cgi.texi (Top): Expanded the "vadduser" section to
+	explain the new optional "userdir" field.
+
+	* cgi/vadduser.cc (CGI_MAIN ): Modified to use the new adduser2
+	interface.
+
+	* cgi/vaddalias.cc (CGI_MAIN ): Modified to use the new adduser2
+	interface.
+
+	* daemon/dispatch.cc: Removed dispatch entries for adduser,
+	addalias, and addaliasp.
+
+	* daemon/adduser2.cc (CMD): Added this new command, which combines
+	the functionality of adduser, addalias, and addaliasp.
+
+	* daemon/addaliasp.cc (CMD): Modified to use build_forwards.
+
+	* daemon/addalias.cc (CMD): Modified to use build_forwards.
+
+	* daemon/adduser.cc (CMD): Only add non-empty forwarding addresses.
+	(build_forwards): Moved the forward-list building code common to
+	adduser, addalias, and addaliasp into this routine.
+
 	* daemon/main.cc (handle_connection): Log command response before
 	attempting to send data back to client.
 	(abortreq): Log abort code before closing FD.
+	(decode_data): Removed the test to check for empty parameters,
+	since some of the modules expect this possibility.
 
 2000-04-03  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 

@@ -16,13 +16,8 @@ can keep the development periods shorter.
 - Update the FAQ
   - Add a section about how checkvpw works
 
-- remove the "addalias" and "addaliasp" daemon interfaces, and move the
-  functionality into "adduser"
-
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
-
-- Completely verify the operation of vchalias, vadduser daemon operations
 
 RELEASE TARGET 0.96.3
 

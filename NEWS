@@ -6,6 +6,10 @@ New Features:
 Internal Changes:
 - Removed the "include" directory.
 - Made vpwtable & vpwentry a seperate source directory.
+- Merged the "adduser", "addalias", and "addaliasp" daemon interfaces
+  into one new inteface named "adduser2".
+- Modified the "vadduser" and "vaddalias" C++ CGIs to use the new
+  interface.
 
 Bug Fixes:
 -------------------------------------------------------------------------------

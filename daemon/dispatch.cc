@@ -134,6 +134,8 @@ response dispatch_cmd(command& args, int fd)
 	mystring baseuser(find_virtual(args[0]));
 	if(baseuser.empty())
 	  RETURN(err, "Invalid or unknown domain name: " + args[0]);
+	else if(!args[1])
+	  args.replace_first_two(baseuser);
 	else
 	  args.replace_first_two(baseuser + "-" + args[1]);
       }

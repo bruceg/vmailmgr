@@ -10,7 +10,7 @@
   Dan Kuykendall <url url="mailto:dan@kuykendall.org">
 </author>
 <date>
-  v1.0, 23 April 2000
+  v1.1, 2001-03-07
 </date>
 <abstract>
   VMailMgr Frequently Asked Questions.
@@ -214,6 +214,28 @@ typing `<tt>/etc/rc.d/init.d/pop3d restart</tt>'.
   vaddalias + me
 </verb>
 </p>
+
+<sect1>How can I put system accounts in a virtual domain?
+
+<p>System accounts are those listed in /etc/password (or
+/var/qmail/users/cdb).  The system accounts are accessable, either
+though SMTP or POP3 or IMAP, as name@DOMAIN, where DOMAIN is listed in
+/var/qmail/control/locals.</p>
+
+<p>Virtual accounts exist only as an artifact of vmailmgr management.
+They are accessable as name@DOMAIN, where DOMAIN is listed in
+/var/qmail/control/virtualdomains.</p>
+
+<p>You CANNOT mix accounts within a domain between system and virtual
+domains.  If the domain is in locals, all accounts for that domain
+must be system accounts.  If it is in virtualdomains, all accounts for
+that domain must be virtual accounts.  Also, locals override
+virtualdomains: if the domain is in locals, virtualdomains is
+ignored.</p>
+
+<p>As an aside, if the domain is neither in locals nor in
+virtualdomains, qmail will reject incoming messages, and vmailmgr will
+treat it as local.</p>
 
 <sect>Troubleshooting
 

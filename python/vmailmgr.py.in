@@ -165,6 +165,9 @@ class Daemon:
         # usable for other commands like listdomain.
         return self.read_response()
 
+def execute(command, args):
+    return Daemon().execute(Command(command, args))
+
 def listdomain(domain, password):
     daemon = Daemon()
     response = daemon.execute(Command('listdomain', (domain, password)))
@@ -187,3 +190,9 @@ def autoresponse(domain, user, password, action, message=None):
     if message:
         cmd.append(message)
     return Daemon().execute(Command('autoresponse', cmd))
+
+def deluser(domain, username, password):
+    return execute('deluser', (domain, username, password))
+
+def chattr(domain, username, password, attribute, *value):
+    return execute('chattr', (domain,username,password,attribute)+value)

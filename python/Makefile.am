@@ -6,16 +6,30 @@ EXTRA_DIST = vautoresponse.in vcommand.in vmailmgr.py.in vmailmgr_cgi.py.in \
 CLEANFILES = $(cgi_SCRIPTS) $(pythonlib_DATA)
 
 SUFFIXES = .py .pyc .pyo .in .py.in
-%: %.in Makefile
+
+vautoresponse: vautoresponse.in Makefile
 	sed <$< >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \
 		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
 	chmod +x $@
 
-%.py: %.py.in Makefile
+vcommand: vcommand.in Makefile
 	sed <$< >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \
 		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
+	chmod +x $@
+
+vmailmgr.py: vmailmgr.py.in Makefile
+	sed <$< >$@ \
+		-e "s|%PYTHON%|${PYTHON}|"  \
+		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
+	chmod +x $@
+
+vmailmgr_cgi.py: vmailmgr_cgi.py.in Makefile
+	sed <$< >$@ \
+		-e "s|%PYTHON%|${PYTHON}|"  \
+		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
+	chmod +x $@
 
 .py.pyc:
 	python -c 'import $*'

@@ -5,7 +5,7 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Seperate the "misc" library directory into modules.
+- Continue to seperate the "misc" library directory into modules.
 
 - Document the Python interface.
 

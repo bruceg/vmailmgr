@@ -1,7 +1,7 @@
 cgi_PROGRAMS = vpasswd vadduser vdeluser vaddalias vchattr listvdomain
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
-INCLUDES = -I../lib/cgi -I../lib/config -I../lib/fdbuf -I../lib/misc -I../lib/mystring -I../lib/vpw
+INCLUDES = -I../lib
 
 vpasswd_SOURCES = vpasswd.cc
 vpasswd_LDADD = ../lib/libcgi.a ../lib/libvmailmgr.a

@@ -17,11 +17,11 @@
 #include <config.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include "fdbuf.h"
-#include "configrc.h"
-#include "stat_fns.h"
-#include "cli.h"
-#include "exec.h"
+#include "fdbuf/fdbuf.h"
+#include "config/configrc.h"
+#include "misc/stat_fns.h"
+#include "cli/cli.h"
+#include "misc/exec.h"
 #include "vcommand.h"
 
 const char* cli_program = "vsetup";

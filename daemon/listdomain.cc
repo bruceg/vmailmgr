@@ -16,8 +16,8 @@
 
 #include <config.h>
 #include "daemon.h"
-#include "pwentry.h"
-#include "lookup.h"
+#include "misc/pwentry.h"
+#include "misc/lookup.h"
 
 static bool write_buf(int fd, const char* buf, unsigned length)
 {

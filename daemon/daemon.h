@@ -20,16 +20,17 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
-#include "mystring.h"
-#include "pwentry.h"
-#include "vpwentry.h"
-#include "pwcrypt.h"
-#include "itoa.h"
-#include "configrc.h"
+#include "mystring/mystring.h"
+#include "misc/pwentry.h"
+#include "vpwentry/vpwentry.h"
+#include "misc/pwcrypt.h"
+#include "misc/itoa.h"
+#include "config/configrc.h"
 #include "state.h"
-#include "response.h"
+#include "misc/response.h"
 #include "command.h"
 #include "log.h"
+#include "vdomain/vdomain.h"
 
 typedef unsigned char uchar;
 

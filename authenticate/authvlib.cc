@@ -18,9 +18,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "authvlib.h"
-#include "exec.h"
-#include "lookup.h"
-#include "vdomain.h"
+#include "misc/exec.h"
+#include "misc/lookup.h"
+#include "vdomain/vdomain.h"
 
 #ifndef HAVE_GETHOSTNAME
 int gethostname(char *name, size_t len);

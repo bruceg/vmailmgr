@@ -24,11 +24,8 @@
 #include <sys/un.h>
 #include <signal.h>
 #include <unistd.h>
-#include "fdbuf.h"
-#include "mystring.h"
-#include "configrc.h"
 #include "daemon.h"
-#include "un.h"
+#include "misc/un.h"
 
 // configuration variables -- set by command line options
 bool opt_log_all = true;

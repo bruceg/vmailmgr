@@ -18,8 +18,6 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "daemon.h"
-#include "configrc.h"
-#include "vdomain.h"
 
 CMD(chattr)
   // Usage: chattr baseuser-virtuser pass attribute value [value ...]

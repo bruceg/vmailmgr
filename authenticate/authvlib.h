@@ -1,8 +1,8 @@
 #ifndef VMAILMGR__VMAILMGR_AUTH_LIBRARY__H__
 #define VMAILMGR__VMAILMGR_AUTH_LIBRARY__H__
 
-#include "mystring.h"
-#include "pwentry.h"
+#include "mystring/mystring.h"
+#include "misc/pwentry.h"
 
 struct user_data
 {

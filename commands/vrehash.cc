@@ -19,16 +19,16 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "autodelete.h"
-#include "fdbuf.h"
-#include "mystring.h"
-#include "maildir.h"
-#include "configrc.h"
-#include "vpwentry.h"
+#include "misc/autodelete.h"
+#include "fdbuf/fdbuf.h"
+#include "mystring/mystring.h"
+#include "misc/maildir.h"
+#include "config/configrc.h"
+#include "vpwentry/vpwentry.h"
 #include "vcommand.h"
-#include "stat_fns.h"
-#include "cli.h"
-#include "cdb++.h"
+#include "misc/stat_fns.h"
+#include "cli/cli.h"
+#include "cdb++/cdb++.h"
 
 const char* cli_program = "vrehash";
 const char* cli_help_prefix =

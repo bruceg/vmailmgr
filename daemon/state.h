@@ -18,8 +18,8 @@
 #define VMAILMGR__STATE__H__
 
 #include <sys/types.h>
-#include "pwentry.h"
-#include "vdomain.h"
+#include "misc/pwentry.h"
+#include "vdomain/vdomain.h"
 
 class saved_state
 {

@@ -16,12 +16,12 @@
 
 #include <config.h>
 #include <string.h>
-#include "cdb++.h"
-#include "cli.h"
-#include "configrc.h"
-#include "fdbuf.h"
-#include "mystring.h"
-#include "vpwentry.h"
+#include "cdb++/cdb++.h"
+#include "cli/cli.h"
+#include "config/configrc.h"
+#include "fdbuf/fdbuf.h"
+#include "mystring/mystring.h"
+#include "vpwentry/vpwentry.h"
 #include "vcommand.h"
 
 const char* cli_program = "passwd2cdb";

@@ -6,7 +6,7 @@ noinst_HEADERS = vcommand.h
 EXTRA_DIST = vaddalias vconf2dir
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
-INCLUDES = -I../lib -I../lib/cdb++ -I../lib/cli -I../lib/config -I../lib/fdbuf -I../lib/misc -I../lib/mystring -I../lib/vpw -DBINDIR=\"@bindir@\"
+INCLUDES = -I../lib -DBINDIR=\"@bindir@\"
 
 listvdomain_SOURCES = listvdomain.cc vcommand.cc
 listvdomain_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

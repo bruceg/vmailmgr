@@ -1,7 +1,7 @@
 #ifndef VMAILMGR__V_COMMAND__H__
 #define VMAILMGR__V_COMMAND__H__
 
-#include "vdomain.h"
+#include "vdomain/vdomain.h"
 
 extern bool go_home();
 extern vdomain domain;

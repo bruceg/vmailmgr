@@ -1,7 +1,7 @@
 #ifndef VMAILMGR__DAEMON__COMMAND__H__
 #define VMAILMGR__DAEMON__COMMAND__H__
 
-#include "mystring.h"
+#include "mystring/mystring.h"
 
 class command
 {

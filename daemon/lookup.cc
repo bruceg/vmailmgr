@@ -17,8 +17,8 @@
 #include <config.h>
 #include "daemon.h"
 #include "log.h"
-#include "lookup.h"
-#include "pwentry_table.h"
+#include "misc/lookup.h"
+#include "misc/pwentry_table.h"
 
 response lookup_and_validate(const mystring& fullname,
 			     pwentry* &pw, vpwentry* &vpw,

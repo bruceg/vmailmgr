@@ -16,9 +16,9 @@
 
 #include <config.h>
 #include <stdlib.h>
-#include "cgi-base.h"
-#include "server.h"
-#include "vpwentry.h"
+#include "cgi/cgi-base.h"
+#include "misc/server.h"
+#include "vpwentry/vpwentry.h"
 
 static mystring domain;
 static mystring userlink;

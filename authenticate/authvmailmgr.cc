@@ -15,12 +15,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
-#include "mystring.h"
-#include "exec.h"
+#include "misc/exec.h"
 #include "authvlib.h"
 // Courier-IMAP includes
-#include "auth.h"
-#include "authmod.h"
+#include "authlib/auth.h"
+#include "authlib/authmod.h"
 
 struct global_data
 {

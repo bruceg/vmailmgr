@@ -16,7 +16,7 @@
 
 #include <config.h>
 #include "daemon.h"
-#include "itoa.h"
+#include "misc/itoa.h"
 
 CMD(check)
   // Usage: check username-virtname password

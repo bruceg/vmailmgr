@@ -17,11 +17,11 @@
 #include <config.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "fdbuf.h"
-#include "mystring.h"
-#include "pwcrypt.h"
-#include "configrc.h"
-#include "cli.h"
+#include "fdbuf/fdbuf.h"
+#include "mystring/mystring.h"
+#include "misc/pwcrypt.h"
+#include "config/configrc.h"
+#include "cli/cli.h"
 #include "vcommand.h"
 
 const char* cli_program = "vaddusers";

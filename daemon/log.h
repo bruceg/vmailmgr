@@ -1,9 +1,9 @@
 #ifndef VMAILMGRD__DAEMON__LOG__H__
 #define VMAILMGRD__DAEMON__LOG__H__
 
-#include "fdbuf.h"
+#include "fdbuf/fdbuf.h"
 #include "command.h"
-#include "response.h"
+#include "misc/response.h"
 
 extern fdobuf& log();
 extern void log(const char*);

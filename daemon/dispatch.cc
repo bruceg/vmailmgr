@@ -16,7 +16,7 @@
 
 #include <config.h>
 #include "daemon.h"
-#include "lookup.h"
+#include "misc/lookup.h"
 
 // declare the commands
 extern CMD(addalias);

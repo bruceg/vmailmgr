@@ -16,8 +16,6 @@
 
 #include <config.h>
 #include "daemon.h"
-#include "mystring.h"
-#include "fdbuf.h"
 
 mystring logstr;
 

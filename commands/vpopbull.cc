@@ -23,11 +23,11 @@
 #include <sys/types.h>
 #include "ac/time.h"
 #include <unistd.h>
-#include "itoa.h"
-#include "mystring.h"
-#include "configrc.h"
-//#include "debug.h"
-#include "cli.h"
+#include "misc/itoa.h"
+#include "mystring/mystring.h"
+#include "config/configrc.h"
+//#include "misc/debug.h"
+#include "cli/cli.h"
 #include "vcommand.h"
 
 const char* cli_program = "vpopbull";

@@ -18,9 +18,9 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/types.h>
-#include "configrc.h"
-#include "exec.h"
-#include "stat_fns.h"
+#include "config/configrc.h"
+#include "misc/exec.h"
+#include "misc/stat_fns.h"
 #include "authvlib.h"
 
 void fail(const char* msg, const char* execfile, int code)

@@ -109,5 +109,7 @@ AC_OUTPUT(Makefile
 	  lib/fdbuf/Makefile
 	  lib/misc/Makefile
 	  lib/mystring/Makefile
-	  lib/vpw/Makefile
+	  lib/vdomain/Makefile
+	  lib/vpwentry/Makefile
+	  lib/vpwtable/Makefile
 	  python/Makefile)

@@ -18,8 +18,6 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "daemon.h"
-#include "configrc.h"
-#include "vdomain.h"
 
 CMD(deluser)
   // Usage: deluser baseuser-virtuser adminpass

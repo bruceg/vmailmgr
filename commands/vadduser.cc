@@ -17,13 +17,13 @@
 #include <config.h>
 #include <stdlib.h>
 #include <time.h>
-#include "fdbuf.h"
-#include "passwdfn.h"
-#include "mystring.h"
-#include "configrc.h"
-#include "pwcrypt.h"
+#include "fdbuf/fdbuf.h"
+#include "misc/passwdfn.h"
+#include "mystring/mystring.h"
+#include "config/configrc.h"
+#include "misc/pwcrypt.h"
 #include "vcommand.h"
-#include "cli.h"
+#include "cli/cli.h"
 
 time_t now = time(0);
 

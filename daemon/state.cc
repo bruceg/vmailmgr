@@ -16,7 +16,6 @@
 
 #include <unistd.h>
 #include "state.h"
-#include "configrc.h"
 
 saved_state::saved_state(const pwentry* pw)
   : domain(*pw), oldconfig(config)

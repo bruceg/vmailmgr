@@ -21,12 +21,12 @@
 #include "ac/time.h"
 #include "ac/wait.h"
 #include <signal.h>
-#include "fdbuf.h"
-#include "cli.h"
+#include "fdbuf/fdbuf.h"
+#include "cli/cli.h"
 #include "vcommand.h"
-#include "itoa.h"
-#include "stat_fns.h"
-#include "exec.h"
+#include "misc/itoa.h"
+#include "misc/stat_fns.h"
+#include "misc/exec.h"
 
 const char* cli_program = "vdeliver";
 const char* cli_help_prefix = "VMailMgr delivery agent\n";

@@ -15,10 +15,10 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
-#include "cgi-base.h"
-#include "server.h"
-#include "vdomain.h"
-#include "itoa.h"
+#include "cgi/cgi-base.h"
+#include "misc/server.h"
+#include "vdomain/vdomain.h"
+#include "misc/itoa.h"
 
 CGI_MAIN 
 {

@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 Changes in version 0.96.3
 
-New Features:
+New Features: None
 
 Internal Changes:
 - Removed the "include" directory.
@@ -10,7 +10,7 @@ Internal Changes:
   into one new inteface named "adduser2".  The C++ CGIs and the PHP3
   code has been modified to use the new interface.
 
-Bug Fixes:
+Bug Fixes: None
 -------------------------------------------------------------------------------
 Changes in version 0.96.2
 

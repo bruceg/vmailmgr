@@ -23,11 +23,12 @@ AC_ARG_WITH(vpwtable,
 [  --with-vpwtable=type    Use "type" database for storage of virtual
                            password tables.  Defaults to "cdb".],
 [case "${withval}" in
- gdbm) vpwtable=gdbm;;
- *)    AC_MSG_ERROR(bad value ${withval} for --enable-vpwtable);;
- esac],[vpwtable=cdb])
-AM_CONDITIONAL(VPWTABLE_GDBM, test x$vpwtable = xgdbm)
-AM_CONDITIONAL(VPWTABLE_CDB,  test x$vpwtable = xcdb)
+ gdbm)	AC_DEFINE(VPWTABLE_GDBM)
+	AM_CONDITIONAL(VPWTABLE_GDBM, true)
+	LIBS="$LIBS -lgdbm";;
+ *)    AC_MSG_ERROR(bad value ${withval} for --with-vpwtable);;
+ esac],[AC_DEFINE(VPWTABLE_CDB)
+	AM_CONDITIONAL(VPWTABLE_CDB, true)])
 
 dnl Checks for programs.
 AC_PROG_CC

@@ -11,3 +11,6 @@
 
 /* Use Kerberos 5 authentication */
 #undef USE_KRB5
+
+#undef VPWTABLE_CDB
+#undef VPWTABLE_GDBM

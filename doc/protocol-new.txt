@@ -20,6 +20,7 @@ Command Header
 Size	Type	Description
 1	int	Protocol number (always 3)
 2	int	Command header length
+                (number of bytes between this length and the end of arguments)
 varies	zstring	Command name
 varies	zstring	Domain name
 varies	zstring	Virtual user name

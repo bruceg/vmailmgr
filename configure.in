@@ -28,8 +28,12 @@ AC_ARG_WITH(vpwtable,
 	LIBS="$LIBS -lgdbm";;
  *)    AC_MSG_ERROR(bad value ${withval} for --with-vpwtable);;
  esac],[AC_DEFINE(VPWTABLE_CDB)
+	CDBPROGS="vpasswd2cdb vrehash"
+	CDBSCRIPTS="allvpasswd2cdb"
 	dbtype=cdb])
 
+AC_SUBST(CDBPROGS)
+AC_SUBST(CDBSCRIPTS)
 AM_CONDITIONAL(VPWTABLE_CDB, test $dbtype = cdb)
 AM_CONDITIONAL(VPWTABLE_GDBM, test $dbtype = gdbm)
 

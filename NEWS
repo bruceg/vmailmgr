@@ -11,8 +11,8 @@ Internal Changes:
 - All accounts are created with an account directory now.
 - Created a vpwtable writer interface, and removed the CDB-specific
   commands.
-- Renamed adduser2 daemon function to adduser3 and added extra
-  has-mailbox parameter.
+- Added adduser3 daemon function, which works the same as the existing
+  adduser2 function but with an additional has-mailbox parameter.
 - New CDB library that uses mmap instead of file reads for efficiency.
 - Removed the vcheckquota and vpopbull tools that are now part of the
   vmailmgr-tools package.

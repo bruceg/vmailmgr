@@ -37,18 +37,12 @@ response build_forwards(const command& args, int offset,
   RETURN(ok, "");
 }
 
-CMD(adduser3)
-  // Usage: adduser3 baseuser-virtuser adminpass newpass dirname has_mailbox [forwards ...]
-  // If <newpass> is empty, a null-password is used.
-  // If <dirname> is empty, <virtuser> is used in its place
-  // If <has_mailbox> is empty, no mailbox is created,
-  // just the account directory
+static response do_adduser(command& args, int minargc)
 {
   mystring fulluser = args[0];
   mystring adminpass = args[1];
   mystring newpass = args[2];
   mystring directory = args[3];
-  mystring has_mailbox = args[4];
   args[1] = LOG_ADMINPASS;
   args[2] = LOG_NEWPASS;
   logcommand(args);
@@ -56,12 +50,31 @@ CMD(adduser3)
   pwentry* pw;
   vpwentry* vpw;
   OK_RESPONSE(lookup_and_validate(fulluser, pw, vpw, adminpass, false));
-  OK_RESPONSE(build_forwards(args, 5, vpw, state->domain));
+  OK_RESPONSE(build_forwards(args, minargc, vpw, state->domain));
   if(!!newpass)
     vpw->pass = pwcrypt(newpass);
   if(!directory)
     directory = vpw->name;
   vpw->directory = "./" + state->domain.userdir(directory);
-  vpw->has_mailbox = !!has_mailbox;
+  vpw->has_mailbox = !!args[minargc-1];
   return state->domain.set(vpw, true);
+}
+
+CMD(adduser2)
+  // Usage: adduser2 baseuser-virtuser adminpass newpass dirname [forwards ...]
+  // If <newpass> is empty, a null-password is used.
+  // If <dirname> is empty, no mailbox directory is created.
+  // <dirname> should normally be the same as virtuser.
+{
+  return do_adduser(args, 4);
+}
+
+CMD(adduser3)
+  // Usage: adduser3 baseuser-virtuser adminpass newpass dirname has_mailbox [forwards ...]
+  // If <newpass> is empty, a null-password is used.
+  // If <dirname> is empty, <virtuser> is used in its place
+  // If <has_mailbox> is empty, no mailbox is created,
+  // just the account directory
+{
+  return do_adduser(args, 5);
 }

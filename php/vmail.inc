@@ -136,7 +136,7 @@ function listdomain_parse($output){
 }
 
 /* listdomain, takes domain name and password, returns listdomain output
-   parsed as stated in listdomain_parse */
+   parsed as stated in listdomain_parse_userdata */
 
 function listdomain($domain, $password){
 if ($domain=="") return array(1, "Empty domain");
@@ -147,18 +147,14 @@ if ($password=="") return array(1, "Empty domain password");
 return listdomain_parse($temp);
 }
 
+/* Lookup, returns for a single virtual user what listdomain does for an entire domain. */
+
 function lookup($domain, $user, $password){
 	$command=array("lookup", $domain, $user, $password);
 	$tmp = vm_daemon_raw($command);
 	return listdomain_parse_userdata($tmp[1], $user);
 }
 			
-#function lookup($domain, $user, $password){
-#	$command=array("lookup", $domain, $user, $password);
-#//return listdomain_parse_userdata(vm_daemon_raw($command), $username);
-#return vm_daemon_raw($command);
-#}
-
 /* vadduser, takes domain name, password, username, userpassword, and an
    array of forwarding desinations, returns an array consisting of an
    integer exit code and message. */
@@ -253,22 +249,22 @@ return vm_daemon_raw($command);
 
 function vwriteautoresponse($domain, $password, $username, $message){
 	$command = array("autoresponse", $domain, $username, $password, "write", $message);
-return vm_daemon_raw($command);
+	return vm_daemon_raw($command);
 }
 
 function vreadautoresponse($domain, $password, $username){
 	$command = array("autoresponse", $domain, $username, $password, "read");
-return vm_daemon_raw($command);
+	return vm_daemon_raw($command);
 }
 
 function vdisableautoresponse($domain, $password, $username){
 	$command = array("autoresponse", $domain, $username, $password, "disable");
-return vm_daemon_raw($command);
+	return vm_daemon_raw($command);
 }
 
 function venableautoresponse($domain, $password, $username){
         $command = array("autoresponse", $domain, $username, $password, "enable");
-return vm_daemon_raw($command);
+	return vm_daemon_raw($command);
 }
 
 function vautoresponsestatus($domain, $password, $username){

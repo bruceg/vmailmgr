@@ -23,13 +23,21 @@
 #include "config/configrc.h"
 #include "misc/response.h"
 #include "misc/lookup.h"
+#include "misc/maildir.h"
 #include "misc/pwentry_table.h"
 #include "misc/stat_fns.h"
 
-response autoresponse_write(const mystring& location, const mystring& msg)
+response autoresponse_write(const mystring& directory,
+			    const mystring& location,
+			    const mystring& msg)
 {
   mystring tmpfile = location + ".lock";
 
+  if(!is_dir(directory.c_str())) {
+    if(mkdir(directory.c_str(), 0755))
+      RETURN(err, "Could not create autoresponse directory");
+  }
+  
   if(is_exist(tmpfile.c_str()))
     RETURN(err, "Temporary autoresponse file already exists");
   
@@ -92,6 +100,15 @@ response autoresponse_read(const mystring& location, int fd)
   RETURN(ok, "Retrieved autoresponse file");
 }
 
+response autoresponse_delete(const mystring& directory)
+{
+  if(!is_dir(directory.c_str()))
+    RETURN(err, "Autoresponse directory does not exist.");
+  if(!delete_directory(directory))
+    RETURN(err, "Could not delete autoresponse directory.");
+  RETURN(ok, "Autoresponse directory deleted.");
+}
+
 CMD_FD(autoresponse)
   // Usage: autoresponse baseuser-virtuser pass action [autorespmessage]
 {
@@ -111,16 +128,19 @@ CMD_FD(autoresponse)
   vpwentry* vpw;
   OK_RESPONSE(lookup_and_validate(user, pw, vpw, pass, true, true));
 
-  mystring filename = vpw->mailbox + "/" + config->autoresponse_file();
+  const mystring directory = vpw->mailbox + "/" + config->autoresponse_dir();
+  const mystring filename = directory + "/" + config->autoresponse_file();
 
   if(action == "disable") return autoresponse_disable(filename);
-  if(action == "enable")  return autoresponse_enable(filename);
-  if(action == "read")  return autoresponse_read(filename, fd);
-  if(action == "write")
+  else if(action == "enable")  return autoresponse_enable(filename);
+  else if(action == "read")  return autoresponse_read(filename, fd);
+  else if(action == "write")
     if(!message)
       RETURN(bad, "Missing autoresponse message argument");
     else
-      return autoresponse_write(filename, message);
+      return autoresponse_write(directory, filename, message);
+  else if(action == "delete")
+    return autoresponse_delete(directory);
   
   RETURN(err, "Unrecognized command");
 }

@@ -29,6 +29,7 @@
 
 response autoresponse_write(const mystring& directory,
 			    const mystring& location,
+			    const mystring& disabled,
 			    const mystring& msg)
 {
   mystring tmpfile = location + ".lock";
@@ -41,8 +42,7 @@ response autoresponse_write(const mystring& directory,
   if(is_exist(tmpfile.c_str()))
     RETURN(err, "Temporary autoresponse file already exists");
 
-  mystring locationbak = location + ".disabled";
-  if(is_exist(locationbak.c_str()))
+  if(is_exist(disabled.c_str()))
     RETURN(err, "Autoresponse is disabled, reenable it before writing a new message");
   
   fdobuf out(tmpfile.c_str(), fdobuf::create | fdobuf::excl, 0644);
@@ -62,44 +62,56 @@ response autoresponse_write(const mystring& directory,
   RETURN(ok, "Message successfully written to autoresponse file");
 }
 
-response autoresponse_disable(const mystring& location)
+response autoresponse_disable(const mystring& location,
+			      const mystring& disabled)
 {
   if(!is_exist(location.c_str()))
     RETURN(ok, "Autoresponse file did not exist");
-  mystring locationbak = location + ".disabled";
-  if(is_exist(locationbak.c_str()))
+  if(is_exist(disabled.c_str()))
     RETURN(err, "Disabled autoresponse file already exists");
-  if(rename(location.c_str(), locationbak.c_str()))
+  if(rename(location.c_str(), disabled.c_str()))
     RETURN(err, "Unable to rename autoresponse file");
   RETURN(ok, "Autoresponse file sucessfully disabled");
 }  
 
-response autoresponse_enable(const mystring& location)
+response autoresponse_enable(const mystring& location,
+			     const mystring& disabled)
 {
   if(is_exist(location.c_str()))
     RETURN(ok, "Autoresponse is already enabled");
-  mystring locationbak = location + ".disabled";
-  if(!is_exist(locationbak.c_str()))
+  if(!is_exist(disabled.c_str()))
     RETURN(err, "Disabled autoresponse file did not exist");
-  if(rename(locationbak.c_str(), location.c_str()))
+  if(rename(disabled.c_str(), location.c_str()))
     RETURN(err, "Unable to rename previously disabled autoresponse file");
   RETURN(ok, "Autoresponse file sucessfully restored");
 }  
 
-response autoresponse_read(const mystring& location, int fd)
+static bool read_file(const mystring& filename, mystring& out)
 {
-  mystring line;
-  if(!is_exist(location.c_str()))
-    RETURN(err, "Autoresponder file does not exist");
-  
-  fdibuf in(location.c_str());
+  fdibuf in(filename.c_str());
   if(!in)
-    RETURN(err, "Unable to read data from autoresponse file");
-  char contents[65536];		// Maximum size of response message
+    return false;
+  char contents[65536];
   unsigned contentlen;
   in.read(contents, 65536);
   contentlen = in.last_count();
-  response resp(response::ok, mystring(contents, contentlen));
+  out = mystring(contents, contentlen);
+  return true;
+}
+
+response autoresponse_read(const mystring& location,
+			   const mystring& disabled, int fd)
+{
+  mystring line;
+  if(!is_exist(location.c_str()) &&
+     !is_exist(disabled.c_str()))
+    RETURN(err, "Autoresponder file does not exist");
+
+  mystring contents;
+  if(!read_file(location, contents) &&
+     !read_file(disabled, contents))
+    RETURN(err, "Unable to read data from autoresponse file");
+  response resp(response::ok, contents);
   resp.write(fd);
   RETURN(ok, "Retrieved autoresponse file");
 }
@@ -111,6 +123,22 @@ response autoresponse_delete(const mystring& directory)
   if(!delete_directory(directory))
     RETURN(err, "Could not delete autoresponse directory.");
   RETURN(ok, "Autoresponse directory deleted.");
+}
+
+response autoresponse_status(const mystring& directory,
+			     const mystring& location,
+			     const mystring& disabled)
+{
+  const char* msg;
+  if(is_exist(location.c_str()))
+    msg = "enabled";
+  else if(is_exist(disabled.c_str()))
+    msg = "disabled";
+  else if(is_dir(directory.c_str()))
+    msg = "missing message file";
+  else
+    msg = "nonexistant";
+  RETURN(ok, msg);
 }
 
 CMD_FD(autoresponse)
@@ -134,17 +162,23 @@ CMD_FD(autoresponse)
 
   const mystring directory = vpw->mailbox + "/" + config->autoresponse_dir();
   const mystring filename = directory + "/" + config->autoresponse_file();
-
-  if(action == "disable") return autoresponse_disable(filename);
-  else if(action == "enable")  return autoresponse_enable(filename);
-  else if(action == "read")  return autoresponse_read(filename, fd);
+  const mystring disabled = filename + ".disabled";
+  
+  if(action == "disable")
+    return autoresponse_disable(filename, disabled);
+  else if(action == "enable")
+    return autoresponse_enable(filename, disabled);
+  else if(action == "read")
+    return autoresponse_read(filename, disabled, fd);
   else if(action == "write")
     if(!message)
       RETURN(bad, "Missing autoresponse message argument");
     else
-      return autoresponse_write(directory, filename, message);
+      return autoresponse_write(directory, filename, disabled, message);
   else if(action == "delete")
     return autoresponse_delete(directory);
+  else if(action == "status")
+    return autoresponse_status(directory, filename, disabled);
   
   RETURN(err, "Unrecognized command");
 }

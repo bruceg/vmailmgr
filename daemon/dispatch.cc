@@ -26,6 +26,7 @@ extern CMD(check);
 extern CMD(deluser);
 extern CMD(listdomain);
 extern CMD(lookup);
+extern CMD(stat);
 
 #ifdef TEST_DAEMON
 CMD(echo)
@@ -71,6 +72,7 @@ dispatch dispatch_table[] = {
   ENTRY(adduser2,     5, -1, true),
   ENTRY(autoresponse, 4,  5, true),
   ENTRY(deluser,      3,  3, true),
+  ENTRY(stat,         3,  3, true),
   ENTRY(listdomain,   2,  2, false),
 #ifdef TEST_DAEMON
   ENTRY(echo,         0, -1, false), // For testing purposes only

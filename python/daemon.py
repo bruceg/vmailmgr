@@ -59,7 +59,10 @@ class Daemon:
             reply = self.socket.recv(3)
             code = ord(reply[0])
             msglen = ord(reply[1])*256 + ord(reply[2])
-            message = self.socket.recv(msglen)
+            if msglen:
+                message = self.socket.recv(msglen)
+            else:
+                message = ""
         except:
             return (econn, 'Server aborted the connection')
         return (code, message)

@@ -4,7 +4,9 @@ bin_PROGRAMS = @CDBPROGS@ \
 bin_SCRIPTS = @CDBSCRIPTS@ vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
 
-noinst_PODS = $(bin_PROGRAMS:=.pod)
+noinst_PODS = listvdomain.pod vadduser.pod vadduser.pod vchattr.pod \
+	vchforwards.pod vcheckquota.pod vdeliver.pod vdeluser.pod \
+	vpasswd.pod vpasswd2db.pod vpasswds.pod vpopbull.pod vsetup.pod
 noinst_HTMLS = $(noinst_PODS:.pod=.html)
 man_MANS = $(noinst_PODS:.pod=.1)
 

@@ -60,7 +60,7 @@ function vm_daemon_raw($arg)
 
 /*      Get the response        */
 
-	(int) $value = (int) fgetc ($vmailsock);
+	$value = ord( fgetc ($vmailsock));
 	$length = (ord(fgetc($vmailsock)) << 8) + ord(fgetc($vmailsock));
 
 	if ($length == 0) {

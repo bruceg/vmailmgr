@@ -1,5 +1,5 @@
-bin_PROGRAMS = listvdomain vadduser vaddusers vchattr \
-	vchforwards vdeliver vdeluser vpasswd vpasswd2cdb vpasswds \
+bin_PROGRAMS = listvdomain vadduser vaddusers vchattr vchforwards \
+	vdeliver vdeluser vpasswd vpasswd2cdb vpasswd2db vpasswds \
 	vpopbull vrehash vsetup
 bin_SCRIPTS = vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
@@ -37,6 +37,9 @@ vpasswds_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vpasswd2cdb_SOURCES = vpasswd2cdb.cc vcommand.cc
 vpasswd2cdb_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
+
+vpasswd2db_SOURCES = vpasswd2db.cc vcommand.cc
+vpasswd2db_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vpopbull_SOURCES = vpopbull.cc vcommand.cc
 vpopbull_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

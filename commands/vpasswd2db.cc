@@ -16,7 +16,6 @@
 
 #include <config.h>
 #include <string.h>
-#include "cdb++/cdb++.h"
 #include "cli/cli.h"
 #include "config/configrc.h"
 #include "fdbuf/fdbuf.h"
@@ -24,11 +23,11 @@
 #include "vpwentry/vpwentry.h"
 #include "vcommand.h"
 
-const char* cli_program = "vpasswd2cdb";
-const char* cli_help_prefix = "Converts text password tables to CDB format\n";
+const char* cli_program = "vpasswd2db";
+const char* cli_help_prefix = "Converts text password tables to current vpwtable DB format\n";
 const char* cli_help_suffix =
 "Reads in a standard virtual password table in the current directory,\n"
-"and writes it out to a CDB table.  The file names for the text and CDB\n"
+"and writes it out to a table.  The file names for the input and output\n"
 "tables are determined from the configuration file.";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
@@ -66,28 +65,16 @@ int cli_main(int, char* [])
 	   << password_file << "'." << endl;
     return 1;
   }
-  mystring cdbname = password_file + ".cdb";
-  mystring cdbtmp = cdbname + ".tmp";
-  cdb_writer cdb(cdbtmp, 0600);
-  if(!cdb) {
-    if(!o_quiet)
-      ferr << "Can't open CDB temporary file named '" << cdbtmp << "'."
-	   << endl;
-    return 1;
-  }
+
+  vpwtable out(&domain);
+
   vpwentry vpw;
   while(getpw(in, vpw)) {
-    if(!cdb.put(vpw.name, vpw.to_record())) {
+    if(!out.put(&vpw, true)) {
       if(!o_quiet)
-	ferr << "Failed to add record to CDB table." << endl;
+	ferr << "Failed to add record to vpwtable." << endl;
       return 1;
     }
-  }
-  if(!cdb.end(cdbname)) {
-    if(!o_quiet)
-      ferr << "Failed to finish CDB table into '"
-	   << password_file << ".cdb'." << endl;
-    return 1;
   }
   return 0;
 }

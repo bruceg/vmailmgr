@@ -16,6 +16,7 @@
 
 #include <config.h>
 #include "vpwtable.h"
+#include "cdb++/cdb++.h"
 
 vpwentry* vpwtable::getbyname(const mystring& name) const
 {

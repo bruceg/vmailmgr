@@ -17,6 +17,7 @@
 #include <config.h>
 #include <errno.h>
 #include "vpwtable.h"
+#include <gdbm.h>
 
 bool vpwtable::put(const vpwentry* vpw, bool onlyadd) const
 {

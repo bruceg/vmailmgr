@@ -18,33 +18,46 @@
 #include "vpwtable.h"
 #include <stdlib.h>
 #include "misc/autodelete.h"
+#include "cdb++/cdb++.h"
+
+class cdb_vpwtable_reader : public vpwtable_reader
+{
+private:
+  cdb_reader cdb;
+public:
+  cdb_vpwtable_reader(const mystring& filename);
+  bool operator!() const;
+  bool get(vpwentry& out);
+  bool rewind();
+  bool end();
+};
 
 vpwtable_reader* vpwtable::start_read() const
 {
-  return new vpwtable_reader(filename);
+  return new cdb_vpwtable_reader(filename);
 }
 
-vpwtable_reader::vpwtable_reader(const mystring& filename)
+cdb_vpwtable_reader::cdb_vpwtable_reader(const mystring& filename)
   : cdb(filename)
 {
 }
 
-bool vpwtable_reader::operator !() const
+bool cdb_vpwtable_reader::operator !() const
 {
   return !cdb;
 }
 
-bool vpwtable_reader::end() 
+bool cdb_vpwtable_reader::end() 
 {
   return true;
 }
 
-bool vpwtable_reader::rewind()
+bool cdb_vpwtable_reader::rewind()
 {
   return !!cdb && cdb.firstrec();
 }
 
-bool vpwtable_reader::get(vpwentry& out)
+bool cdb_vpwtable_reader::get(vpwentry& out)
 {
   autodelete<datum> rec = cdb.nextrec();
   if(!rec)

@@ -17,13 +17,27 @@
 #include <config.h>
 #include "vpwtable.h"
 #include <stdlib.h>
+#include <gdbm.h>
+
+class gdbm_vpwtable_reader : public vpwtable_reader
+{
+private:
+  GDBM_FILE dbf;
+  datum key;
+public:
+  gdbm_vpwtable_reader(const mystring& filename);
+  bool operator!() const;
+  bool get(vpwentry& out);
+  bool rewind();
+  bool end();
+};
 
 vpwtable_reader* vpwtable::start_read() const
 {
-  return new vpwtable_reader(filename);
+  return new gdbm_vpwtable_reader(filename);
 }
 
-vpwtable_reader::vpwtable_reader(const mystring& filename)
+gdbm_vpwtable_reader::gdbm_vpwtable_reader(const mystring& filename)
   : dbf(gdbm_open((char*)filename.c_str(), 0, GDBM_READER, 0, 0))
 {
   if(dbf)
@@ -32,12 +46,12 @@ vpwtable_reader::vpwtable_reader(const mystring& filename)
     key.dptr = 0;
 }
 
-bool vpwtable_reader::operator!() const
+bool gdbm_vpwtable_reader::operator!() const
 {
   return !dbf;
 }
 
-bool vpwtable_reader::end() 
+bool gdbm_vpwtable_reader::end() 
 {
   if(dbf)
     gdbm_close(dbf);
@@ -48,7 +62,7 @@ bool vpwtable_reader::end()
   return true;
 }
 
-bool vpwtable_reader::rewind()
+bool gdbm_vpwtable_reader::rewind()
 {
   if(dbf) {
     key = gdbm_firstkey(dbf);
@@ -57,7 +71,7 @@ bool vpwtable_reader::rewind()
   return false;
 }
 
-bool vpwtable_reader::get(vpwentry& out)
+bool gdbm_vpwtable_reader::get(vpwentry& out)
 {
   if(key.dptr) {
     mystring name(key.dptr, key.dsize);

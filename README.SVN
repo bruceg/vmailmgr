@@ -1,0 +1,16 @@
+To get the pieces not included in this CVS tree, you need to run:
+
+	svn co svn://bruce-guenter.dyndns.org/bglibs/trunk/cgi lib/cgi
+	svn co svn://bruce-guenter.dyndns.org/bglibs/trunk/cli++ lib/
+	svn co svn://bruce-guenter.dyndns.org/bglibs/trunk/cli++ lib/cli++
+	svn co svn://bruce-guenter.dyndns.org/bglibs/trunk/cdb++ lib/cdb++
+	svn co svn://bruce-guenter.dyndns.org/bglibs/trunk/fdbuf lib/fdbuf
+	svn co svn://bruce-guenter.dyndns.org/bglibs/trunk/mystring lib/mystring
+	svn co svn://bruce-guenter.dyndns.org/bglibs/trunk/ac lib/ac
+
+	( cd lib/config && sh build-config.sh )
+
+	aclocal
+	autoheader
+	automake -a
+	autoconf

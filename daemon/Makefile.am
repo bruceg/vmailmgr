@@ -17,5 +17,5 @@ vmailmgrd_SOURCES = daemon.h \
 	lookup.cc \
 	main.cc \
 	state.h state.cc
-vmailmgrd_LDADD = ../lib/libvmailmgr.a
+vmailmgrd_LDADD = ../lib/libvmailmgr.a ../lib/cli/libcli.a
 

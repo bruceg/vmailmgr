@@ -22,11 +22,27 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <unistd.h>
+#include "cli/cli.h"
 #include "daemon.h"
 
-// configuration variables -- set by command line options
-bool opt_log_all = true;
-bool opt_verbose = false;
+const char* cli_program = "clitest";
+const char* cli_help_prefix = "Does nothing but set flags\n";
+const char* cli_help_suffix = "";
+const char* cli_args_usage = "";
+const int cli_args_min = 0;
+const int cli_args_max = -1;
+int opt_log_all = true;
+int opt_verbose = false;
+cli_option cli_options[] = {
+  { 'd', 0, cli_option::flag, 0, &opt_log_all,
+    "Log only requests that fail", 0 },
+  { 'D', 0, cli_option::flag, 1, &opt_log_all,
+    "Log all requests (default)", 0 },
+  { 'v', 0, cli_option::flag, 0, &opt_verbose,
+    "Log non-verbosely (default)", 0 },
+  { 'V', 0, cli_option::flag, 1, &opt_verbose,
+    "Log verbosely", 0 },
+  {0} };
 
 #define TIMEOUT 1
 
@@ -127,39 +143,10 @@ command* read_data()
   return decode_data(buf, length);
 }
 
-bool parse_options(int argc, char* argv[])
+int cli_main(int, char**)
 {
-  int opt;
-  while((opt = getopt(argc, argv, "dDvV")) != EOF) {
-    switch(opt) {
-    case 'd': opt_log_all = false; break;
-    case 'D': opt_log_all = true;  break;
-    case 'v': opt_verbose = false; break;
-    case 'V': opt_verbose = true;  break;
-    default:
-      return false;
-    }
-  }
   if(opt_verbose)
     opt_log_all = true;
-  return true;
-}
-
-void usage()
-{
-  ferr << "usage: vmailmgrd [options]\n"
-       << "  -d  Log only requests that fail\n"
-       << "  -D  Log all requests (default)\n"
-       << "  -v  Log non-verbosely (default)\n"
-       << "  -V  Log verbosely\n";
-}
-
-int main(int argc, char* argv[])
-{
-  if(!parse_options(argc, argv)) {
-    usage();
-    return 1;
-  }
 
   signal(SIGALRM, handle_alrm);
   signal(SIGPIPE, handle_pipe);

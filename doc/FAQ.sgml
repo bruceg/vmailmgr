@@ -337,4 +337,13 @@ soon as the connection is received, and is only cleared once all the
 data has been read.  If it takes longer than 1 second to read the data
 from the socket, the server process exits.
 </p>
+
+<sect1>What are the differences between vmailmgr and vpopmail?
+<p>
+  The primary difference between vmailmgr and vpopmail is the use of
+  base users.  With vmailmgr there is one base user for each virtual
+  domain.  With vpopmail, there is one base user for the entire
+  virtual domain system.
+</p>
+
 </article>

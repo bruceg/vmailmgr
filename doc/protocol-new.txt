@@ -1,9 +1,19 @@
 Proposed Client-Server interaction
 ==================================
 
-To execute a server call, the client opens the daemon's UNIX domain
-socket (as specified by SYSCONFDIR/socket-file), and sends across the
-following data:
+Requirements and Limitations
+----------------------------
+- The front end must be able to efficiently read exactly enough bytes to
+  get the entire header and leave all of the following data unread.  No
+  seeks are possible.
+- None of the command arguments may contain NULs, but they may contain
+  any other data.
+- Some commands need to send and receive arbitrary length binary data.
+- It should not be possible to create a memory overuse through over
+  large data in the protocol.
+- The command header data (command name, etc) will be small (typically
+  less than 1K).  In fact, it will almost always be smaller than 256
+  bytes, but that is not guaranteed.
 
 Command Header
 --------------
@@ -12,16 +22,17 @@ Size	Type	Description
 2	int	Command header length
 varies	zstring	Command name
 varies	zstring	Domain name
+varies	zstring	Virtual user name
 varies	zstring	Pass phrase
+1	int	Argument count
 varies	zstring	Command arguments
-varies	N/A	Command data (optional)
-                (not included in command header length)
 
 The command name, domain name, and pass phrase are passed to an
 authenticating shim which executes the command only if authentication
 succeeds.  The command arguments are passed on the command line to the
-command module after authentication, and the command data is passed on
-standard input.
+command module after authentication, and the command data following the
+arguments is passed on standard input.  This data will be used, for
+example, for the autoresponse message.
 
 Response
 --------

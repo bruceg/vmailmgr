@@ -14,13 +14,16 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#include <stdlib.h>
 #include <config.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <time.h>
 #include "config/configrc.h"
 #include "cli/cli.h"
 #include "fdbuf/fdbuf.h"
 #include "vcommand.h"
 #include "ac/dirent.h"
+#include "misc/itoa.h"
 #include "misc/stat_fns.h"
 #include "misc/md5.h"
 #include "misc/strtou.h"
@@ -28,15 +31,19 @@
 
 const char* cli_program = "checkquota";
 const char* cli_help_prefix = "Checks if the user is over quota\n";
-const char* cli_help_suffix = "";
+const char* cli_help_suffix = "\n"
+"Warning: the soft-message may be linked in multiple times.\n";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
-const int cli_args_max = -1;
+const int cli_args_max = 0;
 static unsigned soft_maxsize = 4096;
+static const char* soft_message = 0;
 
 cli_option cli_options[] = {
   { 'a', "soft-maxsize", cli_option::uinteger, 0, &soft_maxsize,
-    "The maximum message size after softquota is reached", "4096" },
+    "The maximum message size after soft quota is reached", "4096" },
+  { 'm', "soft-message", cli_option::string, 0, &soft_message,
+    "The path to the soft quota warning message", "no message" },
   {0}
 };
 
@@ -75,6 +82,21 @@ bool stat_dir(const mystring& dirname, unsigned& count, unsigned long& size) {
   }
   closedir(dir);
   return true;
+}
+
+void link_softquota_message(const mystring& mailbox)
+{
+  mystring newdir = mailbox + "/new/";
+  pid_t pid = getpid();
+  for(;;) {
+    mystring path = newdir + itoa(time(0)) + "." + itoa(pid) +
+      ".softquota-warning";
+    if(symlink(soft_message, path.c_str()) == 0)
+      return;
+    if(errno != EEXIST)
+      die_temp("Could not create symlink to soft quota warning message");
+    sleep(1);
+  }
 }
 
 void check_quota(mystring mailbox,
@@ -145,15 +167,18 @@ void check_quota(mystring mailbox,
   
   // Soft quota allows small (4K default) messages
   // In other words, it only blocks large messages
-  if(du > softquota)
+  if(du > softquota) {
+    if(soft_message)
+      link_softquota_message(mailbox);
     if(msgsize > soft_maxsize)
       die_fail("Sorry, your message cannot be delivered.\n"
 	       "User's disk quota exceeded.\n"
 	       "A small message will be delivered should you wish "
 	       "to inform this person.\n");
+  }
 }
 
-int cli_main(int , char**)
+int cli_main(int, char**)
 {
 #define ENV_VAR_REQ(VAR,ENV) const char* tmp__##VAR = getenv(#ENV); if(!tmp__##VAR) die_fail(#ENV " is not set");
 #define ENV_VAR_STR(VAR,ENV) ENV_VAR_REQ(VAR,ENV) mystring VAR = tmp__##VAR;

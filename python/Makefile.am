@@ -8,25 +8,25 @@ CLEANFILES = $(cgi_SCRIPTS) $(pythonlib_DATA)
 SUFFIXES = .py .pyc .pyo .in .py.in
 
 vautoresponse: vautoresponse.in Makefile
-	sed <$< >$@ \
+	sed <vautoresponse.in >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \
 		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
 	chmod +x $@
 
 vcommand: vcommand.in Makefile
-	sed <$< >$@ \
+	sed <vcommand.in >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \
 		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
 	chmod +x $@
 
 vmailmgr.py: vmailmgr.py.in Makefile
-	sed <$< >$@ \
+	sed <vmailmgr.py.in >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \
 		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
 	chmod +x $@
 
 vmailmgr_cgi.py: vmailmgr_cgi.py.in Makefile
-	sed <$< >$@ \
+	sed <vmailmgr_cgi.py.in >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \
 		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
 	chmod +x $@

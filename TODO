@@ -24,36 +24,36 @@ can keep the development periods shorter.
 
 - Add note to FAQ or HOWTO regarding the two web interfaces
 
-- Fix checkvpw to set MAILDIR before executing postsetuid somehow
-
-- Convert existing TeXinfo documentation to SGML
-
-- Add the necessary code for *DBM, MySQL, and PostgreSQL password tables.
-
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
 
-- Add Courier IMAP support to the bulletin facility
-
-- Add note to FAQ regarding PHP error code 255 meaning the daemon is not
-  running properly (once it's been confirmed).
+RELEASE TARGET 0.97
 
 - Expand the record format to include a "last modified" field, and to
   change the flag values from binary 0/1 to ASCII.
 
-- Make vrehash take the bits and slices values as command-line
-  parameters.
+- Add note to FAQ regarding PHP error code 255 meaning the daemon is not
+  running properly (once it's been confirmed).
+
+- Fix checkvpw to set MAILDIR before executing postsetuid somehow
 
 - Make quota check program check all directories.
 
-RELEASE TARGET 0.97
+- Add Courier IMAP support to the bulletin facility
+
+- Convert existing TeXinfo documentation to SGML
+
+- Make vrehash take the bits and slices values as command-line
+  parameters.
+
+RELEASE TARGET 0.97.1
 
 - Make the daemon commands stand-alone modules, using the revised daemon
   communication protocol.  The daemon then just forks, reads in the
   command name, validates it, and hands off to an authentication module.
 
 - The authentication module checks for a custom authentication type
-  based on the command name, does authentication, does setuid,chdir,
+  based on the command name, does authentication, does setuid, chdir,
   and executes the actual command.
 
 RELEASE TARGET 0.98
@@ -73,6 +73,12 @@ RELEASE TARGET 0.98
 
 RELEASE TARGET 1.00
 
+- Bug fixes and clean-ups, and documentation improvements
+
+- Add the necessary code for *DBM, MySQL, and PostgreSQL password tables.
+
+RELEASE TARGET 1.XX
+
 - Set up the necessary structures to completely seperate the virtual
   domain information and the real user information, such that each user
   can have a list of virtual domains assigned to it.  This structure
@@ -85,10 +91,6 @@ RELEASE TARGET 1.00
     prefix:subdirectory
   Each domain will have a completely independant user directory and
   password table.
-
-RELEASE TARGET 1.XX
-
-- Bug fixes and clean-ups, and documentation improvements
 
 RELEASE TARGET 2.00
 

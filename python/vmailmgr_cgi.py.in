@@ -20,6 +20,7 @@ import cgi
 import os
 import string
 import sys
+import vmailmgr
 
 # Limit the maximum amount of data sendable to this CGI to 64K.
 # This should be enough for any command (the maximum that can be sent
@@ -59,43 +60,71 @@ def print_file(filename, substs):
     file.close()
     return sys.stdout.write(contents % substs)
 
-def print_html(basename, substs):
+HTML_TITLED = """<html>
+<head><title>%(title)s</title></head>
+<body><center><p><h1>%(title)s</h1></p></center><hr>
+<p>%(message)s</p>
+</html>"""
+
+HTML_NOFILE = HTML_TITLED % {
+    'title': 'Internal VMailMgr CGI Error',
+    'message': 'Could not load document "%s"' }
+
+HTML_ERROR = HTML_TITLED % {
+    'title': 'VMailMgr CGI Error',
+    'message': ('An error occurred while executing this operation:<br>'
+                '<pre>%(response)s</pre>') }
+
+def print_html(basename, substs, nofile=None):
     basename = string.replace(basename, '.', ':')
+    httpname = basename + '.http'
+    htmlname = basename + '.html'
     try:
-        print_file(basename + '.http', substs)
+        print_file(httpname, substs)
     except IOError:
         pass
     sys.stdout.write("\n")
-    return print_file(basename + '.html', substs)
+    try:
+        return print_file(htmlname, substs)
+    except IOError:
+        if nofile is not None:
+            return sys.stdout.write(nofile % substs)
+        else:
+            return sys.stdout.write(HTML_NOFILE % htmlname)
+
+RESPONSE = intern('response')
 
 def wrap_print(command, args, basename, substs={}):
+    succname = basename + '-success'
+    errname = basename + '-error'
     try:
         response = apply(command, tuple(args))
-        substs['response'] = response
-        print_html(basename, substs)
+        substs[RESPONSE] = response
+        print_html(succname, substs)
     except vmailmgr.Error, msg:
-        substs['response'] = msg
-        print_html(basename + '-error', substs)
+        substs[RESPONSE] = msg
+        print_html(errname, substs, HTML_ERROR)
     except vmailmgr.Bad, msg:
-        substs['response'] = msg
-        print_html(basename + '-error', substs)
+        substs[RESPONSE] = msg
+        print_html(errname, substs, HTML_ERROR)
     except vmailmgr.Econn, msg:
-        substs['response'] = msg
-        print_html(basename + '-error', substs)
+        substs[RESPONSE] = msg
+        print_html(errname, substs, HTML_ERROR)
     except:
-        substs['response'] = 'Undetermined error'
-        print_html(basename + '-error', substs)
+        substs[RESPONSE] = msg
+        print_html(errname, substs, HTML_ERROR)
 
 def cgi_main(mainfn):
     if not os.environ.has_key('REQUEST_METHOD'):
         sys.stdout.write("This program must be run as a CGI\n")
         sys.exit(1)
     
-    sys.stdout.write("Content-Type: text/html\n\n")
+    sys.stdout.write("Content-Type: text/html\n")
 
     try:
         if os.environ['REQUEST_METHOD'] == 'GET':
-            sys.stdout.write("<html><head><title>Refused</title></head>\n"
+            sys.stdout.write("\n"
+                             "<html><head><title>Refused</title></head>\n"
                              "<body><h1>CGI GET is refused for security "
                              "reasons.</h1></body></html>\n")
             sys.exit(0)

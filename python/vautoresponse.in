@@ -25,7 +25,7 @@ def main(form):
     username = form.get('username')
     password = form.get('password')
     action = form.get('action')
-    message = form.get('message', None)
+    message = form.get('message', '')
     vmailmgr_cgi.wrap_print(vmailmgr.autoresponse,
                             (vdomain, username, password, action, message),
                             'vautoresponse',

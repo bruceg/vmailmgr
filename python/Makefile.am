@@ -9,6 +9,8 @@ SUFFIXES = .py .pyc .pyo .in .py.in
 	sed <$< >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \
 		-e "s|%SYSCONFDIR%|${sysconfdir}/vmailmgr|"
+	chmod +x $@
+
 %.py: %.py.in Makefile
 	sed <$< >$@ \
 		-e "s|%PYTHON%|${PYTHON}|"  \

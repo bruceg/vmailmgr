@@ -5,6 +5,7 @@ New Features:
 - Aliases can now have autoresponders.
 - New "stat" command in the daemon to lookup the mailbox size.
 - Added a "dumpvuser" command, to output all of an account's data.
+- Renamed vpasswd2db to vupgrade and allvpasswd2db to vupgrade-all.
 
 Internal Changes:
 - All accounts are created with an account directory now.

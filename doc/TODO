@@ -9,9 +9,6 @@ can keep the development periods shorter.
 
 - Complete the remainder of the commands in vmailmgr.py
 
-- Fix bug in changing passwords from the daemon that doesn't initalize
-  the salt to different values.
-
 - Add FAQ or HOWTO to mailing list FAQ response.
 
 - Convert existing TeXinfo documentation to SGML

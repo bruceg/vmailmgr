@@ -27,8 +27,6 @@ FIG2PS = fig2dev -L ps -c
 SGML2HTML = sgml2html --split=0
 SGML2TXT = sgml2txt
 
-SUFFIXES = .1 .5 .7 .8 .pod .html .texi .txt .ps .fig .sgml
-
 all: $(noinst_HTMLS) $(noinst_TXTS) $(noinst_MISC)
 
 dist-hook:

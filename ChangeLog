@@ -1,5 +1,7 @@
 2004-03-15  Bruce.Guenter.dyndns.org  <bruce@lorien.untroubled.org>
 
+	* commands/dumpvuser.cc: Added new source.
+
 	* commands/vadduser.cc (add_alias), commands/vsetup.cc
 	(setup_alias): Make sure even aliases have a userdir set.
 

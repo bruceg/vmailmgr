@@ -1,10 +1,10 @@
-bin_PROGRAMS = listvdomain vadduser vaddusers vchattr vchforwards \
+bin_PROGRAMS = dumpvuser listvdomain vadduser vaddusers vchattr vchforwards \
 	vdeliver vdeluser vpasswd vpasswds vrehash vsetup vupgrade
 bin_SCRIPTS = vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
 
 noinst_PODS = \
-	listvdomain.pod vadduser.pod vadduser.pod vchattr.pod \
+	dumpvuser.pod listvdomain.pod vadduser.pod vadduser.pod vchattr.pod \
 	vchforwards.pod vdeliver.pod vdeluser.pod \
 	vpasswd.pod vpasswds.pod vrehash.pod vsetup.pod vupgrade.pod
 noinst_HTMLS = $(noinst_PODS:.pod=.html)
@@ -29,6 +29,9 @@ dist-hook:
 %.html: %.pod; $(POD2HTML) $< >$@
 
 INCLUDES = -I../lib -DBINDIR=\"@bindir@\"
+
+dumpvuser_SOURCES = dumpvuser.cc vcommand.cc
+dumpvuser_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 listvdomain_SOURCES = listvdomain.cc vcommand.cc
 listvdomain_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

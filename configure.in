@@ -21,10 +21,8 @@ AM_CONDITIONAL(KRB5, test x$with_krb5 != x -a x$with_krb5 != xno)
 
 AC_ARG_WITH(courier-imap,
 [  --with-courier-imap=DIR Build the authentication module for Courier IMAP.],
-[LIBS="$LIBS -L${withval}/authlib -lauthmod -lauth"
- CFLAGS="$CFLAGS -I${withval}/authlib"
- CXXFLAGS="$CXXFLAGS -I${withval}/authlib"
-])
+[COURIER_IMAP_DIR="${withval}"])
+AC_SUBST(COURIER_IMAP_DIR)
 AM_CONDITIONAL(COURIER_IMAP, test x$with_courier_imap != x -a x$with_courier_imap != xno)
 
 dnl Checks for programs.

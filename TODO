@@ -27,7 +27,12 @@ can keep the development periods shorter.
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
 
+- Remove vcheckquota and vpopbull, and point at the new vmailmgr-tools
+  package.
+
 RELEASE TARGET 0.97
+
+- Add a checkpassword command suitable for use with SMTP-Auth+setuid.
 
 - Expand the record format to include a "last modified" field, and to
   change the flag values from binary 0/1 to ASCII.
@@ -47,6 +52,9 @@ RELEASE TARGET 0.97
   parameters.
 
 RELEASE TARGET 0.97.1
+
+- Make the TCP daemon the default usage, and drop the unixserver
+  requirement.
 
 - Make the daemon commands stand-alone modules, using the revised daemon
   communication protocol.  The daemon then just forks, reads in the

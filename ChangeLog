@@ -1,3 +1,8 @@
+2000-10-27  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vchforwards.cc (cli_main): Fixed the same bug here as
+	for daemon/lookup.cc -- need to lookup users with nodefault set.
+
 2000-10-25  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* python/commands.py (adduser): Added the new has_mailbox

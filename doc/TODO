@@ -5,8 +5,6 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Add tests for the autoresponse commands and release.
-
 - Complete the remainder of the commands in vmailmgr.py
 
 - Fix bug in changing passwords from the daemon that doesn't initalize

@@ -31,7 +31,7 @@ map_table::map_table(const mystring& filename)
     buf = buf.rstrip();
     int mid = buf.find_first(':');
     if(mid > 0)
-      set(buf.left(mid), buf.right(mid+1));
+      set(buf.left(mid).lower(), buf.right(mid+1));
   }
   valid = true;
 }

@@ -24,6 +24,8 @@ Bug Fixes:
   set properly.
 - Fixed a bug in vdeliver that would cause any error from the predeliver
   script to be treated as a temporary failure.
+- Fixed a bug in the domain name lookup code that caused case sensitive
+  domain name comparisons.
 -------------------------------------------------------------------------------
 Changes in version 0.96.5
 

@@ -32,6 +32,7 @@ bool is_local(mystring domain)
 
 mystring find_virtual(mystring domain)
 {
+  domain = domain.lower();
   mystring tblname = config->qmail_root() + "/control/virtualdomains";
   map_table tbl(tblname.c_str());
   if(!tbl)

@@ -1,3 +1,16 @@
+2000-06-01  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* Released version 0.96.6
+
+	* commands/vdeliver.cc (cli_main): Fixed typo in order of
+	operands in call to exit_msg.
+
+	* lib/misc/map_table.cc (map_table): Lower case all keys to allow
+	for case insensitive comparisons.
+
+	* lib/misc/lookup_domain.cc (find_virtual): Fixed bug: domain
+	names are not case sensitive.
+
 2000-05-31  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* python/vmailmgr.py.in (VUser.from_binary): Fixed some bugs in

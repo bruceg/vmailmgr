@@ -2,7 +2,7 @@ Features of using native PHP code for vmailmgr.
 
 - No need to compile PHP module, which few find themselves able to do.
 
-- Fully up to date as of 0.96.2, able to make use of all the new
+- Fully up to date as of 0.96.6, able to make use of all the new
   functionality added (multiple forwarding destinations, users with forwarding
   destinations and mailboxes, etc.)
 

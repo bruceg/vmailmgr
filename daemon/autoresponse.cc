@@ -40,6 +40,10 @@ response autoresponse_write(const mystring& directory,
   
   if(is_exist(tmpfile.c_str()))
     RETURN(err, "Temporary autoresponse file already exists");
+
+  mystring locationbak = location + ".disabled";
+  if(is_exist(locationbak.c_str()))
+    RETURN(err, "Autoresponse is disabled, reenable it before writing a new message");
   
   fdobuf out(tmpfile.c_str(), fdobuf::create | fdobuf::excl, 0644);
   if(!out)

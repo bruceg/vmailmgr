@@ -1,3 +1,30 @@
+2000-09-11  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* Removed all old Python support code, replace by the new
+	"pyadmin" interface.
+
+2000-09-05  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/dispatch.cc (dispatch_cmd): Don't add "-virtuser" to
+	baseuser name if virtuser is empty.
+
+2000-09-04  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* python/vmailmgr_cgi.py.in (Session): Added prototype for new
+	class to manage session data.
+
+	* daemon/check.cc (CMD): Simplified the logic, elimited the return
+	value.  Now returns either error or OK.
+
+2000-09-01  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* doc/FAQ.sgml: Added section on long POP3 logins.
+
+2000-08-22  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vdeliver.cc (deliver_partial): Fail permanently if: the
+	open failed, EDQUOT is defined, and the error number is EDQUOT.
+
 2000-08-15  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* daemon/deluser.cc (CMD): Use new form of vdomain::deluser.

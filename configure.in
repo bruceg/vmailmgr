@@ -133,4 +133,4 @@ AC_OUTPUT(Makefile
 	  lib/vpwtable/Makefile
 	  scripts/Makefile
 	  php/Makefile
-	  python/Makefile)
+	  pyadmin/Makefile)

@@ -1,5 +1,5 @@
 if WANTPYTHON
-SUBDIRS = python php lib authenticate commands daemon cgi doc scripts
+SUBDIRS = pyadmin php lib authenticate commands daemon cgi doc scripts
 else
 SUBDIRS = php lib authenticate commands daemon cgi doc scripts
 endif

@@ -25,15 +25,19 @@ DOCS="doc/TODO doc/YEAR2000 doc/*.html doc/*.ps"
 # the version-numbered directory in the destination site.
 EXTRAS_VER="ANNOUNCEMENT"
 
+EXTRAS=
+EXTRAS_DIST=
+
 # Set VERSION_BASE to the subdirectory into which the version-numbered
 # will be placed.
 VERSION_BASE=archive
 
-# Set REMOTEPATH to username@hostname:dir for use with rsync.
-REMOTEPATH=bruceg@vmailmgr.org:vmailmgr.org
+WEBSITE=vmailmgr.org
+WEBDIR=vmailmgr.org
 
 # Set RPMUPLOAD to a list of additional "hostname/path" destinations to
 # which to upload the source and binary RPMs.
+RPMUPLOAD=
 
 # Set LIST to the mailing list(s) to send the announcement to
 LIST=vmailmgr@lists.em.ca

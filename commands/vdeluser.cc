@@ -28,8 +28,11 @@ const int cli_args_min = 1;
 const int cli_args_max = -1;
 
 static int o_quiet = false;
+static int o_domailbox = true;
 
 cli_option cli_options[] = {
+  { 'D', "no-mailbox", cli_option::flag, false, &o_domailbox,
+    "Do not delete users that have a mailbox", 0 },
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   {0}
@@ -41,7 +44,7 @@ int cli_main(int argc, char* argv[])
     return 1;
   int errors = 0;
   for(int i = 0; i < argc; i++) {
-    response r = domain.deluser(argv[i]);
+    response r = domain.deluser(argv[i], o_domailbox);
     if(!r) {
       errors++;
       if(!o_quiet)

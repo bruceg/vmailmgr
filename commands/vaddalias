@@ -6,7 +6,7 @@ if [ $# -lt 2 ]; then
 fi
 user="$1"
 shift 1
-args=-D
+args="-D -P"
 for dest in "$@"; do
   args="$args -f '$dest'"
 done

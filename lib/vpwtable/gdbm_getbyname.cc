@@ -16,14 +16,14 @@
 
 #include <config.h>
 #include "vpwtable.h"
-#include <gdbm.h>
 
 vpwentry* vpwtable::getbyname(const mystring& name) const
 {
   GDBM_FILE db = gdbm_open((char*)filename.c_str(), 0, GDBM_READER, 0, 0);
   if(!db)
     return 0;
-  datum key = { (char*)name.c_str(), name.length() };
+  mystring lower = name.lower();
+  datum key = { (char*)lower.c_str(), lower.length() };
   datum result = gdbm_fetch(db, key);
   gdbm_close(db);
   vpwentry v;

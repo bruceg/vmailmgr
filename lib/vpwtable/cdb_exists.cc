@@ -16,7 +16,6 @@
 
 #include <config.h>
 #include "vpwtable.h"
-#include "cdb++/cdb++.h"
 
 bool vpwtable::exists(const mystring& name) const
 {

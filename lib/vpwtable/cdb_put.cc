@@ -17,7 +17,6 @@
 #include <config.h>
 #include <errno.h>
 #include "vpwtable.h"
-#include "cdb++/cdb++.h"
 
 bool vpwtable::put(const vpwentry* vpw, bool onlyadd) const
 {

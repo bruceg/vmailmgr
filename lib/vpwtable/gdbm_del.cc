@@ -16,7 +16,6 @@
 
 #include <config.h>
 #include "vpwtable.h"
-#include <gdbm.h>
 
 bool vpwtable::del(const mystring& name) const
 {

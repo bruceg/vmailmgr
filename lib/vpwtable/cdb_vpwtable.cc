@@ -21,18 +21,15 @@
 const mystring cdb_extension = ".cdb";
 
 vpwtable::vpwtable(const vdomain* d)
-  : filename(d->config.password_file() + cdb_extension),
-    getdata(0)
+  : filename(d->config.password_file() + cdb_extension)
 {
 }
 
 vpwtable::vpwtable(const vpwtable& t)
-  : filename(t.filename),
-    getdata(0)
+  : filename(t.filename)
 {
 }
 
 vpwtable::~vpwtable()
 {
-  //end();
 }

@@ -27,11 +27,11 @@
 const char* cli_program = "vupgrade";
 const char* cli_help_prefix = "Upgrades the vmailmgr data files for a virtual domain\n";
 const char* cli_help_suffix =
-"Reads in a standard virtual password table in the current directory,
-and writes it out to the current table format.  The file names for the
-input and output tables are determined from the configuration file.
-In addition, a user directory is created for each account that does
-not have one.";
+"Reads in a standard virtual password table in the current directory,\n"
+"and writes it out to the current table format.  The file names for the\n"
+"input and output tables are determined from the configuration file.\n"
+"In addition, a user directory is created for each account that does\n"
+"not have one.";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;

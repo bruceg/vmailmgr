@@ -25,8 +25,7 @@ const char* cli_program = "vchforwards";
 const char* cli_help_prefix =
 "Change virtual user forwarding addresses.\n";
 const char* cli_help_suffix =
-"If no forwarding addresses are given, forwarding is disabled.
-";
+"If no forwarding addresses are given, forwarding is disabled.\n";
 const char* cli_args_usage = "USERNAME [DESTINATION1 ...]";
 const int cli_args_min = 1;
 const int cli_args_max = -1;

@@ -53,8 +53,7 @@ static vdomain* domain = 0;
 
 void set_user(const pwentry* pw)
 {
-  presetenv("USER=", pw->name);
-  presetenv("HOME=", pw->home);
+  pw->export_env();
   if(!!exec_presetuid && execute(exec_presetuid))
     fail_temporary("Execution of presetuid failed");
   if(setgid(pw->gid) == -1 ||

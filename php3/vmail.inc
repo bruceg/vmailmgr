@@ -83,11 +83,17 @@ return array($value, $message);
    are ignored, but this is easy to fix if anybody cared about them */
 
 function listdomain_parse_line($line){
+	$position = strpos($line, chr(0));
+	$username=substr($line, 0, $position);
+	$line=substr($line, $position+2);
+	while (substr($line, 0, 1) != chr(0)){
+		$flags[]=ord(substr($line, 1, 1));
+		$line=substr($line, 2);
+	};
 	$user=explode(chr(0), $line);
-	$username=$user[0];
-	if ($user[1]!=(chr(1)."*")) $password="Set";
-	$mailbox=$user[2];
-	$x=3;
+	$x=1;
+	if ($user[$x++]!=("*")) $password="Set";
+	$mailbox=$user[$x++];
 	while($user[$x]!="")
 		$aliases[]=$user[$x++];
 	$x++;
@@ -101,7 +107,7 @@ function listdomain_parse_line($line){
 	
 	return array($username, $password, $mailbox, $aliases,
 $PersonalInfo, $HardQuota, $SoftQuota, $SizeLimit, $CountLimit,
-$CreationTime, $ExpiryTime);
+$CreationTime, $ExpiryTime, $flags);
 }
 
 /* Does the ugly stuff for listdomain, and calls listdomain_parse_line once
@@ -207,6 +213,7 @@ if ($username=="") return array(1, "Empty username");
 	$command=array("chattr", $domain, $username, $password, "2");
 	for ($x=0; $x< sizeof($forwards); $x++)
 		if ($forwards[$x] != "") $command[]=$forwards[$x];
+	if (sizeof($forwards) == 0) $command[] = "";
 	$temp=vm_daemon_raw($command);
 return $temp;
 }

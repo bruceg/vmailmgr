@@ -274,7 +274,7 @@ int cli_main(int, char*[])
     die_fail(mystring("Invalid or unknown virtual user '" + ext + "'").c_str());
 
   vpw->export_env();
-  bool enabled = vpw->is_enabled();
+  bool enabled = vpw->is_mailbox_enabled && !!vpw->mailbox;
 
   if(execute("vdeliver-predeliver"))
     die_temp("Execution of vdeliver-predeliver failed");

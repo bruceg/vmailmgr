@@ -18,12 +18,14 @@
 #include "vpwentry.h"
 
 vpwentry::vpwentry()
+  : is_mailbox_enabled(true)
 {
 }
 
 vpwentry::vpwentry(const mystring& n, const mystring& p,
 		   const mystring& m, const mystring& f)
-  : name(n), pass(p), mailbox(m), forwards(f)
+  : name(n), pass(p), mailbox(m), forwards(f),
+    is_mailbox_enabled(true)
 {
 }
 

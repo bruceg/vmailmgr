@@ -46,7 +46,7 @@ bool vpwtable::get(vpwentry& out)
   autodelete<datum> rec = ((cdb_reader*)getdata)->nextrec();
   if(!rec)
     return false;
-  if(!vpwentry::from_record(out, rec->key, rec->data))
+  if(!out.from_record(rec->key, rec->data))
     return false;
   return true;
 }

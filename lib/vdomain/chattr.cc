@@ -19,6 +19,11 @@
 #include "vdomain.h"
 #include "misc/pwcrypt.h"
 #include "misc/autodelete.h"
+#include "misc/strtou.h"
+
+static const response
+  resp_invalid_number(response::err, "Invalid number"),
+  resp_attribute_changed(response::ok, "Attribute value changed");
 
 response vdomain::chattr(mystring username, unsigned attr, mystring newval)
 {
@@ -28,33 +33,14 @@ response vdomain::chattr(mystring username, unsigned attr, mystring newval)
   return chattr(vpw, attr, newval);
 }
 
-unsigned strtou(const char* ptr, const char** endptr)
-{
-  unsigned uint;
-  if(*ptr == '-') {
-    uint = (unsigned)-1;
-    ++ptr;
-    while(isdigit(*ptr))
-      ++ptr;
-  }
-  else {
-    uint = 0;
-    while(isdigit(*ptr))
-      uint = (uint * 10) + (*ptr++ - '0');
-  }
-  if(endptr)
-    *endptr = ptr;
-  return uint;
-}
-
-response chunsigned(unsigned* value, mystring newval)
+static response chunsigned(unsigned* value, mystring newval)
 {
   const char* end;
   *value = strtou(newval.c_str(), &end);
   if(*end)
-    RETURN(err, "Invalid number");
+    return resp_invalid_number;
   else
-    RETURN(ok, "Attribute value changed");
+    return resp_attribute_changed;
 }
 
 response vdomain::chpass(vpwentry* vpw, mystring pass)
@@ -74,24 +60,14 @@ response vdomain::chdest(vpwentry* vpw, mystring dest)
   RETURN(ok, "Forwarding address(es) changed");
 }
 
-response vdomain::chenabled(vpwentry* vpw, mystring newval)
+static response chbool(bool* value, mystring newval)
 {
   const char* end;
-  unsigned value = strtou(newval.c_str(), &end);
+  unsigned i = strtou(newval.c_str(), &end);
   if(*end)
-    RETURN(err, "Invalid number");
-  else if(value) {
-    if(vpw->enable())
-      RETURN(ok, "Delivery enabled");
-    else
-      RETURN(err, "Could not enable delivery");
-  }
-  else {
-    if(vpw->disable())
-      RETURN(ok, "Delivery disabled");
-    else
-      RETURN(err, "Could not disable delivery");
-  }
+    return resp_invalid_number;
+  *value = !!i;
+  return resp_attribute_changed;
 }
   
 #define CHATTR(V,X) do{ response tmp=ch##X(&(V),newval); if(!tmp) return tmp; okmsg=tmp.msg; }while(0)
@@ -101,16 +77,14 @@ response vdomain::chattr(const vpwentry* vpw, unsigned attr, mystring newval)
   vpwentry newpw(*vpw);
   mystring okmsg;
   switch(attr) {
-    // Static attributes require re-setting the vpw
-  case ATTR_PASS:      CHATTR(newpw,pass); break;
-  case ATTR_DEST:      CHATTR(newpw,dest); break;
-  case ATTR_HARDQUOTA: CHATTR(newpw.hardquota,unsigned); break;
-  case ATTR_SOFTQUOTA: CHATTR(newpw.softquota,unsigned); break;
-  case ATTR_MSGSIZE:   CHATTR(newpw.msgsize,unsigned); break;
-  case ATTR_MSGCOUNT:  CHATTR(newpw.msgcount,unsigned); break;
-  case ATTR_EXPIRY:    CHATTR(newpw.expiry,unsigned); break;
-    // Dynamic attributes, which don't require re-setting the vpw
-  case ATTR_ENABLED:   return chenabled(&newpw,newval);
+  case ATTR_PASS:              CHATTR(newpw,pass); break;
+  case ATTR_DEST:              CHATTR(newpw,dest); break;
+  case ATTR_HARDQUOTA:         CHATTR(newpw.hardquota,unsigned); break;
+  case ATTR_SOFTQUOTA:         CHATTR(newpw.softquota,unsigned); break;
+  case ATTR_MSGSIZE:           CHATTR(newpw.msgsize,unsigned); break;
+  case ATTR_MSGCOUNT:          CHATTR(newpw.msgcount,unsigned); break;
+  case ATTR_EXPIRY:            CHATTR(newpw.expiry,unsigned); break;
+  case ATTR_MAILBOX_ENABLED:   CHATTR(newpw.is_mailbox_enabled,bool); break;
   default:
     RETURN(bad, "Invalid attribute type");
   }

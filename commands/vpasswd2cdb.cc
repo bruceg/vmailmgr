@@ -52,7 +52,7 @@ static bool getpw(fdibuf& in, vpwentry& out)
   if(first < 0) return false;
 
   out.set_defaults();
-  return vpwentry::from_record(out, buf.left(first), buf.c_str() + first);
+  return out.from_record(buf.left(first), buf.c_str() + first);
 }
 
 int cli_main(int, char* [])

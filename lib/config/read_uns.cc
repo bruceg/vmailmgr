@@ -19,6 +19,7 @@
 #include <ctype.h>
 #include "configrc.h"
 #include "configio.h"
+#include "misc/strtou.h"
 
 unsigned configuration::read_uns(const mystring& file,
 				 unsigned def,
@@ -28,22 +29,14 @@ unsigned configuration::read_uns(const mystring& file,
     mystring tmp;
     unsigned result = 0;
     const configuration* node;
-    for(node = this; node; node = node->parent)
+    for(node = this; node; node = node->parent) {
       if(config_read(node->directory, file, tmp)) {
-	const char* ptr = tmp.c_str();
-	while(*ptr && isspace(*ptr))
-	  ++ptr;
-	char* endptr;
-	if(*ptr == '-') {
-	  result = (unsigned)-1;
+	const char* endptr;
+	result = strtou(tmp.c_str(), &endptr);
+	if(endptr > tmp.c_str())
 	  break;
-	}
-	else {
-	  result = strtoul(ptr, &endptr, 10);
-	  if(endptr > ptr)
-	    break;
-	}
       }
+    }
     if(!node)
       result = def;
     cache.value = new unsigned(result);

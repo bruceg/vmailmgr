@@ -1,3 +1,51 @@
+2000-04-12  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* cgi/listvdomain.cc (show_user): Adapted to using
+	vpwentry::from_record instead of vpwentry::from_ver1_record.
+
+	* lib/vpwentry/vpwentry.cc: Set the flag defaults here on creation
+	instead of in set_defaults.
+
+	* lib/vdomain/chattr.cc (chattr): Modified to use the new vpwentry
+	is_mailbox_enabled flag.
+
+	* lib/vpwentry/from_ver1.cc (from_ver1_record): Made this a
+	protected non-static method.
+
+	* lib/vpwentry/from_ver2.cc (from_ver2_record): Made this a
+	protected non-static method.
+
+	* lib/vpwentry/from_old.cc (from_old_record): Made this a
+	protected non-static method.
+
+	* lib/vpwentry/from.cc (from_record): Made this a non-static method.
+
+	* lib/vpwentry/decode.cc: Moved the common pieces from from_ver1
+	and from_ver2 into seperate routines and moved them here.
+
+	* lib/vpwentry/from_ver2.cc (from_ver2_record): Added this routine
+	to do conversions from the new binary record format.
+
+	* lib/vpwentry/to.cc (to_record): Modified to create the new
+	binary record format.
+
+	* lib/vpwentry/from_uint.cc (from_uint): Moved this routine out of
+	from_ver1.cc, as it's common to both ver1 and ver2 (and other)
+	records.
+
+	* lib/vdomain/chattr.cc: Returned the extraneous definition of
+	strtou from here.
+
+	* lib/config/read_uns.cc (read_uns): Coded to use our strtou.
+
+	* lib/misc/strtou.c (strtou): Renamed the C++ source to a C
+	source, and added a header file.  Added a null-pointer and leading
+	space check.
+
+	* lib/vpwentry/vpwentry.h (struct vpwentry ): Removed the
+	enable/disable routines and added a "is_mailbox_enabled" boolean
+	flag.
+
 2000-04-11  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* cgi/vadduser.cc (CGI_MAIN ): Added code to handle adding

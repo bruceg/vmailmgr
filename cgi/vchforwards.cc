@@ -34,7 +34,8 @@ CGI_MAIN
   // Enable the account *BEFORE* changing the destination
   if(!!enable && enable != "0") {
     response resp = server_call("chattr", vdomain, username, password,
-				itoa(vdomain::ATTR_ENABLED), enable).call();
+				itoa(vdomain::ATTR_MAILBOX_ENABLED),
+				enable).call();
     if(!resp)
       error(resp.msg);
   }
@@ -58,7 +59,8 @@ CGI_MAIN
   // Disable the account *AFTER* changing the destination.
   if(!!enable && enable == "0") {
     response resp = server_call("chattr", vdomain, username, password,
-				itoa(vdomain::ATTR_ENABLED), enable).call();
+				itoa(vdomain::ATTR_MAILBOX_ENABLED),
+				enable).call();
     if(!resp)
       error(resp.msg);
   }

@@ -60,8 +60,7 @@ user::user(const mystring& n, const mystring& c)
 void show_user(const user* user)
 {
   vpwentry vpw;
-  vpw.name = user->name;
-  vpwentry::from_ver1_record(vpw, user->code);
+  vpw.from_record(user->name, user->code);
   
   mystring link;
   mystring elink;

@@ -24,7 +24,7 @@ vpwentry* vpwtable::getbyname(const mystring& name) const
   if(!d)
     return 0;
   vpwentry v;
-  if(!vpwentry::from_record(v, name, d->data)) {
+  if(!v.from_record(name, d->data)) {
     delete d;
     return 0;
   }

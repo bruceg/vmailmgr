@@ -1,3 +1,4 @@
+
 // Copyright (C) 1999,2000 Bruce Guenter <bruceg@em.ca>
 //
 // This program is free software; you can redistribute it and/or modify
@@ -92,7 +93,7 @@ bool getvpwent(vpwentry& vpw)
   autodelete<datum> d = in->nextrec();
   if(!d)
     return false;
-  vpwentry::from_record(vpw, d->key, d->data);
+  vpw.from_record(d->key, d->data);
   return true;
 }
 

@@ -17,6 +17,7 @@
 #include <config.h>
 #include "vpwtable.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include "cdb++/cdb++.h"
 
 class cdb_vpwtable_writer : public vpwtable_writer

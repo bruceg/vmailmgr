@@ -20,16 +20,17 @@ vmailmgr_local.py: Makefile
 
 make-pymain: Makefile
 	{ echo '#!/bin/sh' ;\
-	  echo "echo '#! ${PYTHON}'" ;\
-	  echo 'echo "import $$1"' ;\
-	  echo 'echo "$$1.main($$2)"' } >$@
+	  echo "echo '#! ${PYTHON}'" '>$$1' ;\
+	  echo 'echo "import $$2" >>$$1' ;\
+	  echo 'echo "$$2.main($$3)" >>$$1' ;\
+	  echo 'chmod +x $$1' } >$@
 	chmod +x $@
 
 vmailmgr-sessiond: make-pymain
-	./make-pymain vmailmgr_sessiond "'/tmp/.vmailmgr-sessiond', 900" >$@
+	./make-pymain $@ vmailmgr_sessiond "'/tmp/.vmailmgr-sessiond', 900"
 
 vmailmgr-pyadmin: make-pymain
-	./make-pymain vmailmgr_pyadmin >$@
+	./make-pymain $@ vmailmgr_pyadmin
 
 vmailmgr_lib.pyc: vmailmgr_lib.py vmailmgr_local.py
 vmailmgr_lib.pyo: vmailmgr_lib.py vmailmgr_local.py

@@ -49,8 +49,14 @@ class Context:
         #def pop(self):
         #self.dict = self.stack.pop()
         self.dict = initdict
-        for method in dir(self.dict):
-            setattr(self, method, getattr(self.dict, method))
+        self.get = self.dict.get
+        self.has_key = self.dict.has_key
+        self.items = self.dict.items
+        self.keys = self.dict.keys
+        self.values = self.dict.values
+        self.update = self.dict.update
+    def copy(self):
+        return Context(self.dict.copy())
     def __getitem__(self, key):
         try:
             return self.dict[key]
@@ -199,7 +205,7 @@ class Else(Token):
         stack.top().do_else()
 
 class Foreach(Token):
-    '''
+    '''Iterates over each item in a list'''
     rx = re.compile(r'^foreach\s+(.+)$')
     def __init__(self, groups):
         self.expr = groups[0]

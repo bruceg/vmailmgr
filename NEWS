@@ -1,4 +1,13 @@
 -------------------------------------------------------------------------------
+Changes in version 0.96.8
+
+New Features:
+
+Internal Changes:
+
+Bug Fixes:
+- Fixed a typo in the vmailmgrd run script.
+-------------------------------------------------------------------------------
 Changes in version 0.96.7
 
 New Features:

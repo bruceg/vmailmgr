@@ -71,8 +71,9 @@ elif test "x$LYNX" != x; then
   echo Using lynx to format html pages.
   HTML2TXT="lynx -dump -nolist"
 else
-  echo "Can't find either w3m or lynx."
-  exit 1
+  echo "Can't find either w3m or lynx, building the plain text"
+  echo "documentation files will fail."
+  HTML2TXT="false"
 fi
 AC_SUBST(HTML2TXT)
 

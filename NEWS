@@ -15,7 +15,7 @@ Internal Changes:
 
 Bug Fixes:
 - Fixed a problem that caused the Courier IMAP authentication module to
-  fail for users of the form "baseuser-virtuser".
+  fail for users of the form "baseuser-virtuser".  It should work now.
 -------------------------------------------------------------------------------
 Changes in version 0.96.3
 

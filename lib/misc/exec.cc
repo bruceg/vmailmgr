@@ -26,8 +26,17 @@
 
 int presetenv(const char* prefix, const mystring& value)
 {
-  mystring tmp = prefix + value;
-  return putenv(tmp.c_str());
+  unsigned plen = strlen(prefix);
+  char* tmp = new char[plen+value.length()+1];
+  strcpy(tmp, prefix);
+  strcpy(tmp+plen, value.c_str());
+  return putenv(tmp);
+  
+  // Note that tmp is never freed.  This was done as a result of problems
+  // using putenv with glibc 2.1, where freeing the pointer passed to
+  // putenv appeared to cause garbage to enter the environment.
+  //mystring tmp = prefix + value;
+  //return putenv(tmp.c_str());
 }
 
 int execute_one(const char* args[])

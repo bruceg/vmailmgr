@@ -29,7 +29,7 @@ public:
   mystring userdir(mystring username) const;
 
   // Virtual user manipulation functions
-  vpwentry* lookup(mystring name, bool nodefault);
+  vpwentry* lookup(mystring name);
   bool exists(mystring name);
   
   response set(const vpwentry*, bool onlyadd);

@@ -37,15 +37,8 @@ bool vdomain::exists(mystring name)
   return table()->exists(name);
 }
 
-vpwentry* vdomain::lookup(mystring name, bool nodefault)
+vpwentry* vdomain::lookup(mystring name)
 {
-  vpwentry* vpw;
-  if(!name)
-    vpw = 0;
-  else {
-    vpw = table()->getbyname(name);
-    if(!vpw && !nodefault)
-      vpw = table()->getbyname(config.default_username());
-  }
-  return vpw;
+  if(!name) return 0;
+  return table()->getbyname(name);
 }

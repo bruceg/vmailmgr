@@ -315,7 +315,9 @@ int cli_main(int, char*[])
   if(!adddtline)
     dtline = 0;
 
-  vpwentry* vpw = domain.lookup(ext, false);
+  vpwentry* vpw = domain.lookup(ext);
+  if(!vpw)
+    vpw = domain.lookup(config->default_username());
   if(!vpw)
     die_fail(mystring("Invalid or unknown virtual user '" + ext + "'").c_str());
   if(vpw->expiry < (unsigned)time(0))

@@ -82,7 +82,7 @@ static user_data* check(mystring fulluser, mystring password,
   }
   else {
     set_user(basepw);
-    vpwentry* vpw = domain->lookup(virtname, true);
+    vpwentry* vpw = domain->lookup(virtname);
     if(!vpw || !vpw->has_mailbox)
       fail_login("Invalid or unknown virtual user");
     if(!vpw->authenticate(password))

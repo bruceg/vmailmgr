@@ -37,7 +37,7 @@ CMD(check)
   }
   else {
     state = new saved_state(basepw);
-    vpwentry* virtpw = state->domain.lookup(virtname, false);
+    vpwentry* virtpw = state->domain.lookup(virtname);
     if(!virtpw)
       RETURN(err, "Invalid or unknown virtual user");
     if(virtpw->authenticate(password))

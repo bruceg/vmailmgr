@@ -30,6 +30,13 @@ libmisc_a_SOURCES = $(KRB5_SRCS) \
 	pwentry_table.h pwentry_table.cc \
 	response.h response_write.cc response_message.cc response_read.cc \
 	server.h server.cc \
+	server_call0.cc \
+	server_call1.cc \
+	server_call2.cc \
+	server_call3.cc \
+	server_call4.cc \
+	server_call5.cc \
+	server_call6.cc \
 	stat_fns.h \
 	strlist.h strlist.cc \
 	strlist_read.cc \

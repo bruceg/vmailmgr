@@ -27,6 +27,8 @@ public:
   server_call(mystring, mystring, mystring, mystring);
   server_call(mystring, mystring, mystring, mystring, mystring);
   server_call(mystring, mystring, mystring, mystring, mystring, mystring);
+  server_call(mystring, mystring, mystring, mystring, mystring, mystring,
+	      mystring);
   ~server_call();
   response call(const mystring& = config->socket_file());
   void operand(int i, mystring m) { args[i] = m; }

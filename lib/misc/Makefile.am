@@ -25,6 +25,7 @@ libmisc_a_SOURCES = $(KRB5_SRCS) \
 	pwcrypt.h pwcrypt.cc \
 	pwentry.h pwentry.cc \
 	pwentry_auth.cc \
+	pwentry_export_env.cc \
 	pwentry_table.h pwentry_table.cc \
 	response.h response_write.cc response_message.cc response_read.cc \
 	server.h server.cc \

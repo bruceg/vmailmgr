@@ -14,33 +14,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifndef VMAILMGR__PWENTRY__H__
-#define VMAILMGR__PWENTRY__H__
+#include <config.h>
+#include "pwentry.h"
+#include "exec.h"
 
-#include <sys/types.h>
-#include "mystring/mystring.h"
-#include "config/configrc.h"
-
-struct pwentry
+bool pwentry::export_env() const
 {
-  mystring name;
-  mystring pass;
-  uid_t uid;
-  gid_t gid;
-  mystring home;
-  configuration config;
-  
-  pwentry();
-  pwentry(const mystring& n, const mystring& p,
-	  uid_t u, gid_t g, const mystring& h);
-  pwentry(const struct passwd&);
-  ~pwentry();
-  mystring pwfile();
-
-  bool authenticate(const mystring& phrase) const;
-  bool export_env() const;
-private:
-  pwentry(const pwentry&);	// Not implemented -- copying not permitted yet
-};
-
-#endif
+  return presetenv("USER=", name) == 0 &&
+    presetenv("HOME=", home) == 0;
+}

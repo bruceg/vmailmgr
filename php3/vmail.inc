@@ -1,6 +1,9 @@
 <?
 // Copyright (C) 2000 Mike Bell <mike@mikebell.org>
 //
+// Examples available at http://mailtest.mikebell.org/
+// Latest version will be included in each vmailmgr release
+//
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
@@ -57,87 +60,74 @@ function vm_daemon_raw($arg)
 
 /*      Get the response        */
 
-        for ($x=0; ; $x++)
-        {
-                $out[$x] = fgetc($vmailsock);
-		if (feof($vmailsock)) break;
-        }
+	(int) $value = (int) fgetc ($vmailsock);
+	$length = (ord(fgetc($vmailsock)) << 8) + ord(fgetc($vmailsock));
+
+	if ($length == 0) {
+		while (!feof($vmailsock))
+			$out=fread($vmailsock, 65535);
+		fclose($vmailsock);
+		return $out;
+	}
+
+	$message = fgets ($vmailsock, $length);
 
 /*	Close the socket	*/
 	fclose($vmailsock);
 
-	unset($out[$x]);
-
-/* 	If output is a successful listdomain, it comes in a special format to
-	keep clients from returning it as a success message. Pass it back raw
-	to facilitate this */
-
-if ($arg[0]=="listdomain")
-	if (ord($out[0]) == 0) return $out;
-
-
-	$value = (int) $out[0];
-	$out[0]=""; $out[1]=""; $out[2]="";
-	$output=join("", $out);
-	$return[]=$value;
-	$return[]=$output;
-return $return;
+return array($value, $message);
 
 }
 
-/* Returns the contents of one field in $out beginning at $pos. */
+/* Parses the lines from listdomain into fields. All fields after aliases
+   are ignored, but this is easy to fix if anybody cared about them */
 
-function listdomain_parse_field(&$out, &$pos){
-if (ord($out[$pos])==0) {$pos++;return 0;}
-	for (; ord($out[$pos]) != 0; $pos++){
-		$field.=$out[$pos];
-	}
-$pos++;
-return $field;
+function listdomain_parse_line($line){
+	$user=explode(chr(0), $line);
+	$username=$user[0];
+	if ($user[1]!=(chr(1)."*")) $password="Set";
+	$mailbox=$user[2];
+	$x=3;
+	while($user[$x]!="")
+		$aliases[]=$user[$x++];
+	$x++;
+	$PersonalInfo=$user[$x++];
+	$HardQuota=$user[$x++];
+	$SoftQuota=$user[$x++];
+	$SizeLimit=$user[$x++];
+	$CountLimit=$user[$x++];
+	$CreationTime=$user[$x++];
+	$ExpiryTime=$user[$x++];
+	
+	return array($username, $password, $mailbox, $aliases,
+$PersonalInfo, $HardQuota, $SoftQuota, $SizeLimit, $CountLimit,
+$CreationTime, $ExpiryTime);
 }
 
-/* Calls listdomain_parse_field repeatedly to parse a single line of the
-   listdomain output */
+/* Does the ugly stuff for listdomain, and calls listdomain_parse_line once
+   for each user */
 
-function listdomain_parse_line(&$out, $pos){
-	$username=listdomain_parse_field(&$out, &$pos);
-	$password=listdomain_parse_field(&$out, &$pos);
-	$mbox=listdomain_parse_field(&$out, &$pos);
-	if ($mbox=="0") {$mbox="";}
-	for ($x=0; ; $x++){
-		$temp=listdomain_parse_field(&$out, &$pos);
-		if (!$temp) break;
-		$alias[$x]=$temp;
-	}
-return array($username, $password, $mbox, $alias);
-}
-
-/* Returns an array of lines, which are in turn arrays of 
-   (username, password, mbox, alias) */
-
-function listdomain_parse_output(&$out){
-	$pos=4;
-	$length=1;
-	for ($x=0; ; $x++){
-		$length=(ord($out[$pos]) << 8) + ord($out[++$pos]);
-		if ($length == 0) break;
-		list($username, $password, $mbox, $alias)=listdomain_parse_line($out, ++$pos, $length);
-		$pos=$pos+$length+1;
-		$output[$x]=array($username, $password, $mbox, $alias);
-	}
-	return $output;
+function listdomain_parse($output){
+	$cur=1;
+	do {
+		$linelength=(ord(substr($output, $cur++, 1)) << 8 ) + ord(substr($output, $cur++, 1));
+		if ($linelength == 0) break;
+		$array[] = listdomain_parse_line(substr($output, $cur, $linelength));
+		$cur+=$linelength+1;
+	} while (1);
+	return $array;
 }
 
 /* listdomain, takes domain name and password, returns listdomain output
-   parsed as stated in listdomain_parse_output */
+   parsed as stated in listdomain_parse */
 
 function listdomain($domain, $password){
-if ($domain=="") return array(1, "Empty domain");
-if ($password=="") return array(1, "Empty domain password");
+if ($domain=="") return array(0, "Empty domain");
+if ($password=="") return array(0, "Empty domain password");
 	$command=array("listdomain",$domain, $password);
 	$temp=vm_daemon_raw(array("listdomain", $domain, $password));
-	if (ord($temp[0]) != 0) return $temp;
-return listdomain_parse_output($temp);
+	if (is_array($temp)) return $temp;
+return listdomain_parse($temp);
 }
 
 /* vadduser, takes domain name, password, username, userpassword, and an
@@ -145,11 +135,10 @@ return listdomain_parse_output($temp);
    integer exit code and message. */
 
 function vadduser($domain, $password, $username, $userpass, $forwards){
-if ($domain=="") return array(1, "Empty domain");
-if ($password=="") return array(1, "Empty domain password");
-if ($username=="") return array(1, "Empty username");
-if ($userpass=="") return array(1, "No user password supplied");
-if ($forwards[0]=="") return array(1, "Empty forwarding address");
+if ($domain=="") return array(0, "Empty domain");
+if ($password=="") return array(0, "Empty domain password");
+if ($username=="") return array(0, "Empty username");
+if ($userpass=="") return array(0, "No user password supplied");
 	$command=array("adduser2", $domain, $username, $password,
 	               $userpass, $username);
 	for ($x=0; $x < sizeof($forwards); $x++)
@@ -165,10 +154,9 @@ return $temp;
    alias with no password will be created. */
 
 function vaddalias($domain, $password, $username, $userpass, $forwards){
-if ($domain=="") return array(1, "Empty domain");
-if ($password=="") return array(1, "Empty domain password");
-if ($username=="") return array(1, "Empty username");
-if ($forwards[0]=="") return array(1, "Empty forwarding destination");
+if ($domain=="") return array(0, "Empty domain");
+if ($password=="") return array(0, "Empty domain password");
+if ($username=="") return array(0, "Empty username");
 	$command=array("adduser2", $domain, $username, $password,
 	               $userpass, "");
 	for ($x=0; $x < sizeof($forwards); $x++)
@@ -182,9 +170,9 @@ return $temp;
    consisting of an integer exit code and message. */
 
 function vdeluser($domain, $password, $username){
-if ($domain=="") return array(1, "Empty domain");
-if ($password=="") return array(1, "Empty domain password");
-if ($username=="") return array(1, "Empty username");
+if ($domain=="") return array(0, "Empty domain");
+if ($password=="") return array(0, "Empty domain password");
+if ($username=="") return array(0, "Empty username");
 	$command=array("deluser", $domain, $username, $password);
 	$temp=vm_daemon_raw($command);
 return $temp;
@@ -197,10 +185,10 @@ return $temp;
    these are equal*/
 
 function vchpass($domain, $password, $username, $newpass){
-if ($domain=="") return array(1, "Empty domain");
-if ($password=="") return array(1, "Empty domain password");
-if ($username=="") return array(1, "Empty username");
-if ($newpass=="") return array(1, "Empty new password");
+if ($domain=="") return array(0, "Empty domain");
+if ($password=="") return array(0, "Empty domain password");
+if ($username=="") return array(0, "Empty username");
+if ($newpass=="") return array(0, "Empty new password");
 	$command=array("chattr", $domain, $username, $password, "1", $newpass);
 	$temp=vm_daemon_raw($command);
 return $temp;
@@ -213,9 +201,9 @@ return $temp;
    one is using the patched vmailmgrd present in 0.96.2 and later */
 
 function vchforward($domain, $password, $username, $forwards){
-if ($domain=="") return array(1, "Empty domain");
-if ($password=="") return array(1, "Empty domain password");
-if ($username=="") return array(1, "Empty username");
+if ($domain=="") return array(0, "Empty domain");
+if ($password=="") return array(0, "Empty domain password");
+if ($username=="") return array(0, "Empty username");
 	$command=array("chattr", $domain, $username, $password, "2");
 	for ($x=0; $x< sizeof($forwards); $x++)
 		if ($forwards[$x] != "") $command[]=$forwards[$x];

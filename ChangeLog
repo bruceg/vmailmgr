@@ -1,3 +1,11 @@
+2000-04-11  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* Released version 0.96.4
+
+	* lib/misc/exec.cc (presetenv): Changed this routine to allocate a
+	new string (char*) that it never frees.  This seems to fix the
+	problems with garbage making its way into the environment.
+
 2000-04-10  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* lib/vpwentry/export_env.cc (export_env): Moved the setenv

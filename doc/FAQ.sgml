@@ -59,6 +59,12 @@
   package, available at <url url="http://em.ca/~bruceg/ucspi-unix/">.
 </p>
 
+<p>
+  If you want to use the autoresponse feature, I recommend the use of
+  my own autoresponder program, <tt>qmail-autoresponder</tt> available
+  at <url url="http://em.ca/~bruceg/qmail-autoresponder/">.
+</p>
+
 <sect1>How do I record the output of vmailmgrd with syslog?
 <p>
   Output from vmailmgrd can be recorded by either splogger (part of
@@ -251,6 +257,14 @@ typing `<tt>/etc/rc.d/init.d/pop3d restart</tt>'.
   was invoked
 </enum>
   Please do not contact the author directly with vmailmgr questions. 
+</p>
+
+<sect1>Are development version of vmailmgr available anywhere?
+<p>
+  Yes, they are available through anonymous CVS.
+  To access the CVS server, set your <tt>CVSROOT</tt> to
+  <tt>:pserver:cvs@bruce-guenter.dyndns.org:/CVS</tt>, log in with an
+  empty password, and check out the <tt>vmailmgr</tt> module.
 </p>
 
 <sect1>How does incoming email get handled?

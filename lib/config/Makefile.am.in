@@ -13,4 +13,5 @@ libconfig_a_SOURCES = \
 
 showvconfig_SOURCES = showvconfig.cc
 showvconfig_LDADD = libconfig.a ../fdbuf/libfdbuf.a ../misc/libmisc.a \
-	../mystring/libmystring.a ../vpw/libvpw.a
+	../mystring/libmystring.a ../vdomain/libvdomain.a \
+	../vpwtable/libvpwtable.a

@@ -24,6 +24,7 @@ Bug Fixes:
 - Fixed a bug that caused creating directories with a trailing slash to
   fail.
 - Fixed the use of libstdc++ in showvconfig.
+- Personal information can now be changed by the virtual user in the daemon.
 -------------------------------------------------------------------------------
 Changes in version 0.96.9
 

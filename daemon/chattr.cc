@@ -39,6 +39,7 @@ CMD(chattr)
     break;
   case vdomain::ATTR_DEST:
   case vdomain::ATTR_MAILBOX_ENABLED:
+  case vdomain::ATTR_PERSONAL:
     userpass = true;
     break;
   }

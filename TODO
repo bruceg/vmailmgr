@@ -5,8 +5,6 @@ releases.
 -------------------------------------------------------------------------------
 FOR VERSION 0.97:
 
-- Make daemon/chattr.cc handle changes to the "personal information".
-
 - Revert vdomain::lookup back to the single-argument case, and yank the
   dead code.
 
@@ -17,9 +15,7 @@ FOR VERSION 0.97:
   - daemon "stat" command
   - daemon adduser3 command
   - vupgrade command
-
-- Make sure that exit 99 from vdeliver-predeliver causes delivery to be
-  skipped.
+  - exit 99 from vdeliver-predeliver causes delivery to be skipped
 
 - Add note to FAQ or HOWTO regarding the two web interfaces
 

@@ -185,6 +185,7 @@ Each of the following sections identifies a single configuration file
 * postmaster-email::            
 * qmail-root::                  
 * separators::                  
+* socket-file::                 
 * user-dir::                    
 * user-dir-bits::               
 * user-dir-slices::             
@@ -566,7 +567,7 @@ installed qmail.
 @end table
 
 @c ============================================================================
-@node separators, user-dir, qmail-root, Configuration Files
+@node separators, socket-file, qmail-root, Configuration Files
 @section separators
 
 @table @strong
@@ -585,7 +586,25 @@ For example, if separators contains @samp{@@:} then @samp{user@@domain} and
 @end table
 
 @c ============================================================================
-@node user-dir, user-dir-bits, separators, Configuration Files
+@node socket-file, user-dir, separators, Configuration Files
+@section socket-file
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{/tmp/.vmailmgrd}
+@item Used By
+vmailmgrd, checkvpw, vdeliver, and the CGI programs
+@item Description
+Identifies the file name of the local socket used to
+communicate between the vmailmgr daemon and the other programs.
+@emph{Warning:} Changing this in the local configuration directories
+will cause vdeliver to fail.
+@end table
+
+@c ============================================================================
+@node user-dir, user-dir-bits, socket-file, Configuration Files
 @section user-dir
 
 @table @strong

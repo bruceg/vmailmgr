@@ -11,9 +11,6 @@ can keep the development periods shorter.
 
 - Convert existing TeXinfo documentation to SGML
 
-- Investigate IP-based virtual domain problem with Courier IMAP not
-  setting TCPREMOTEHOST.
-
 - Add option to vdeluser to prevent deleting users that have a mailbox.
 
 - Document the Python interface.
@@ -25,8 +22,7 @@ can keep the development periods shorter.
 - Expand the record format to include a "last modified" field, and to
   change the flag values from binary 0/1 to ASCII.
 
-- Add the necessary code for compile-time switchable support for CDB,
-  [GN]DBM, and MySQL virtual user databases -> goes into vpwtable.
+- Add the necessary code for NDBM, MySQL, and PostgreSQL password tables.
 
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
@@ -62,6 +58,10 @@ RELEASE TARGET 0.97
 - Make the daemon commands stand-alone modules, using the revised daemon
   communication protocol.  The daemon then just forks, reads in the
   command name, validates it, and hands off to an authentication module.
+
+- The authentication module checks for a custom authentication type
+  based on the command name, does authentication, does setuid,chdir,
+  and executes the actual command.
 
 - Rewrite the daemon headers so that the commands can be built into
   stand-alone modules.
@@ -104,14 +104,6 @@ RELEASE TARGET 1.00
 - in all the command-line programs:
   - if the environment variable VDOMAIN is set, read the virtual domain
     from that variable, prompt for a password, and do a server call
-
-- write a "vlogin" program:
-  - asks user for username & password
-  - checks authentication with daemon
-  - execs a subprogram, such as vpasswd, after changing uid/gid/cwd to
-    that of the owner of the virtual domain (like checkvpw does)
-  - ?If local address of connection is not a virtual domain, exec
-    login or in.telnetd or similar?
 
 - In vmailmgrd:
   ? add support for PAM for non-virtual users (this may be difficult,

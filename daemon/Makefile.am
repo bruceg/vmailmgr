@@ -1,5 +1,4 @@
 sbin_PROGRAMS = vmailmgrd
-EXTRA_DIST = init run-log run-svc
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = -I../lib

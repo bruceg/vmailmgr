@@ -1,0 +1,396 @@
+\input texinfo @c -*-texinfo-*-
+@c %**start of header
+@setfilename FAQ.info
+@settitle Vmailmgr FAQ
+@setchapternewpage off
+@paragraphindent 5
+@footnotestyle end
+@c %**end of header
+
+@ifinfo
+Copyright @copyright{} 1998 Bruce Guenter
+@end ifinfo
+
+@titlepage
+@title Vmailmgr FAQ
+@author Bruce Guenter
+@author Dan Kuykendall
+@subtitle @today{}
+@end titlepage
+
+@ifinfo
+VMailMgr Frequently Asked Questions.
+@end ifinfo
+
+@c ****************************************************************************
+@chapter Building and Installing
+
+@section What compiler and libraries do I need to build vmailmgr?
+
+You will need a working C and C++ compiler and linker. You will not
+need any C++ libraries.  The package is being developed under Linux
+using egcs and glibc version 2, and may rely on some gcc/g++
+extensions.
+
+@section Does vmailmgr work with shadow passwords?
+
+This package should work without changes both with and without
+shadow passwords as long as the shadow password libraries are
+present when this package is built. The @code{configure} script will
+detect what method of shadow passwords are being used and the
+programs will be built accordingly.
+
+@section Does vmailmgr support IMAP?
+
+Yes, vmailmgr supports Courier-IMAP.  Some minor steps are needed to
+make them work, the steps are in the next section of this file.
+
+@c ****************************************************************************
+@chapter Setup and Configuration
+
+@section What other software is needed to run vmailmgr?
+
+VMailMgr is based around qmail's handling of virtual users, and as
+such requires qmail for its operation. If you wish to use the @code{init}
+file to start/stop @code{vmailmgrd} or are installing the RPM package,
+supervise-scripts version 2.2 (or later, available at 
+@uref{http://untroubled.org/supervise-scripts/})
+and daemontools 0.60 (or later, available at 
+@uref{http://untroubled.org/rpms/daemontools/})
+packages are required.  If you need to use the @code{vmailmgrd} daemon, you 
+will also need the @code{unixserver} program, from the ucspi-unix package, 
+available at
+@uref{http://untroubled.org/ucspi-unix/}.
+
+If you want to use the autoresponse feature, I recommend the use of
+my own autoresponder program, @code{qmail-autoresponder} available
+at 
+@uref{http://untroubled.org/qmail-autoresponder/}.
+
+@section How do I record the output of vmailmgrd with syslog?
+
+Output from @code{vmailmgrd} can be recorded by either @code{splogger} (part of 
+qmail) or with the logger that comes with several flavours of UNIX. To use 
+@code{splogger}, pipe the output of @code{vmailmgrd} into the command 
+@samp{splogger vmailmgrd}. This will timestamp each entry and tag them with the 
+word @samp{vmailmgrd}. By default, @code{splogger} logs to facility 2 (mail). To 
+use @code{logger}, pipe the output of @code{vmailmgrd} into the command 
+@samp{logger -t vmailmgrd -p mail.notice}. 
+See the respective man pages of these two programs for more information.
+
+Note: The use of @code{syslog} for logging messages is strongly discouraged
+due to problems with inefficent and buggy implementation of @code{syslog}.
+
+@section How do I record the output of vmailmgrd with multilog?
+
+Make a directory into which the output will go, for example
+@file{/var/log/vmailmgrd}. Pipe the output of @code{vmailmgrd} into the
+command @samp{multilog t /var/log/vmailmgrd}. See the
+documentation for @code{multilog} for more information on how to adjust its
+output.
+
+@section How do I setup VMmailMgr IMAP support?
+
+VMailMgr supports Courier-IMAP, but Courier-IMAP does not auto
+detect VMailMgr.  This means that some minor work is required for
+making the two work together.
+
+@itemize @bullet
+@item
+You must copy @file{/usr/local/bin/authvmailmgr} to
+@file{/usr/lib/courier-imap/libexec/authlib/authvmailmgr}.
+
+@item
+Then modify the @code{AUTHMODULES} statement in
+@file{/usr/lib/courier-imap/etc/imapd.config} and add
+@kbd{authvmailmgr} as the first authentication module.
+
+@end itemize
+
+@section Upgrading from Previous Versions
+
+If you are upgrading from an older version, you may need to make
+some changes to your system before or after doing the upgrade. The
+following table outlines the necessary changes. Note that you need
+to follow the instructions for all later versions of the software.
+
+@subsection Upgrading from version 0.96.6 or earlier
+
+The @code{vmailmgrd} daemon needs to be run by unixserver, as opposed
+to being a stand-alone program previously.
+
+@subsection Upgrading from version 0.96.2 or earlier
+
+Make sure the @code{vmailmgrd} daemon and vmailmgr CGIs are disabled
+before upgrading, and upgrade them along with the main
+package. Changes were made to the daemon interface that will
+cause adding users and aliases to flake out. As well, the
+listdomain interface was completely redone.
+
+@subsection Upgrading from version 0.94 or earlier, using the POP bulletin facility
+
+The POP bulletin facility has been moved into a stand-alone
+program that needs to be executed through @code{checkvpw-postsetuid}.
+
+@subsection Upgrading from version 0.93 or earlier
+
+If you do not use the CGIs, you no longer need to run the
+@code{vmailmgrd} daemon.
+
+@subsection Upgrading from version 0.92.2 or earlier
+
+The configuration changed from reading a single file to reading a
+set of files in a directory.  Read the configuration documentation
+and run the program @code{vconf2dir}.
+
+@subsection Upgrading from version 0.90.2 or earlier
+
+The name of the user to which mail to an unknown user is
+delivered changed from @samp{*} to @samp{+}. If you were using this
+feature, either change all your domains to accomodate this
+change, or set the @file{default-username} config file to contain @samp{*}.
+
+@subsection Upgrading from version 0.88 or earlier
+
+The file format of the virtual password tables has changed from
+plain text files to CDB tables. You will need to suspend local
+deliveries before upgrading, and run the program @code{vpasswd2cdb} as
+each base user after upgrading, before re-enabling local
+deliveries.
+
+@section How do I configure qmail+patches to use vmailmgr for POP?
+
+Put the string @kbd{checkvpw} into the file
+@file{/etc/qmail/control/checkpassword} and restart @code{qmail-pop3d} by
+typing @samp{/etc/rc.d/init.d/pop3d restart}.
+
+@section How do I allow clients to relay SMTP through me?
+
+Download and install relay-ctrl from
+@uref{http://untroubled.org/relay-ctrl/}.
+It works with vmailmgr, for both POP3 and IMAP clients.
+
+@c ****************************************************************************
+@chapter Usage
+
+@section I can only use one IP address. How do I log in as a virtual user?
+
+There are two ways to log in without using multiple IP addresses.
+
+@itemize @bullet
+@item
+The first way is to log in as @samp{user@var{SEP}virtual.domain.org}, where 
+@samp{user} is the mailbox name of the virtual user, @var{SEP} is one of 
+@samp{@@} or @samp{:} (by default, this is configurable in the 
+@file{/etc/vmailmgr/} directory), and @samp{virtual.domain.org} is the virtual 
+domain's name, as listed in @file{/var/qmail/control/virtualdomains}.
+
+@item
+The second way is to use the internal form of the mailbox name --
+that is, @samp{baseuser-user}, where @samp{user} is the same
+as above, and @samp{baseuser} is the username of the managing
+user.
+
+For example, @file{/var/qmail/control/virtualdomains} contains 
+@samp{testdomain.org:testuser}, user @samp{testuser} exists,
+and has set up a virtual mailbox with the name @samp{v}.
+The @var{separators} variable in @file{/etc/vmailmgr/}
+contains @samp{@@:}.  This virtual user
+could log in as @samp{v@@testdomain.org},
+@samp{v:testdomain.org}, or @samp{testuser-v}.
+@end itemize
+
+@section How do I get all misdirected mail sent to me?
+
+In the @file{vmailmgr/} configuration directory, there is an
+entry called @file{default-username}. If mail to a virtual
+domain does not match any users or aliases in that domain, it is
+delivered to the name listed in this configuration item if it exists
+(which defaults to @samp{+}). To make this deliver to you,
+simply type:
+
+@example
+vaddalias + me
+@end example
+
+@section How can I put system accounts in a virtual domain?
+
+System accounts are those listed in @file{/etc/password} (or 
+@file{/var/qmail/users/cdb}). 
+The system accounts are accessable, either though SMTP or POP3 or IMAP, as 
+@samp{name@@@var{DOMAIN}}, where @var{DOMAIN} is listed in
+@file{/var/qmail/control/locals}.
+
+Virtual accounts exist only as an artifact of vmailmgr management.
+They are accessable as @samp{name@@@var{DOMAIN}}, where @var{DOMAIN} is listed 
+in @file{/var/qmail/control/virtualdomains}.
+
+You @strong{cannot} mix accounts within a domain between system and virtual 
+domains.  If the domain is in @file{control/locals}, all accounts for that 
+domain must be system accounts.  If it is in @file{control/virtualdomains}, all 
+accounts for that domain must be virtual accounts.  Also, @file{control/locals} 
+overrides @file{control/virtualdomains}: if the domain is in @file{locals}, 
+@file{virtualdomains} is ignored.
+
+As an aside, if the domain is neither in @file{locals} nor in
+@file{virtualdomains}, qmail will reject incoming messages, and vmailmgr will
+treat it as local.
+
+@c ****************************************************************************
+@chapter Troubleshooting
+
+@section Bind error message from @code{vmailmgrd}.
+
+If @code{vmailmgrd} reports 
+@quotation
+vmailmgrd: bind: no such file or directory
+@end quotation 
+when you start it up, it means that can't create its socket file.  By default, 
+it will try to create the socket file @file{/tmp/.vmailmgrd}. You must ensure 
+that @file{/tmp/} is writable, or that the socket is created in some other place 
+by setting @var{socket-file} in the configuration.
+
+@section Error sending to an alias: @code{qmail-queue} exited with an error!
+
+If qmail reports
+@quotation
+deferral: vdeliver: qmail-queue exited with an error!
+@end quotation
+check where your qmail is installed.  On Debian systems,
+you will need to type @samp{ls -s /usr/sbin /var/qmail/bin},
+since they've installed the qmail binaries into @file{/usr/sbin}.
+
+@section Running @code{vmailmgrd} fails.
+
+When run by itself, @code{vmailmgrd} will report
+@quotation
+Timed out waiting for remote
+@end quotation
+@code{vmailmgrd} needs to be run from @code{unixserver}, part of the ucspi-unix
+package available at
+@uref{http://untroubled.org/ucspi-unix/}.
+
+@section POP3 or IMAP logins take 30 seconds or longer.
+
+This is almost certainly a DNS lookup problem.  Make sure that DNS
+lookups aren't timing out, that lookups on all your IP addresses
+aren't failing, and that you can lookup remote addresses as well.
+
+If you are using @code{tcpserver} for the head end to @code{qmail-pop3d}, then 
+you may want to add the following 2 switches to the command line: @samp{-R} and 
+@samp{-H}.  The former prevents @code{tcpserver} from attempting to obtain 
+@var{TCPREMOTEINFO} from the remote host.  This eliminates an @code{ident} 
+lookup that may be being blocked or silently dropped by a firewall. The latter 
+prevents @code{tcpserver} from doing a DNS lookup on the remote IP.
+
+@c ****************************************************************************
+@chapter Miscellaneous
+
+@section How do I get in contact with other users?
+
+There is a mailing list run by the author. To subscribe, send an
+e-mail (content and subject line is ignored) to
+@email{vmailmgr-subscribe@@lists.untroubled.org}.
+
+Remember that if you have a problem that you want us to diagnose, we
+need to know the following important details:
+@enumerate
+@item
+The output of @code{qmail-showctl}
+@item
+The contents of the @code{vmailmgrd} log for the attempt you are
+trying to diagnose
+@item
+The contents of the qmail and smtpd logs for a failed delivery
+attempt
+@item
+The contents of the pop3d logs for a failed login attempt
+@item
+The complete command line with which @code{vmailmgrd} and @code{qmail-pop3d}
+was invoked
+@end enumerate
+
+Please do not contact the author directly with vmailmgr questions. 
+
+@section Are development version of vmailmgr available anywhere?
+
+Yes, they are available through anonymous CVS.
+To access the CVS server, set your @code{CVSROOT} to
+@kbd{:pserver:cvs@@bruce-guenter.dyndns.org:/CVS}, log in with an
+empty password, and check out the @code{vmailmgr} module.
+
+@section How does incoming email get handled?
+
+Incoming email is first received by the qmail SMTP daemon and
+inserted into the qmail queue. Then @code{qmail-send} examines
+the email envelope (which details the recipient address or
+addresses) to determine how to dispatch the message. It looks up the
+domain name of each recipient in
+@file{/var/qmail/control/virtualdomains}, and prefixes the user
+name with the string that it finds. It then looks up the resulting
+user name in the system password table (or in
+@file{/var/qmail/users/cdb} if it exists) to find the base user
+name and home directory (which I will call @code{$HOME}). It
+then looks for the file @file{@code{$HOME}/.qmail-VIRTUAL}. If that's
+not found, it looks for the file @file{@code{$HOME}/.qmail-default},
+which will contain an instruction to pipe the message to
+@code{vdeliver}.
+
+This is where vmailmgr first enters the picture. The virtual user
+name is sent to @code{vdeliver} through environment variables. It looks
+in the configuration files (in @file{@code{$HOME}/.vmailmgr} and then
+in @file{/etc/vmailmgr}) to determine the location of the
+password table, and looks up the virtual user name in the table to
+determine delivery instructions. If the name is not found, the
+message is bounced and delivery ends. Otherwise, it then looks for
+the @code{vdeliver-predeliver} script in the configuration
+directories (in reverse order) and executes any that are found. It
+then delivers the message to all the listed destinations -- an
+optional mailbox directory and zero or more forwarding
+addresses. Finally, it looks for the @code{vdeliver-postdeliver}
+script and executes any that are found.
+
+@section How does outgoing email get handled?
+
+Outgoing email is not handled by vmailmgr. For details on outgoing
+email handling, check the qmail documentation.
+
+@section What about security of CGI and PHP functions?
+
+The socket used by the daemon is a UNIX-domain socket (as opposed to
+Internet-domain), meaning you need local access on the computer to
+open up a connection.  The path for this socket is run-time
+configurable.
+
+The daemon forks a new connection for each connection, up to a
+configurable maximum (at which point it stops listening, IIRC, I
+should verify this).  The idea of threading has been completely
+discarded to avoid a bug in a command creeping in and making the
+whole server break.
+
+The protocol spoken over the socket is explicitly bounded to at most
+64kB of data, and all data is prefixed by a size.  Static-sized
+buffers are only used with static-sized reads, and therefore can't be
+overflowed with stack-smashing tricks.
+
+The daemon commands setuid to the appropriate user as soon as the base
+user has been verified, to avoid doing any more than necessary as
+root, as well as to avoid the possibility of tricking the daemon into
+reading a file another user wouldn't normally have access to.
+
+To help avoid DoS on the local computer, a 1-second alarm is set as
+soon as the connection is received, and is only cleared once all the
+data has been read.  If it takes longer than 1 second to read the data
+from the socket, the server process exits.
+
+@section What are the differences between vmailmgr and vpopmail?
+
+The primary difference between vmailmgr and vpopmail is the use of
+base users.  With vmailmgr there is one base user for each virtual
+domain.  With vpopmail, there is one base user for the entire
+virtual domain system.
+
+@contents
+
+@bye
+

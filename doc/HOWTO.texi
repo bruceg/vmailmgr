@@ -1,0 +1,393 @@
+\input texinfo @c -*-texinfo-*-
+@c %**start of header
+@setfilename HOWTO.info
+@settitle VMailMgr HOWTO
+@setchapternewpage off
+@paragraphindent 5
+@footnotestyle end
+@c %**end of header
+
+@ifinfo
+Copyright @copyright{} 1998 Bruce Guenter
+@end ifinfo
+
+@titlepage
+@title Vmailmgr HOWTO
+@author Bruce Guenter
+@author Dan Kuykendall
+@subtitle @today{}
+@end titlepage
+
+@ifinfo
+This document explains how to setup VMailMgr support pop3 virtual domain 
+services in conjunction with Qmail.
+@end ifinfo
+
+@c ****************************************************************************
+@chapter Introduction
+
+VMailMgr (an abbreviation for Virtual Mail Manager) is a package of programs
+designed to manage multiple domains of mail addresses and mailboxes
+on a single host.  It co-operates with qmail for mail delivery and
+program control.
+
+@section What is VMailMgr and why should I use it?
+
+VMailMgr is a series of utilities for managing virtual domains, including:
+@itemize
+@item
+a password checking interface for qmail, which replaces the usual
+checkpassword, and
+@item
+an authentication module for Courier IMAP
+@end itemize
+
+These utilities provide access to the virtual mailboxes by one of three
+methods:
+
+@itemize
+@item
+IP-based virtual server access (invisible to the POP3 user)
+@item
+username-based access (virtual user logs in as @samp{username-virtualuser})
+@item
+hostname-based access (virtual user logs in as @samp{virtualuser@@virtual.host}
+or @samp{virtualuser:virtual.host})
+@end itemize
+
+You should use VMailMgr if you prefer to have each domain controlled by a
+seperate username, allowing the use of system quotas and better
+security.
+
+@section New versions 
+
+The newest version of this document can be found on the VMailMgr homepage
+@uref{http://www.vmailmgr.org/} in various formats, including the
+texinfo source and HTML and plaintext versions.
+
+@section Comments 
+
+Comments on this HOWTO should be directed to the VMailMgr mailing
+list.  To subscribe, send a blank email to
+@email{vmailmgr-subscribe@@lists.untroubled.org}.
+
+@section History 
+
+This document was started by Bruce Guenter and reworked by Dan
+Kuykendall, then by Charles Cazabon.
+
+@section Copyrights and Trademarks 
+
+Copyright @copyright{} Dan Kuykendall.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation
+
+A copy of the license is available at 
+@uref{http://www.gnu.org/copyleft/fdl.txt,GNU Free Documentation License}.
+
+@section Acknowledgements and Thanks 
+
+Thanks to Bruce Guenter for VMailMgr and the core of this
+HOWTO.  Thanks to Mike Bell, who always seems to have the answers to
+my questions. Finally, thanks to all those on the 
+@email{vmailmgr@@lists.untroubled.org}
+mailing list who have helped me, or asked the same stuff so many
+times that I had to write this to stop the repeat questions.
+
+@c ****************************************************************************
+@chapter Installation
+
+@section Get the files
+
+Visit the VMailMgr website @uref{http://www.vmailmgr.org/} or one of its
+mirror sites to download the package.  There are two primary methods of
+installing:
+
+@itemize
+@item
+from source
+
+@item
+from a binary package -- specifically, an @code{RPM} binary package
+
+@end itemize
+
+If you get the binary RPMS you will need at least the vmailmgr package.
+
+@section Install with RPMS
+
+To install from binary @code{RPM} packages, you can download the binaries,
+or build them from the source RPM package.
+
+@subsection Compiling the Source RPM (SRPM) Package
+
+If you download the binary packages directly, skip to the next step.
+
+Download the source rpm package (@samp{vmailmgr-@var{VERSION}.src.rpm}),
+and then use the @code{rpm} tool to build the binary RPM package from it
+with the @samp{rpm --rebuild} command as follows:
+
+@example
+rpm --rebuild vmailmgr-1.0.0-1.src.rpm
+@end example
+
+@subsection Installing the Binary RPM packages
+
+After compiling the source RPM, the binary RPM packages will be located 
+in the appropriate output directory (typically 
+@file{/usr/src/redhat/RPMS/i386/}).
+
+Install each package using the @samp{-i} option of @code{rpm} (i.e. 
+@samp{rpm -ivh @var{PACKAGE}.i386.rpm}) as follows:
+
+@example
+rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-1.0.0-1.i386.rpm
+rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-daemon-1.0.0-1.i386.rpm
+@end example
+
+@section Install from source
+
+If you dont use RPM packages, you can install from source with the following 
+commands. First, as a regular, non-root user:
+
+@example
+tar xzf @file{vmailmgr-@var{VERSION}.tar.gz}
+cd @file{vmailmgr-@var{VERSION}}
+./configure
+make
+@end example
+
+Then, as user @samp{root}:
+
+@example
+make install
+@end example
+
+@c ****************************************************************************
+@chapter Setup
+
+In the following setup examples, it is assumed that your binaries are installed 
+in the @file{/usr/bin]} directory, and configuration files are located in the 
+@file{/etc/vmailmgr/} directory, as is the case if you installed from the RPMs.
+
+If you installed from source, configure instead puts the binaries into
+@file{/usr/local/bin/} and the configuration into
+@file{/usr/local/etc/vmailmgr/} by default.
+
+@section Setting Up a Virtual Domain
+
+The following steps are necessary to set up a virtual domain with
+vmailmgr (assuming vmailmgr has been compiled and installed). As an
+example, we'll set up a virtual user @samp{me@@mydomain.org},
+with aliases of @samp{myself@@mydomain.org} and
+@samp{myname@@mydomain.org}.
+
+@enumerate
+@item
+Set up a DNS entry for the domain. This is not covered here, as it
+is dependant on far too many other things.  I will mention that to
+make IP based virtual domains work a @samp{PTR} record which matches an
+entry in virtualdomains is nessesary, for example, if nslookup
+10.56.33.122 returns @samp{mail.mydomain.com},
+@file{control/virtualdomains} needs an entry like
+@samp{mail.mydomain.com:myuser}.
+
+For the example, we'll assume that the mail exchanger for
+@samp{mydomain.org} is already set up to point to your computer.
+
+@item
+Set up a base user for the domain.  Create a user, with a name of
+your choosing.  Since the maildirs for all the users in the
+virtual domain will be stored under this user's home directory,
+make sure you set the user up in a partition or disk that is
+appropriate for such storage. The tools that you should use to
+accomplish this step vary greatly between different systems. For
+our example, I'll add a user @samp{myuser}.
+
+@item
+Configure qmail to recognize the domain. To do this, you need to
+modify two of qmail's configuration files in
+@file{/var/qmail/control}: @file{rcpthosts} and @file{virtualdomains}.
+@itemize
+@item
+To @file{rcpthosts}, add the line @samp{mydomain.org}. 
+@item
+To @file{virtualdomains}, add the line @samp{mydomain.org:myuser}.
+@end itemize
+
+If you wish to have mail to @samp{anything.mydomain.org}
+be delivered in the same way:
+@itemize
+@item
+To @file{rcpthosts}, add the line @samp{.mydomain.org}. 
+@item
+To @file{virtualdomains}, add the line @samp{.mydomain.org:myuser}.
+@end itemize
+
+@item
+Configure @code{qmail-popup}/@code{qmail-pop3d} to use @code{checkvpw} as the 
+password checker.  This step is dependant on how you have installed qmail.
+@itemize
+@item
+Replace @code{checkpassword} in the command you use to
+invoke @code{qmail-popup}/@code{qmail-pop3d} (either in
+@file{/etc/inet.conf} or in a @code{tcpserver}
+command) with @code{checkvpw}.
+@item
+And/Or at the prompt type @samp{echo checkvpw > @file{/var/qmail/control/checkpassword}}.
+@end itemize
+
+@item
+Set up the vmailmgr files:
+@itemize
+@item
+Either change user to the user you just created (for example,
+type @samp{su - myuser}) or log in (with either telnet or
+at the console) as the new user.
+@item
+Set up the base vmailmgr files by running @code{vsetup}.
+@item
+Use the included programs to add users and aliases.
+For our example, we would type the following commands:
+
+@example
+vadduser me
+vaddalias myself me
+vaddalias myname me
+@end example
+
+@end itemize
+     
+@end enumerate
+
+After you have completed all these steps, you will need to kill and
+restart @code{qmail-send} to make it read the new
+@file{virtualdomains} control file.
+
+If you are using @code{inetd} to launch @code{qmail-popup},
+@samp{kill -HUP} the @code{inetd} process as well.
+
+@section Using one IP address for mutiple domains
+
+There are two ways to log in without using multiple IP addresses. 
+
+@enumerate
+@item
+The first way is to log in as
+@samp{user@var{SEP}virtual.domain.org}, where @samp{user} is the
+mailbox name of the virtual user, @var{SEP} is one of @samp{@@} or
+@samp{:} (by default; this is configurable in the
+@file{/etc/vmailmgr/} directory), and
+@samp{virtual.domain.org} is the virtual domain's name, as
+listed in @file{/var/qmail/control/virtualdomains}.
+
+@item
+The second way is to use the internal form of the mailbox name --
+that is, @samp{baseuser-user}, where @samp{user} is the
+same as above, and @samp{baseuser} is the username of the
+managing user.
+
+@end enumerate
+
+For example, if @file{/var/qmail/control/virtualdomains} contains 
+@samp{mydomain.com:myuser} and user @samp{myuser} exists and has
+set up a virtual mailbox with the name @samp{me}, and the
+@file{separators} configuration file @file{/etc/vmailmgr/} contains @samp{@@},
+this virtual user could log in as @samp{me@@mydomain.com},
+@samp{me:mydomain.com}, or @samp{myuser-me}.
+
+@section Catching all misdirected mail in a virtual domain
+
+In the @code{vmailmgr} configuration directory, there is a
+file called @file{default-username}. If mail to a virtual
+domain does not match any users or aliases in that domain, it is
+delivered to the name listed in this configuration item if it exists
+(which defaults to @samp{+}). To make this deliver to you,
+simply type @samp{vaddalias + me}.
+
+@section VMailMgr IMAP support
+
+VMailMgr supports Courier-IMAP, but Courier-IMAP does not come with
+an authentication module for VMailMgr.  This means that some minor
+work is required for making the two work together.
+
+The steps are:
+
+@itemize
+@item
+Copy @file{/usr/bin/authvmailmgr} to
+@file{/usr/lib/courier-imap/libexec/authlib/authvmailmgr}.
+
+@item
+Modify the @code{AUTHMODULES} statement in
+@file{/usr/lib/courier-imap/etc/imapd.config} and add
+@samp{authvmailmgr} as the first authentication module.
+@end itemize
+
+@section Enabling enforcement of virtual user quotas
+
+VMailMgr supports per-virtual-user quotas, but not out of the box,
+as it is not needed by the majority of users, and requires an extra
+program to be run on each delivery.
+
+To configure quota support, create the file
+@file{/etc/vmailmgr/vdeliver-predeliver}, containing
+the following:
+
+@example
+#!/bin/sh
+/usr/bin/vcheckquota
+@end example
+
+This is executed as a shell script, so you will need to make it
+executable by running the command @samp{chmod +x /etc/vmailmgr/vdeliver-predeliver}.
+
+@section Enabling processing of autoresponses
+
+Download and install the qmail-autoresponder package, found at
+@uref{http://untroubled.org/qmail-autoresponder/}.
+
+As with the above section, create a shell script
+@file{/etc/vmailmgr/vdeliver-postdeliver}, containing the following:
+
+@example
+#!/bin/sh
+if test -s $MAILDIR/autoresponse/message.txt ; then
+  qmail-autoresponder $MAILDIR/autoresponse/message.txt $MAILDIR/autoresponse
+fi
+@end example
+
+@section Web-based interfaces for vmailmgr
+
+There are currently a few working solutions to administrate
+your vmailmgr system via a web interface. Only requirement is
+that the vmailmgrd daemon is running, and that you have
+a webserver on your system.
+
+@itemize
+@item
+For Python fans, there is vpyadmin by Bruce Guenter. The files can
+be downloaded at @uref{http://untroubled.org/vpyadmin/}, and
+the development code is online at 
+@uref{http://bruce-guenter.dyndns.org/cgi-bin/vpyadmin/}
+(sample.org / samplevm).
+
+@item
+And if you like PHP, you can use oMail-admin by Olivier Müller:
+it fully supports all vmailmgr functions, and speaks englich,
+french, italian, spanish, german and russian. Project homepage:
+@uref{http://omail.omnis.ch}. Online demo:
+@uref{http://admin.omnis.ch/omail/} (test.com / test).
+
+@item
+And there are also C-based CGI scripts in the @file{cgi}
+subdirectory of the vmailmgr distribution.
+
+@end itemize
+
+@contents
+
+@bye
+

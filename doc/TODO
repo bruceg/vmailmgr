@@ -5,23 +5,15 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Test the new enable/disable feature.
-
-- Fix the problem in check in authvlib.cc
-
-- Modify the vadduser CGI to take forwarding addresses.
-
 - Document the Python interface.
 
 - Build sample HTML for the Python interface.
 
-- Update the FAQ
-  - Add a section about how checkvpw works
+- Add the necessary code for compile-time switchable support for CDB,
+  [GN]DBM, and MySQL virtual user databases -> goes into vpwtable.
 
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
-
-- Modify vdeliver and authvlib.cc to obey account expiry information.
 
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd
@@ -44,6 +36,25 @@ can keep the development periods shorter.
 
 - Per-user quotas, implemented as a program to be called by the above
 
+? Modifiy the pop bulletin command to take the bulletin directory on the
+  command line.
+
+- Continue to seperate the "misc" library directory into modules.
+
+RELEASE TARGET 0.97
+
+- Make the daemon commands stand-alone modules, using the revised daemon
+  communication protocol.  The daemon then just forks, reads in the
+  command name, validates it, and hands off to an authentication module.
+
+- Rewrite the daemon headers so that the commands can be built into
+  stand-alone modules.
+
+- Move the parsing of server commands out of dispatch and into the
+  commands themselves.
+
+RELEASE TARGET 0.98
+
 - Set up the necessary structures to completely seperate the virtual
   domain information and the real user information, such that each user
   can have a list of virtual domains assigned to it.  This structure
@@ -56,27 +67,6 @@ can keep the development periods shorter.
     prefix:subdirectory
   Each domain will have a completely independant user directory and
   password table.
-
-? Modifiy the pop bulletin command to take the bulletin directory on the
-  command line.
-
-- Continue to seperate the "misc" library directory into modules.
-
-RELEASE TARGET 0.97
-
-- Add the necessary code for compile-time switchable support for CDB,
-  [GN]DBM, and MySQL virtual user databases
-
-RELEASE TARGET 0.98
-
-- Eliminate the "response" class, and replace with an integer index into
-  a list of messages.
-
-- Move the parsing of server commands out of dispatch and into the
-  commands themselves.
-
-- Change client-server protocol to use an integer instead of a string as
-  the command identifier, and codify the command numbers.
 
 RELEASE TARGET 0.99
 

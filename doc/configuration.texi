@@ -785,7 +785,7 @@ not set them itself.
 
 @c ============================================================================
 @node vsetup-post, vsetup-pre, vdeliver-predeliver, Configuration Files
-@section vsetup-pre
+@section vsetup-post
 
 @table @strong
 @item Type

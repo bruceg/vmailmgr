@@ -1,4 +1,4 @@
-// Copyright (C) 2000 Bruce Guenter <bruceg@em.ca>
+// Copyright (C) 1999,2000 Bruce Guenter <bruceg@em.ca>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,49 +15,54 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
+#include <errno.h>
 #include "vpwtable.h"
-#include <stdlib.h>
-#include "cdb++/cdb++.h"
+#include <gdbm.h>
 
-class cdb_vpwtable_writer : public vpwtable_writer
+class gdbm_vpwtable_writer : public vpwtable_writer
 {
 private:
   const mystring& tmpname;
   const mystring& cdbname;
-  cdb_writer out;
+  GDBM_FILE out;
   bool opened;
 public:
-  cdb_vpwtable_writer(const mystring& filename);
-  ~cdb_vpwtable_writer();
+  gdbm_vpwtable_writer(const mystring& filename);
+  ~gdbm_vpwtable_writer();
   bool put(const vpwentry& vpw);
   bool end();
 };
 
 vpwtable_writer* vpwtable::start_write() const
 {
-  return new cdb_vpwtable_writer(filename);
+  return new gdbm_vpwtable_writer(filename);
 }
 
-cdb_vpwtable_writer::cdb_vpwtable_writer(const mystring& filename)
+gdbm_vpwtable_writer::gdbm_vpwtable_writer(const mystring& filename)
   : tmpname(filename + ".tmp"), cdbname(filename),
-    out(filename, 0600), opened(true)
+    out(gdbm_open((char*)filename.c_str(), 0, GDBM_NEWDB|GDBM_FAST, 0600, 0)),
+    opened(true)
 {
 }
 
-cdb_vpwtable_writer::~cdb_vpwtable_writer()
+gdbm_vpwtable_writer::~gdbm_vpwtable_writer()
 {
   end();
 }
 
-bool cdb_vpwtable_writer::put(const vpwentry& vpw)
+bool gdbm_vpwtable_writer::put(const vpwentry& vpw)
 {
-  return out.put(vpw.name.lower(), vpw.to_record());
+  mystring name = vpw->name.lower();
+  datum key = { (char*)name.c_str(), name.length() };
+  mystring binary = vpw->to_record();
+  datum data = { (char*)binary.c_str(), binary.length() };
+  return gdbm_store(out, key, data, GDBM_INSERT) == 0;
 }
 
-bool cdb_vpwtable_writer::end() 
+bool gdbm_vpwtable_writer::end() 
 {
   if(!opened)
     return false;
   opened = false;
-  return out.end(cdbname);
+  return gdbm_close(out) == 0;
 }

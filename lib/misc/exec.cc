@@ -85,6 +85,5 @@ static int execute(const configuration* node, const mystring& name)
   
 int execute(const mystring& name)
 {
-  int i = execute(config, name);
-  return (i == 99) ? 0 : i;
+  return execute(config, name);
 }

@@ -1,4 +1,16 @@
 -------------------------------------------------------------------------------
+Changes in version 0.96.10
+
+New Features:
+
+Internal Changes:
+- Created a vpwtable writer interface, and removed the CDB-specific
+  commands.
+
+Bug Fixes:
+- Fixed bug in Python library that caused the listdomain command to fail
+  on some OS's.
+-------------------------------------------------------------------------------
 Changes in version 0.96.9
 
 New Features:

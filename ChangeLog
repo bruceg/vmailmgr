@@ -1,3 +1,16 @@
+2000-10-07  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vpasswd2db.cc: Converted to use new vpwtable_writer
+	interface.
+
+	* lib/vpwtable/vpwtable.h: Added new vpwtable_writer interface.
+
+2000-10-05  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* python/daemon.py (Daemon.read_response_noraise): Fixed a bug in
+	reading zero-length responses (like from listdomain) on certain
+	OSes.
+
 2000-09-30  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* Released version 0.96.9

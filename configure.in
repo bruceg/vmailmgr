@@ -1,5 +1,5 @@
 AC_INIT(lib/mergelib.sh)
-AM_INIT_AUTOMAKE(vmailmgr, 0.96.9)
+AM_INIT_AUTOMAKE(vmailmgr, 0.96.10)
 AM_CONFIG_HEADER(config.h)
 AC_PROG_MAKE_SET
 
@@ -28,7 +28,7 @@ AC_ARG_WITH(vpwtable,
 	LIBS="$LIBS -lgdbm";;
  *)    AC_MSG_ERROR(bad value ${withval} for --with-vpwtable);;
  esac],[AC_DEFINE(VPWTABLE_CDB)
-	CDBPROGS="vpasswd2cdb vrehash"
+	CDBPROGS="vrehash"
 	CDBSCRIPTS="allvpasswd2cdb"
 	dbtype=cdb])
 

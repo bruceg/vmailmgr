@@ -8,6 +8,8 @@ can keep the development periods shorter.
 - Add note to FAQ regarding PHP error code 255 meaning the daemon is not
   running properly (once it's been confirmed).
 
+- Use the vpwtable writer to support a more portable version of vrehash
+
 - Add tests for:
   - authvmailmgr
   - execution of presetuid and postsetuid hooks in authvmailmgr
@@ -20,6 +22,9 @@ can keep the development periods shorter.
 
 - Add a mailbox size daemon command
 
+- Make all virtual users have a directory -- distinguish between the
+  directory and the mailbox in it.
+
 - Expand the record format to include a "last modified" field, and to
   change the flag values from binary 0/1 to ASCII.
 
@@ -29,16 +34,6 @@ can keep the development periods shorter.
   command.
 
 - Add Courier IMAP support to the bulletin facility
-
-- Add support to the vpwtable template that allows writing a batch of
-  users in a more efficient manner
-  - start writing (locks the table for other writes, enter nosync mode)
-  - append record (check for prior existance of record, add it)
-  - stop writing (sync data and unlock the table)
-
-- Use the above to support a more efficient version of:
-  - vpasswd2db
-  - vrehash
 
 - Figure out how to make vdeliver write to both the output file and the
   queue simultaneously, to avoid needing to do rewinds.
@@ -73,8 +68,6 @@ RELEASE TARGET 1.XX
 - Bug fixes and clean-ups, and documentation improvements
 
 RELEASE TARGET 2.00
-
-- Investigate making all virtual users have a directory
 
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd
@@ -122,8 +115,8 @@ RELEASE TARGET 2.00
   ? add support for PAM for non-virtual users (this may be difficult,
     requiring a change in the authentication model)
 
-- documentation
-  - write a "getting started" guide
+- Develop support for HMAC passcodes, in order to support CRAM-MD5
+  authentication, as per RFCs 2195 and 2104.
 
 - miscelaneous
   - code clean-ups, including internal documentation

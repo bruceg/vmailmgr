@@ -51,48 +51,55 @@ def new_key():
     return "%f.%d" % (time.time(),
                       random.uniform(0, 1000000000))
 
-def main(socket_file, age_threshold):
-    sessions = { }
-    sock = make_socket(socket_file)
-    while 1:
-        ( conn, address ) = sock.accept()
-        try:
-            age_sessions(sessions, age_threshold)
-            conn = conn.makefile("r+")
-            signal.signal(signal.SIGALRM, trap_alarm)
-            signal.alarm(1)
-            line = string.split(string.strip(conn.readline()))
-            fn = line[0]
-            key = line[1]
-            if fn == 'get':
-                print "Get '%s'" % key,
-                if sessions.has_key(key):
-                    sess = sessions[key]
-                    sess.touch()
-                    conn.write("%s\n%s" % (len(sess.data), sess.data))
-                    print "OK, %d bytes" % len(sess.data)
-                else:
-                    print "NO"
-            elif fn == 'set':
-                datalen = int(line[2])
-                print "Set '%s' (%d bytes)" % (key, datalen)
-                data = conn.read(datalen)
-                sess = Session(data)
-                sessions[key] = sess
-            elif fn == 'new':
-                datalen = int(line[1])
-                print "New (%d bytes)" % datalen,
-                key = new_key()
-                data = conn.read(datalen)
-                sess = Session(data)
-                sessions[key] = sess
-                conn.write("%s\n" % key)
-                print "OK '%s'" % key
+def accept_connection(sock, age_threshold, sessions):
+    ( conn, address ) = sock.accept()
+    try:
+        age_sessions(sessions, age_threshold)
+        conn = conn.makefile("r+")
+        signal.signal(signal.SIGALRM, trap_alarm)
+        signal.alarm(1)
+        line = string.split(string.strip(conn.readline()))
+        fn = line[0]
+        key = line[1]
+        if fn == 'get':
+            print "Get '%s'" % key,
+            if sessions.has_key(key):
+                sess = sessions[key]
+                sess.touch()
+                conn.write("%s\n%s" % (len(sess.data), sess.data))
+                print "OK, %d bytes" % len(sess.data)
             else:
-                print "Unknown command '%s' from client" % fn
-        except IOError, msg:
-            print "Caught I/O error:", msg
-        except:
-            print "Caught untrapped exception!"
-        signal.alarm(0)
-        conn.close()
+                print "NO"
+        elif fn == 'set':
+            datalen = int(line[2])
+            print "Set '%s' (%d bytes)" % (key, datalen)
+            data = conn.read(datalen)
+            sess = Session(data)
+            sessions[key] = sess
+        elif fn == 'new':
+            datalen = int(line[1])
+            print "New (%d bytes)" % datalen,
+            key = new_key()
+            data = conn.read(datalen)
+            sess = Session(data)
+            sessions[key] = sess
+            conn.write("%s\n" % key)
+            print "OK '%s'" % key
+        else:
+            print "Unknown command '%s' from client" % fn
+    except IOError, msg:
+        print "Caught I/O error:", msg
+    except:
+        print "Caught untrapped exception!"
+    signal.alarm(0)
+    conn.close()
+
+def main(socket_file, age_threshold):
+    try:
+        sessions = { }
+        sock = make_socket(socket_file)
+        while 1:
+            accept_connection(sock, age_threshold, sessions)
+    finally:
+        try: os.unlink(socket_file)
+        except OSError: pass

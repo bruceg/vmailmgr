@@ -7,6 +7,8 @@ PKGURL=http://www.vmailmgr.org/
 # subscription.
 LISTSUB=vmailmgr-subscribe@lists.em.ca
 
+LISTURL=http://lists.em.ca/ezmlm.cgi?1
+
 # Set MAKERPM to non-empty if the tarball is to be built into a RPM.
 MAKERPM=true
 

@@ -10,8 +10,9 @@ Internal Changes:
   commands.
 
 Bug Fixes:
-- Fixed bug in Python library that caused the listdomain command to fail
+- Fixed a bug in Python library that caused the listdomain command to fail
   on some OS's.
+- Fixed a bug in the PHP library that caused long listdomains to fail.
 -------------------------------------------------------------------------------
 Changes in version 0.96.9
 

@@ -23,32 +23,123 @@
 #include "misc/stat_fns.h"
 #include "ac/dirent.h"
 
-bool stat_dir(const mystring& dirname, unsigned& count, unsigned long& size) {
-  struct stat buf;
-  DIR* dir = opendir(dirname.c_str());
+struct count_size
+{
+  unsigned long count;
+  unsigned long size;
+  count_size() : count(0), size(0) { }
+};
 
-  if(!dir) 
-    return false;
+struct stats
+{
+  count_size unseen_new;
+  count_size unseen;
+  count_size seen;
+  
+  mystring rep() const;
+};
 
-  while(dirent* entry = readdir(dir)) {
-    const char* name = entry->d_name;
-    if(name[0] == '.' &&
-       (NAMLEN(entry) == 1 ||
-	(name[1] == '.' && NAMLEN(entry) == 2)))
-      continue;
+mystring stats::rep() const
+{
+  return utoa(unseen_new.count) + mystring::NUL +
+    utoa(unseen_new.size)  + mystring::NUL + 
+    utoa(unseen.count) + mystring::NUL +
+    utoa(unseen.size) + mystring::NUL +
+    utoa(seen.count) + mystring::NUL +
+    utoa(seen.size) + mystring::NUL;
+}
 
-    mystring fullname = dirname + "/" + name;
+class statdir
+{
+  mystring path;
+  DIR* dir;
+  struct dirent* curr;
+  struct stat statbuf;
+public:
+  statdir(const mystring& dirname);
+  ~statdir() { close(); }
+  void close();
+  operator void*() const { return (void*)dir; }
+  bool operator!() const { return !dir; }
+  const struct stat* operator->() const { return &statbuf; }
+  const char* currname() const { return curr->d_name; }
+  void operator++() { advance(); }
+  void advance();
+};
 
-    if(stat(fullname.c_str(), &buf) == -1)
-      return false;
+statdir::statdir(const mystring& dirname)
+  : path(dirname),
+    dir(opendir(dirname.c_str()))
+{
+  advance();
+}
+  
+void statdir::close()
+{
+  if(dir)
+    closedir(dir);
+  dir = NULL;
+}
 
-    if(S_ISREG(buf.st_mode)) {
-      ++count;
-      size += buf.st_blocks * 512;
+void statdir::advance()
+{
+  if(dir) {
+    while((curr = readdir(dir)) != 0) {
+      if(curr->d_name[0] == '.')
+	continue;
+      break;
     }
   }
-  closedir(dir);
+  if(!curr)
+    close();
+  else {
+    mystring fullpath = path + "/" + curr->d_name;
+    if(stat(fullpath.c_str(), &statbuf) == -1)
+      close();
+  }
+}
+    
+bool stat_new_dir(const mystring& basename, stats& stats)
+{
+  statdir dir(basename + "/new");
+  if(!dir)
+    return false;
+  while(dir) {
+    if(S_ISREG(dir->st_mode)) {
+      ++stats.unseen_new.count;
+      stats.unseen_new.size += dir->st_blocks * 512;
+    }
+    ++dir;
+  }
   return true;
+}
+
+bool stat_cur_dir(const mystring& basename, stats& stats)
+{
+  statdir dir(basename + "/cur");
+  if(!dir)
+    return false;
+  while(dir) {
+    if(S_ISREG(dir->st_mode)) {
+      count_size* stat = &stats.unseen;
+      const char* colon = strchr(dir.currname(), ':');
+      if(colon) {
+	++colon;
+	if(*colon++ == '2' && *colon++ == ',' && !strchr(colon, 'S'))
+	  stat = &stats.seen;
+      }
+      ++stat->count;
+      stat->size += dir->st_blocks * 512;
+    }
+    ++dir;
+  }
+  return true;
+}
+
+bool stat_dir(const mystring& basename, stats& stats)
+{
+  return stat_new_dir(basename, stats) &&
+    stat_cur_dir(basename, stats);
 }
 
 CMD(stat)
@@ -66,25 +157,9 @@ CMD(stat)
     RETURN(err, "User is alias");
 
   mystring dirname = pw->home + "/" + vpw->mailbox;
-  mystring newdir  = dirname + "/new";
-  mystring curdir  = dirname + "/cur";
+  stats stats;
+  if(!stat_dir(dirname, stats))
+    RETURN(err, "Failed to stat maildir");
 
-  unsigned cur_count=0;
-  unsigned long cur_size=0;
-  unsigned new_count=0;
-  unsigned long new_size=0;
-
-  if(!stat_dir(newdir, new_count, new_size))
-    RETURN(err, "Failed to stat new dir");
-
-  if(!stat_dir(curdir, cur_count, cur_size))
-    RETURN(err, "Failed to stat cur dir");
-  
-  mystring info =
-    utoa(new_count) + mystring::NUL +
-    utoa(new_size)  + mystring::NUL + 
-    utoa(cur_count) + mystring::NUL +
-    utoa(cur_size);
-
-  RETURN(ok, info);
+  RETURN(ok, mystring::NUL + stats.rep());
 }

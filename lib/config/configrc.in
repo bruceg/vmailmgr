@@ -1,3 +1,4 @@
+mystring str	autoresponse_file "autoresponse.txt"
 mystring dir	bulletin_dir "bulletins"
 unsigned uns	default_expiry (unsigned)-1
 mystring dir	default_maildir "Maildir"

@@ -1,3 +1,18 @@
+2000-04-18  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* daemon/dispatch.cc: Added autoresponse dispatch entry.
+
+	* daemon/autoresponse.cc: Added autoresponse command from Mike Bell.
+
+2000-04-14  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* Modified the spec file to put the Courier IMAP module into a
+	seperate package.
+
+	* Copied the necessary sources from Courier IMAP to build a
+	minimal stand-alone libauthmod in order to build the
+	authentication module without needing the Courier IMAP sources.
+
 2000-04-13  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* Released version 0.96.5

@@ -5,9 +5,19 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Change note in FAQ and web site regarding support for IMAP.
+
+- Add tests for the new autoresponse command.
+
 - Document the Python interface.
 
 - Build sample HTML for the Python interface.
+
+- Add support for changing the personal information
+
+- Add options to the vmailmgr programs to expand its output.
+
+- Expand the record format to include a "last modified" field.
 
 - Add the necessary code for compile-time switchable support for CDB,
   [GN]DBM, and MySQL virtual user databases -> goes into vpwtable.

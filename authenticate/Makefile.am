@@ -1,4 +1,6 @@
-bin_PROGRAMS = authvmailmgr checkvpw vauthenticate
+bin_PROGRAMS = checkvpw vauthenticate
+authlib_PROGRAMS = authvmailmgr
+authlibdir = ${prefix}/lib/courier-imap/libexec/authlib/
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = $(CIINCLUDES) -I../lib

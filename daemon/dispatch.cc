@@ -19,10 +19,8 @@
 #include "misc/lookup.h"
 
 // declare the commands
-extern CMD(addalias);
-extern CMD(addaliasp);
-extern CMD(adduser);
 extern CMD(adduser2);
+extern CMD(autoresponse);
 extern CMD(chattr);
 extern CMD(check);
 extern CMD(deluser);
@@ -68,16 +66,17 @@ struct dispatch
 
 #define ENTRY(NAME,MIN,MAX,DV) { #NAME , NAME##_cmd , unsigned(MIN), unsigned(MAX), DV }
 dispatch dispatch_table[] = {
-  ENTRY(lookup,     2,  2, true),
-  ENTRY(check,      3,  3, true),
-  ENTRY(chattr,     5, -1, true),
-  ENTRY(adduser2,   5, -1, true),
-  ENTRY(deluser,    3,  3, true),
-  ENTRY(listdomain, 2,  2, false),
-  ENTRY(forkstat,   0,  0, false),
+  ENTRY(lookup,       2,  2, true),
+  ENTRY(check,        3,  3, true),
+  ENTRY(chattr,       5, -1, true),
+  ENTRY(adduser2,     5, -1, true),
+  ENTRY(autoresponse, 4,  5, true),
+  ENTRY(deluser,      3,  3, true),
+  ENTRY(listdomain,   2,  2, false),
+  ENTRY(forkstat,     0,  0, false),
 #ifdef TEST_DAEMON
-  ENTRY(echo,       0, -1, false), // For testing purposes only
-  ENTRY(fecho,      0, -1, false), // For testing purposes only
+  ENTRY(echo,         0, -1, false), // For testing purposes only
+  ENTRY(fecho,        0, -1, false), // For testing purposes only
 #endif // TEST_DAEMON
   { "", 0, 0, false, 0 }
 };

@@ -2,11 +2,15 @@
 Changes in version 0.96.6
 
 New Features:
+- Updated PHP code from Mike Bell.
+- Added autoresponse command to daemon, modified from code submitted by
+  Mike Bell.
 
 Internal Changes:
 - The necessary parts of the Courier IMAP "authlib" library is now
   included in this package.  The Courier IMAP authentication module is
   now always built.
+- The Courier IMAP module is now part of the standard RPM.
 
 Bug Fixes: None
 -------------------------------------------------------------------------------

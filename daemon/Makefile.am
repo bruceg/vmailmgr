@@ -6,6 +6,7 @@ INCLUDES = -I../lib
 
 vmailmgrd_SOURCES = daemon.h \
 	adduser2.cc \
+	autoresponse.cc \
 	chattr.cc \
 	check.cc \
 	command.h command.cc \

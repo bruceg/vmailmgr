@@ -41,6 +41,14 @@ Requires: vmailmgr-daemon = %{PACKAGE_VERSION}
 This package contains vmailmgr code written in/for Python, including one
 CGI.
 
+%package courier-imap
+Summary: Vmailmgr authentication module for Courier IMAP
+Requires: courier-imap
+Group: Utilities/System
+%description courier-imap
+This package contains the vmailmgr authentication module to be used by
+Courier IMAP.
+
 %prep
 %setup
 CFLAGS="$RPM_OPT_FLAGS" \
@@ -102,6 +110,7 @@ fi
 
 %files cgi
 %defattr(-,root,root)
+%doc cgi/*.html
 /home/httpd/cgi-bin/*
 
 %files daemon
@@ -118,3 +127,7 @@ fi
 %files python
 %defattr(-,root,root)
 /usr/lib/python1.5/*
+
+%files courier-imap
+%defattr(-,root,root)
+/usr/lib/courier-imap/libexec/authlib/*

@@ -19,17 +19,21 @@
 
 unsigned strtou(const char* ptr, const char** endptr)
 {
-  unsigned uint;
-  if(*ptr == '-') {
-    uint = (unsigned)-1;
-    ++ptr;
-    while(isdigit(*ptr))
+  unsigned uint = 0;
+  if(ptr) {
+    while(*ptr && isspace(*ptr))
       ++ptr;
-  }
-  else {
-    uint = 0;
-    while(isdigit(*ptr))
-      uint = (uint * 10) + (*ptr++ - '0');
+    if(*ptr == '-') {
+      uint = (unsigned)-1;
+      ++ptr;
+      while(isdigit(*ptr))
+	++ptr;
+    }
+    else {
+      uint = 0;
+      while(isdigit(*ptr))
+	uint = (uint * 10) + (*ptr++ - '0');
+    }
   }
   if(endptr)
     *endptr = ptr;

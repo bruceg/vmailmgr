@@ -1,6 +1,6 @@
 noinst_LIBRARIES = libmisc.a
 INCLUDES = -I..
-EXTRA_DIST = krbauth.c hash_table.h stat_fns.h
+EXTRA_DIST = autodelete.h debug.h hash_table.h krbauth.c stat_fns.h
 
 if KRB5
 KRB5_SRCS = krbauth.c
@@ -9,9 +9,7 @@ KRB5_SRCS =
 endif
 
 libmisc_a_SOURCES = $(KRB5_SRCS) \
-	autodelete.h \
 	crc32.h crc32.cc crc_hash.h \
-	debug.h \
 	exec.h exec.cc \
 	itoa.h itoa.cc \
 	keystrlist.cc \
@@ -40,5 +38,6 @@ libmisc_a_SOURCES = $(KRB5_SRCS) \
 	strlist.h strlist.cc \
 	strlist_read.cc \
 	strlist_write.cc \
+	strtou.h strtou.c \
 	un.h \
 	utoa.h utoa.cc

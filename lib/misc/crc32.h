@@ -45,4 +45,4 @@ public:
         (unsigned char)(octet) ] ^ ( ((crc32)>>8) & 0x00FFFFFFL ) )
 #endif
 
-#endif CRC32INIT
+#endif

@@ -7,7 +7,11 @@ can keep the development periods shorter.
 
 - Copy in the new HOWTO and FAQ (and add note to AUTHORS)
 
+- Add FAQ or HOWTO to mailing list FAQ response.
+
 - Add note regarding configuring qmail+patches RPM to FAQ
+
+- Add option to vdeluser to prevent deleting users that have a mailbox.
 
 - Add CGI for new autoresponse daemon command (partially done in Python).
 

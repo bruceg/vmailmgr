@@ -22,3 +22,6 @@ Kerberos5 support written by Nickolai Zeldovich <kolya@zepa.net>
 Anil Madhavapeddy <anil@recoil.org> has contributed a makefile /
 configure.in patch.
 
+Eugene Miretskiy <eugene@invision.net> contributed the original quota
+checking program, vcheckquota.
+

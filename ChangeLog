@@ -1,3 +1,8 @@
+2000-07-18  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vcheckquota.cc: Added this new program, originally
+	authored by Eugene Miretskiy, and subsequently modified.
+
 2000-07-17  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* doc/HOWTO.sgml, doc/FAQ.sgml: Updated documentation.

@@ -5,7 +5,7 @@ CDBPROGS =
 endif
 
 bin_PROGRAMS = listvdomain vadduser vaddusers vchattr vchforwards \
-	vdeliver vdeluser vpasswd vpasswd2db vpasswds \
+	vcheckquota vdeliver vdeluser vpasswd vpasswd2db vpasswds \
 	vpopbull vsetup $(CDBPROGS)
 bin_SCRIPTS = vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
@@ -26,6 +26,9 @@ vaddusers_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vchattr_SOURCES = vchattr.cc vcommand.cc
 vchattr_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
+
+vcheckquota_SOURCES = vcheckquota.cc
+vcheckquota_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vchforwards_SOURCES = vchforwards.cc vcommand.cc
 vchforwards_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

@@ -20,21 +20,59 @@ import sys
 ###############################################################################
 # Context management
 
-objects_requiring_context = [ ]
+def iif(cond, true, false):
+    '''A functional equivalent to C's ?: operator.
+
+    This function returns the value of 'true' if 'cond' evaluates to non-zero,
+    or the value of 'false' otherwise.  Since it's a function, both 'true' and
+    'false' are unconditionally evaluated (unlike 'cond?true:false' in C).
+    '''
+    if cond:
+        return true
+    else:
+        return false
+
+global_context = {
+    'iif': iif,
+    'math': __import__('math'),
+    'random': __import__('random'),
+    're': __import__('re'),
+    'regsub': __import__('regsub'),
+    'string': __import__('string'),
+    'time': __import__('time'),
+    }
+
+class Context:
+    def __init__(self, initdict = { }):
+        #self.stack = [ initdict ]
+        #self.pop()
+        #def pop(self):
+        #self.dict = self.stack.pop()
+        self.dict = initdict
+        for method in dir(self.dict):
+            setattr(self, method, getattr(self.dict, method))
+    def __getitem__(self, key):
+        try:
+            return self.dict[key]
+        except KeyError:
+            return eval(key, global_context, self.dict)
+    def __getattr__(self, key):
+        return self.dict[key]
+    def __setitem__(self, key, val):
+        self.dict[key] = val
+    #def push(self):
+    #    self.stack.append(self.dict.copy())
 
 def do_exec(body, context):
-    for o in objects_requiring_context:
-        o.context = context
-    exec(body, context)
+    exec(body, global_context, context.dict)
 
 eval_cache = { }
 
 def do_eval(body, context):
+    '''Evaluate an expression, keeping a cache of results.'''
     if eval_cache.has_key(body):
         return eval_cache[body]
-    for o in objects_requiring_context:
-        o.context = context
-    result = eval(body, context)
+    result = eval(body, global_context, context.dict)
     eval_cache[body] = result
     return result
 
@@ -75,11 +113,11 @@ class Token:
     Syntax tokens manipulate the stack and context here.
     
     Tokens on the stack must define the following methods:
-    * do_end() -- called *after* the token is popped off the stack by
-    an end token.
-    * append(section) -- either appends the section to the current token and
-    returns None, or returns the section (potentially formatting it in the
-    process).
+    * do_end(stack, context) -- called *after* the token is popped off
+    the stack by an end token.
+    * append(section) -- either appends the section to the current token
+    and returns None, or returns the section (potentially formatting it
+    in the process).
     * is_true() -- Returns true if tokens are to be pushed onto the stack.
     
     Tokens that handle an "else" clause must define:
@@ -94,7 +132,7 @@ class Start(Token):
         pass
     def apply(self, stack, context):
         stack.push(self)
-    def do_end(self):
+    def do_end(self, stack, context):
         pass
     def append(self, section):
         return section
@@ -120,13 +158,14 @@ class Section(Token):
         return Section(self.section, self.formatted)
 
 class End(Token):
+    '''Ends a block token, like Start, Foreach, and If'''
     rx = re.compile(r'^end(\s+.*|)$')
     def __init__(self, groups):
         pass
     def apply(self, stack, context):
         top = stack.pop()
         if top:
-            return top.do_end()
+            return top.do_end(stack, context)
         return None
 
 class If(Token):
@@ -140,7 +179,7 @@ class If(Token):
             stack.push(self)
         else:
             stack.fake_push()
-    def do_end(self):
+    def do_end(self, stack, context):
         pass
     def do_else(self):
         self.truth = not self.truth
@@ -152,6 +191,7 @@ class If(Token):
         return self.truth
 
 class Else(Token):
+    '''Negates an If clause'''
     rx = re.compile(r'^else$')
     def __init__(self, groups):
         pass
@@ -159,6 +199,7 @@ class Else(Token):
         stack.top().do_else()
 
 class Foreach(Token):
+    '''
     rx = re.compile(r'^foreach\s+(.+)$')
     def __init__(self, groups):
         self.expr = groups[0]
@@ -175,13 +216,13 @@ class Foreach(Token):
         for i in copy:
             copy[i] = self.sections[i].copy()
         return copy
-    def do_end(self):
-        context = self.saved_context.copy()
+    def do_end(self, stack, context):
+        context = context.copy()
         for item in self.results:
             context.update(item)
             for section in self.copy_sections():
                 section.format(context)
-                sys.stdout.write(str(section))
+                stack.append_or_print(section, context)
     def append(self, section):
         self.sections.append(section)
         return None
@@ -239,6 +280,9 @@ class Lexer:
         return Expr(cmdstr)
 
 def format(content, context):
+    if not isinstance(context, Context):
+        context = Context(context)
+    
     stack = Stack()
     Start().apply(stack, context)
 

@@ -297,10 +297,10 @@ def cgi_main(form):
         if session:
             form[DOMAIN] = session['domain']
             form[USERNAME] = session['username']
-            vmailmgr_fns = VmailmgrWrapper(session, form)
-            vmailmgr_parser.objects_requiring_context.append(vmailmgr_fns)
-            form['vmailmgr'] = vmailmgr_fns
-            format_page(page or default_page, form)
+            context = vmailmgr_parser.Context(form)
+            vmailmgr_fns = VmailmgrWrapper(session, context)
+            global_context['vmailmgr'] = vmailmgr_fns
+            format_page(page or default_page, context)
             #save_session(form[SESSION], session)
     except vmailmgr_lib.Econn, message:
         form[MESSAGE] = message

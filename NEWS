@@ -8,6 +8,8 @@ Internal Changes:
 - All accounts are created with an account directory now.
 - Created a vpwtable writer interface, and removed the CDB-specific
   commands.
+- Renamed adduser2 daemon function to adduser3 and added extra
+  has-mailbox parameter.
 
 Bug Fixes:
 - Fixed a bug in Python library that caused the listdomain command to fail

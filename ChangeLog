@@ -1,5 +1,11 @@
 2000-10-25  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
+	* python/commands.py (adduser): Added the new has_mailbox
+	parameter, defaulting to false.
+
+	* python/daemon.py (encode_str): Explicitly cast non-string
+	objects to string before encoding.
+
 	* daemon/adduser.cc (CMD(adduser3)): Renamed the file adduser2.cc
 	to adduser.cc; Renamed the adduser2 command to adduser3 to make
 	the additional argument explicit.

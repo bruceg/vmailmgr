@@ -20,7 +20,7 @@
 
 CMD(check)
   // Usage: check username-virtname password
-  // Result: username NUL uid NUL gid NUL home NUL [mailbox] (NUL forward)*
+  // Result: None
 {
   mystring fulluser = args[0];
   mystring password = args[1];
@@ -31,24 +31,18 @@ CMD(check)
   pwentry* basepw;
   if(!lookup_baseuser(fulluser, basepw, virtname))
     RETURN(err, "Invalid or unknown base user or domain");
-  state = new saved_state(basepw);
-  vpwentry* virtpw = state->domain.lookup(virtname, false);
-  if((!!virtname && !virtpw) ||
-     (virtpw && !virtpw->mailbox))
-    RETURN(err, "Invalid or unknown virtual user");
-  if((virtpw && !virtpw->authenticate(password)) ||
-     (basepw && !basepw->authenticate(password)))
-    RETURN(err, "Invalid or incorrect password");
-  else {
-    mystring r = basepw->name + mystring::NUL + itoa(basepw->uid)
-      + mystring::NUL;
-    r = r + itoa(basepw->gid) + mystring::NUL + basepw->home + mystring::NUL;
-    if(virtpw) {
-      r += virtpw->mailbox;
-      if(!!virtpw->forwards)
-	r = r + mystring::NUL + virtpw->forwards;
-    }
-    RETURN(ok, r);
+  if(!virtname) {
+    if(basepw->authenticate(password))
+      RETURN(ok, "");
   }
+  else {
+    state = new saved_state(basepw);
+    vpwentry* virtpw = state->domain.lookup(virtname, false);
+    if(!virtpw)
+      RETURN(err, "Invalid or unknown virtual user");
+    if(virtpw->authenticate(password))
+      RETURN(ok, "");
+  }
+  RETURN(err, "Invalid or incorrect password");
 }
 

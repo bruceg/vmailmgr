@@ -1,7 +1,8 @@
-cgi_SCRIPTS = vcommand
-pythonlib_DATA = vmailmgr.py vmailmgr.pyc vmailmgr.pyo
-EXTRA_DIST = vcommand.in vmailmgr.py.in
-CLEANFILES = vcommand vmailmgr.py *.pyo *.pyc
+cgi_SCRIPTS = vautoresponse vcommand
+pythonlib_DATA = vmailmgr.py vmailmgr.pyc vmailmgr.pyo \
+	vmailmgr_cgi.py vmailmgr_cgi.pyc vmailmgr_cgi.pyo
+EXTRA_DIST = vautoresponse.in vcommand.in vmailmgr.py.in vmailmgr_cgi.py.in
+CLEANFILES = $(cgi_SCRIPTS) $(pythonlib_DATA)
 
 SUFFIXES = .py .pyc .pyo .in .py.in
 %: %.in Makefile

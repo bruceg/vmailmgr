@@ -1,7 +1,7 @@
 #! %PYTHON%
 #-*-python-*-
 #
-# Copyright (C) 1999,2000 Bruce Guenter <bruceg@em.ca>
+# Copyright (C) 2000 Bruce Guenter <bruceg@em.ca>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,17 +21,15 @@ import vmailmgr
 import vmailmgr_cgi
 
 def main(form):
-    command = vmailmgr.Command(form.get('command'),
-                               form.fetch_args())
-    response = vmailmgr.Daemon().execute(command)
-    data = {
-        'command': command.name,
-        'response_code': response.code,
-        'response_msg': response.msg
-        }
-    for i in range(len(command.args)):
-        data['arg%d'%i] = command.args[i]
-    basename = form.get('filename', command.name)
-    vmailmgr_cgi.print_html(basename, data)
+    vdomain = form.get('vdomain')
+    username = form.get('username')
+    password = form.get('password')
+    action = form.get('action')
+    message = form.get('message', None)
+    vmailmgr_cgi.wrap_print(vmailmgr.autoresponse,
+                            (vdomain, username, password, action, message),
+                            'vautoresponse',
+                            {'username': username,
+                             'action': action})
 
 if __name__ == '__main__': vmailmgr_cgi.cgi_main(main)

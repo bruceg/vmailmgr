@@ -1,0 +1,108 @@
+# This is -*-python-*- code.
+#
+# Copyright (C) 1999,2000 Bruce Guenter <bruceg@em.ca>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+import cgi
+import os
+import string
+import sys
+
+# Limit the maximum amount of data sendable to this CGI to 64K.
+# This should be enough for any command (the maximum that can be sent
+# down to the vmailmgr daemon is 64K) and prevents D.O.S. attacks.
+cgi.maxlen = 64*1024
+
+class VFieldStorage(cgi.FieldStorage):
+    def __init__(self):
+        cgi.FieldStorage.__init__(self)
+    def get(self, key, default=None):
+        try:
+            value = self[key]
+        except KeyError:
+            if default is not None:
+                return default
+            else:
+                raise KeyError, "Unknown form input field name '%s'"%key
+        if type(value) is type([]):
+            raise ValueError, "Input '%s' is multiply defined" % key
+        if value.file:
+            raise ValueError, "Input '%s' is a file" % key
+        return value.value
+
+    def fetch_args(self):
+        argcount = 0
+        argname = 'arg%d' % argcount
+        args = []
+        while self.has_key(argname):
+            args.append(self.get(argname))
+            argcount = argcount + 1
+            argname = 'arg%d' % argcount
+        return args
+
+def print_file(filename, substs):
+    file = open(filename, 'r')
+    contents = file.read()
+    file.close()
+    return sys.stdout.write(contents % substs)
+
+def print_html(basename, substs):
+    basename = string.replace(basename, '.', ':')
+    try:
+        print_file(basename + '.http', substs)
+    except IOError:
+        pass
+    sys.stdout.write("\n")
+    return print_file(basename + '.html', substs)
+
+def wrap_print(command, args, basename, substs={}):
+    try:
+        response = apply(command, tuple(args))
+        substs['response'] = response
+        print_html(basename, substs)
+    except vmailmgr.Error, msg:
+        substs['response'] = msg
+        print_html(basename + '-error', substs)
+    except vmailmgr.Bad, msg:
+        substs['response'] = msg
+        print_html(basename + '-error', substs)
+    except vmailmgr.Econn, msg:
+        substs['response'] = msg
+        print_html(basename + '-error', substs)
+    except:
+        substs['response'] = 'Undetermined error'
+        print_html(basename + '-error', substs)
+
+def cgi_main(mainfn):
+    if not os.environ.has_key('REQUEST_METHOD'):
+        sys.stdout.write("This program must be run as a CGI\n")
+        sys.exit(1)
+    
+    sys.stdout.write("Content-Type: text/html\n\n")
+
+    try:
+        if os.environ['REQUEST_METHOD'] == 'GET':
+            sys.stdout.write("<html><head><title>Refused</title></head>\n"
+                             "<body><h1>CGI GET is refused for security "
+                             "reasons.</h1></body></html>\n")
+            sys.exit(0)
+        form = VFieldStorage()
+        mainfn(form)
+    except SystemExit:
+        pass
+    except:
+        print
+        cgi.print_exception()

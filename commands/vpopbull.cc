@@ -73,13 +73,17 @@ cli_option cli_options[] = {
 //
 // The following control files are used:
 //
-// F<global-bulletin-dir>
+// =over 8
+//
+// =item F<global-bulletin-dir>
 //
 // This specifies the bulletin directory for all domains.
 //
-// F<bulletin-dir>
+// =item F<bulletin-dir>
 //
 // This specifies the bulletin (sub)directory for virtual domains.
+//
+// =back
 
 // SEE ALSO
 //

@@ -47,18 +47,30 @@ static const char* soft_message = 0;
 //
 // The following rules are applied:
 //
+// =over 8
+//
+// =item 1
+//
 // If the message is larger than the message size limit, it is rejected.
+//
+// =item 2
 //
 // If the user has too many messages in their mailbox,
 // further messages are rejected.
 //
+// =item 3
+//
 // If the user is over their hard quota, all further messages are rejected
 // and no warning messages are linked in.
+//
+// =item 4
 //
 // If the user is over their soft quota, and the message is small
 // (as defined by I<soft-maxsize>), the message is accepted, otherwise
 // it is rejected.  If I<soft-message> is defined, a warning message
 // is linked into the mailbox in either case.
+//
+// =back
 
 cli_option cli_options[] = {
   { 'a', "soft-maxsize", cli_option::uinteger, 0, &soft_maxsize,

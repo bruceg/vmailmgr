@@ -1,4 +1,15 @@
 -------------------------------------------------------------------------------
+Changes in version 0.96.6
+
+New Features:
+
+Internal Changes:
+- The necessary parts of the Courier IMAP "authlib" library is now
+  included in this package.  The Courier IMAP authentication module is
+  now always built.
+
+Bug Fixes: None
+-------------------------------------------------------------------------------
 Changes in version 0.96.5
 
 New Features:

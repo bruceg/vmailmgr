@@ -1,5 +1,5 @@
 AC_INIT(lib/mergelib.sh)
-AM_INIT_AUTOMAKE(vmailmgr, 0.96.5)
+AM_INIT_AUTOMAKE(vmailmgr, 0.96.6)
 AM_CONFIG_HEADER(config.h)
 AC_PROG_MAKE_SET
 
@@ -18,12 +18,6 @@ AC_ARG_WITH(krb5,
  CXXFLAGS="$CXXFLAGS -I${withval}/include"
  AC_DEFINE(USE_KRB5)])
 AM_CONDITIONAL(KRB5, test x$with_krb5 != x -a x$with_krb5 != xno)
-
-AC_ARG_WITH(courier-imap,
-[  --with-courier-imap=DIR Build the authentication module for Courier IMAP.],
-[COURIER_IMAP_DIR="${withval}"])
-AC_SUBST(COURIER_IMAP_DIR)
-AM_CONDITIONAL(COURIER_IMAP, test x$with_courier_imap != x -a x$with_courier_imap != xno)
 
 dnl Checks for programs.
 AC_PROG_CC

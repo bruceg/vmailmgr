@@ -30,6 +30,8 @@ AC_ARG_WITH(vpwtable,
  esac],[AC_DEFINE(VPWTABLE_CDB)
 	AM_CONDITIONAL(VPWTABLE_CDB, true)])
 
+AM_CONDITIONAL(FDBUF_NO_MYSTRING, false)
+
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX

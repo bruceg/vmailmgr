@@ -17,6 +17,8 @@ Bug Fixes:
 - Fixed a problem with converting from old records that didn't set the
   virtual user flags properly.
 - Fixed a problem with the virtual user creation not being set properly.
+- Fixed a bug in vdeliver that would cause any error from the predeliver
+  script to be treated as a temporary failure.
 -------------------------------------------------------------------------------
 Changes in version 0.96.5
 

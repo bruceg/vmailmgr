@@ -278,8 +278,9 @@ int cli_main(int, char*[])
   vpw->export_env();
   bool enabled = vpw->is_mailbox_enabled && !!vpw->mailbox;
 
-  if(execute("vdeliver-predeliver"))
-    die_temp("Execution of vdeliver-predeliver failed");
+  int r = execute("vdeliver-predeliver");
+  if(r)
+    exit_msg(r, "Execution of vdeliver-predeliver failed");
 
   if(enabled) {
     maildir = vpw->mailbox;

@@ -49,14 +49,12 @@ AC_PATH_PROG(PYTHON, python)
 AC_CACHE_CHECK(Python library path, local_cv_python_lib_dir,
 [[if test -x "$PYTHON"; then
   local_cv_python_lib_dir=`$PYTHON -c "import sys;print sys.path[1]"`
-  WANTPYTHON="python"
 else
   local_cv_python_lib_dir=NONE
-  WANTPYTHON=""
 fi]])
 pythonlibdir="$local_cv_python_lib_dir"
 AC_SUBST(pythonlibdir)
-AC_SUBST(WANTPYTHON)
+AM_CONDITIONAL(WANTPYTHON, test x$local_cv_python_lib_dir != x)
 
 phpdir="/home/httpd/php"
 AC_SUBST(phpdir)

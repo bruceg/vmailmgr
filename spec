@@ -73,9 +73,11 @@ for dir in var/service/vmailmgrd/log var/log/vmailmgrd \
 do
 	mkdir -p $RPM_BUILD_ROOT/$dir
 done
-make prefix=$RPM_BUILD_ROOT/usr \
+make	prefix=$RPM_BUILD_ROOT/usr \
 	cgidir=$RPM_BUILD_ROOT/home/httpd/cgi-bin \
-	pythonlibdir=$RPM_BUILD_ROOT/usr/lib/python1.5 install-strip
+	pythonlibdir=$RPM_BUILD_ROOT/usr/lib/python1.5 \
+	phpdir=$RPM_BUILD_ROOT/home/httpd/php \
+	install-strip
 install -m 755 scripts/vmailmgrd.init $RPM_BUILD_ROOT/etc/rc.d/init.d/vmailmgrd
 install -m 755 scripts/vmailmgrd.svc $RPM_BUILD_ROOT/var/service/vmailmgrd/run
 install -m 755 scripts/vmailmgrd.log $RPM_BUILD_ROOT/var/service/vmailmgrd/log/run

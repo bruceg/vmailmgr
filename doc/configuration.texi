@@ -643,6 +643,8 @@ This list is executed after the delivery is successfully
 completed.
 Since vdeliver expects @samp{USER} and @samp{HOME} to be set, it does
 not set them itself.
+If the command returns with an error code, a warning is printed, but
+delivery does not fail, as failure would lead to duplicates.
 @end table
 
 @c ============================================================================

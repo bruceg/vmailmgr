@@ -23,6 +23,14 @@ Requires: vmailmgr-daemon = %{PACKAGE_VERSION}
 This package contains CGI applications to allow web-based administration
 of vmailmgr systems.
 
+%package courier-imap
+Summary: Vmailmgr authentication module for Courier IMAP
+Requires: courier-imap
+Group: Utilities/System
+%description courier-imap
+This package contains the vmailmgr authentication module to be used by
+Courier IMAP.
+
 %package daemon
 Summary: Vmailmgr daemon for CGIs
 Requires: daemontools >= 0.61
@@ -32,6 +40,13 @@ Group: Utilities/System
 This package contains the vmailmgrd daemon that provides virtual domain
 manipulation services to support unprivileged clients like CGIs.
 
+%package php
+Summary: PHP include files
+Group: Development/Libraries
+%description php
+This package contains the include files necessary to call VMailMgr
+functions from PHP.
+
 %package python
 Summary: Python modules and CGIs for vmailmgr
 Group: Utilities/System
@@ -40,14 +55,6 @@ Requires: vmailmgr-daemon = %{PACKAGE_VERSION}
 %description python
 This package contains vmailmgr code written in/for Python, including one
 CGI.
-
-%package courier-imap
-Summary: Vmailmgr authentication module for Courier IMAP
-Requires: courier-imap
-Group: Utilities/System
-%description courier-imap
-This package contains the vmailmgr authentication module to be used by
-Courier IMAP.
 
 %prep
 %setup
@@ -111,7 +118,17 @@ fi
 %files cgi
 %defattr(-,root,root)
 %doc cgi/*.html
-/home/httpd/cgi-bin/*
+/home/httpd/cgi-bin/listvdomain
+/home/httpd/cgi-bin/vaddalias
+/home/httpd/cgi-bin/vadduser
+/home/httpd/cgi-bin/vchattr
+/home/httpd/cgi-bin/vchforwards
+/home/httpd/cgi-bin/vdeluser
+/home/httpd/cgi-bin/vpasswd
+
+%files courier-imap
+%defattr(-,root,root)
+/usr/lib/courier-imap/libexec/authlib/*
 
 %files daemon
 %defattr(-,root,root)
@@ -124,10 +141,14 @@ fi
 /var/service/vmailmgrd/run
 %attr(0700,root,root) /var/log/vmailmgrd
 
+%files php
+%defattr(-,root,root)
+%doc php/vmail.features
+/home/httpd/php/*
+
 %files python
 %defattr(-,root,root)
+%doc python/*.html
+/home/httpd/cgi-bin/vautoresponse
+/home/httpd/cgi-bin/vcommand
 /usr/lib/python1.5/*
-
-%files courier-imap
-%defattr(-,root,root)
-/usr/lib/courier-imap/libexec/authlib/*

@@ -21,6 +21,7 @@ Bug Fixes:
   (with code 99) without delivering the message.
 - Fixed a bug that caused creating directories with a trailing slash to
   fail.
+- Fixed the use of libstdc++ in showvconfig.
 -------------------------------------------------------------------------------
 Changes in version 0.96.9
 

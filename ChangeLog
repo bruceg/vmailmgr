@@ -1,3 +1,8 @@
+2002-05-03  Bruce Guenter  <bruce@lorien.untroubled.org>
+
+	* lib/config/Makefile.am (noinst_LIBRARIES): Fixed the use of
+	libstdc++ in showvconfig.
+
 2001-03-07  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* commands/vcheckquota.cc: Fixed abbreviated error message.

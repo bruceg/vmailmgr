@@ -19,6 +19,7 @@
 #include "cgi/cgi-base.h"
 #include "misc/server.h"
 #include "vpwentry/vpwentry.h"
+#include "fdbuf/fdbuf.h"
 
 static mystring domain;
 static mystring userlink;
@@ -36,7 +37,7 @@ mystring do_subst(mystring link, const mystring& ref)
   int start = 0;
   unsigned advance = ref.length();
   
-  while((pos = link.find('%', start)) >= 0) {
+  while((pos = link.find_first('%', start)) >= 0) {
     link = link.left(pos) + ref + link.right(pos+1);
     start = pos + advance;
   }

@@ -26,7 +26,14 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "USER1 [USER2 ...]";
 const int cli_args_min = 1;
 const int cli_args_max = -1;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 int cli_main(int argc, char* argv[])
 {
@@ -37,15 +44,18 @@ int cli_main(int argc, char* argv[])
     response r = domain.deluser(argv[i]);
     if(!r) {
       errors++;
-      ferr << "vdeluser: error deleting user '" << argv[i] << "':\n  "
-	   << r.msg << endl;
+      if(!o_quiet)
+	ferr << "vdeluser: error deleting user '" << argv[i] << "':\n  "
+	     << r.msg << endl;
     }
     else
-      fout << "vdeluser: user '" << argv[i] << "' successfully deleted."
-	   << endl;
+      if(!o_quiet)
+	fout << "vdeluser: user '" << argv[i] << "' successfully deleted."
+	     << endl;
   }
   if(errors) {
-    ferr << "vdeluser: " << errors << " errors were encountered." << endl;
+    if(!o_quiet)
+      ferr << "vdeluser: " << errors << " errors were encountered." << endl;
     return 1;
   }
   return 0;

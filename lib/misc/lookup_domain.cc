@@ -36,7 +36,7 @@ mystring find_virtual(mystring domain)
   if(!tbl)
     return "";
   for(unsigned i = 0; i != (unsigned)-1 && i < domain.length();
-      i = domain.find('.', i+1)) {
+      i = domain.find_first('.', i+1)) {
     mystring tmp = tbl[domain.c_str()+i];
     if(!!tmp)
       return tmp;

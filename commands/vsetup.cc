@@ -30,7 +30,14 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 mystring user_dir;
 
@@ -38,38 +45,46 @@ bool setup_user_dir()
 {
   if(!is_exist(user_dir.c_str())) {
     if(mkdir(user_dir.c_str(), 0755)) {
-      ferr << "vsetup: error: could not create users directory.\n";
+      if(!o_quiet)
+	ferr << "vsetup: error: could not create users directory.\n";
       return false;
     }
     else
-      fout << "vsetup: created users directory.\n";
+      if(!o_quiet)
+	fout << "vsetup: created users directory.\n";
   }
   else
-    fout << "vsetup: users directory already exists.\n";
+    if(!o_quiet)
+      fout << "vsetup: users directory already exists.\n";
   return true;
 }
 
 bool setup_qmail_default()
 {
   if(is_exist(".qmail-default")) {
-    ferr << "vsetup: warning: '.qmail-default' file exists, renaming to "
-      "'.qmail-default~'.\n";
+    if(!o_quiet)
+      ferr << "vsetup: warning: '.qmail-default' file exists, renaming to "
+	"'.qmail-default~'.\n";
     if(rename(".qmail-default", ".qmail-default~")) {
-      ferr << "vsetup: error: rename failed.\n";
+      if(!o_quiet)
+	ferr << "vsetup: error: rename failed.\n";
       return false;
     }
   }
   fdobuf out(".qmail-default", fdobuf::create | fdobuf::excl, 0644);
   if(!out) {
-    ferr << "vsetup: error: unable to open file '.qmail-default' for output.\n";
+    if(!o_quiet)
+      ferr << "vsetup: error: unable to open file '.qmail-default' for output.\n";
     return false;
   }
   out << "|" BINDIR "/vdeliver\n";
   if(!out.flush() || !out.close()) {
-    ferr << "vsetup: error: writing to file '.qmail-default' failed.\n";
+    if(!o_quiet)
+      ferr << "vsetup: error: writing to file '.qmail-default' failed.\n";
     return false;
   }
-  fout << "vsetup: wrote '.qmail-default' file.\n";
+  if(!o_quiet)
+    fout << "vsetup: wrote '.qmail-default' file.\n";
   return true;
 }
 
@@ -77,19 +92,22 @@ bool setup_alias(mystring alias, const mystring& dest)
 {
   alias = alias.lower();
   if(domain.exists(alias)) {
-    ferr << "vsetup: warning: alias or user '" << alias
-	 << "' already exists, skipping.\n";
+    if(!o_quiet)
+      ferr << "vsetup: warning: user '" << alias
+	   << "' already exists, skipping.\n";
     return true;
   }
   vpwentry vpw(alias, "*", 0, dest);
   vpw.set_defaults();
   response resp = domain.set(&vpw, true);
   if(!resp) {
-    ferr << "vsetup: error: adding alias '" << alias << "' failed:\n  "
-	 << resp.msg << endl;
+    if(!o_quiet)
+      ferr << "vsetup: error: adding alias '" << alias << "' failed:\n  "
+	   << resp.msg << endl;
     return false;
   }
-  fout << "vsetup: added alias '" << alias << "'\n";
+  if(!o_quiet)
+    fout << "vsetup: added alias '" << alias << "'\n";
   return true;
 }
 
@@ -113,7 +131,8 @@ int cli_main(int, char* [])
   user_dir = config->user_dir();
   
   if(execute("vsetup-pre")) {
-    ferr << "vsetup: Execution of 'vsetup-pre' failed!\n";
+    if(!o_quiet)
+      ferr << "vsetup: Execution of 'vsetup-pre' failed!\n";
     return 1;
   }
   if(!setup_user_dir())
@@ -123,7 +142,8 @@ int cli_main(int, char* [])
   if(!setup_passwd())
     return 1;
   if(execute("vsetup-post")) {
-    ferr << "vsetup: Execution of 'vsetup-post' failed!\n";
+    if(!o_quiet)
+      ferr << "vsetup: Execution of 'vsetup-post' failed!\n";
     return 1;
   }
   return 0;

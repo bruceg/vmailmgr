@@ -28,6 +28,7 @@
 #include "config/configrc.h"
 //#include "misc/debug.h"
 #include "cli/cli.h"
+#include "fdbuf/fdbuf.h"
 #include "vcommand.h"
 
 const char* cli_program = "vpopbull";
@@ -36,7 +37,14 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 #ifndef HAVE_GETHOSTNAME
 int gethostname(char *name, size_t len);
@@ -48,7 +56,8 @@ int gethostname(char *name, size_t len);
 
 static void log(const mystring& msg)
 {
-  ferr << "vpopbull: " msg << endl;
+  if(!o_quiet)
+    ferr << "vpopbull: " msg << endl;
 }
 
 #define FAIL(X) do{ log(X); return false; }while(0)
@@ -90,7 +99,7 @@ static bool link_file(const mystring& bulldir,
     src = bulldir + "/" + filename;
   else {
     int i = -1;
-    while((i = destdir.find('/', i+1)) > 0)
+    while((i = destdir.find_first('/', i+1)) > 0)
       src += "../";
     src = src + bulldir + filename;
   }
@@ -167,7 +176,8 @@ int cli_main(int, char*[])
     return 1;
   mystring maildir = getenv("MAILDIR");
   if(!maildir) {
-    ferr << "vpopbull: MAILDIR is not set." << endl;
+    if(!o_quiet)
+      ferr << "vpopbull: MAILDIR is not set." << endl;
     return 1;
   }
   mystring vuser = getenv("VUSER");

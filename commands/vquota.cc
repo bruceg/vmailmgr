@@ -24,6 +24,11 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
+
+static int o_quiet = false;
+
 cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
   {0}
 };

@@ -29,7 +29,14 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "USERNAME [DESTINATION1 ...]";
 const int cli_args_min = 1;
 const int cli_args_max = -1;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 int cli_main(int argc, char* argv[])
 {
@@ -41,15 +48,17 @@ int cli_main(int argc, char* argv[])
   
   vpwentry* vpw = domain.lookup(username, false);
   if(!vpw) {
-    ferr << "vchforwards: User '" << username << "' does not exist." << endl;
+    if(!o_quiet)
+      ferr << "vchforwards: User '" << username << "' does not exist." << endl;
     return 1;
   }
 
   for(int i = 1; i < argc; i++) {
     response resp1 = domain.validate_forward(argv[i]);
     if(!resp1) {
-      ferr << "vchforwards: error with forwarding address '" << argv[i]
-	   << "':\n  " << resp1.msg << endl;
+      if(!o_quiet)
+	ferr << "vchforwards: error with forwarding address '" << argv[i]
+	     << "':\n  " << resp1.msg << endl;
       return 1;
     }
   }
@@ -65,11 +74,13 @@ int cli_main(int argc, char* argv[])
 
   response resp2 = domain.set(vpw, false);
   if(!resp2) {
-    ferr << "vchforwards: Could not change user '" << username << "':\n"
-      "  " << resp2.msg << endl;
+    if(!o_quiet)
+      ferr << "vchforwards: Could not change user '" << username << "':\n"
+	"  " << resp2.msg << endl;
     return 1;
   }
-  fout << "vchforwards: User '" << username << "' successfully changed."
-       << endl;
+  if(!o_quiet)
+    fout << "vchforwards: User '" << username << "' successfully changed."
+	 << endl;
   return 0;
 }

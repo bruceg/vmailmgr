@@ -30,7 +30,14 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 static int errors = 0;
 
@@ -54,15 +61,17 @@ void add_one(const mystring& line)
   mystring pass = get_word(str);
   if(!user || !pass) {
     errors++;
-    ferr << "vaddusers: invalid line, ignoring:\n  "
-	 << line << endl;
+    if(!o_quiet)
+      ferr << "vaddusers: invalid line, ignoring:\n  "
+	   << line << endl;
     return;
   }
   user = user.lower();
   if(domain.exists(user)) {
     errors++;
-    ferr << "vaddusers: error: user '" << user
-	 << "' already exists, skipping.\n";
+    if(!o_quiet)
+      ferr << "vaddusers: error: user '" << user
+	   << "' already exists, skipping.\n";
     return;
   }
   {
@@ -72,12 +81,14 @@ void add_one(const mystring& line)
     response resp = domain.set(&vpw, true, maildir);
     if(!resp) {
       errors++;
-      ferr << "vaddusers: error adding the virtual user, skipping aliases:\n  "
-	   << resp.msg << endl;
+      if(!o_quiet)
+	ferr << "vaddusers: error adding the virtual user, skipping aliases:\n  "
+	     << resp.msg << endl;
       return;
     }
   }
-  fout << "added user '" << user << "'";
+  if(!o_quiet)
+    fout << "added user '" << user << "'";
   for(;;) {
     mystring alias = get_word(str);
     if(!alias)
@@ -86,8 +97,9 @@ void add_one(const mystring& line)
     if(domain.exists(alias)) {
       fout << endl;
       errors++;
-      ferr << "vaddusers: warning: alias '" << alias
-	   << "' already exists, skipping." << endl;
+      if(!o_quiet)
+	ferr << "vaddusers: warning: alias '" << alias
+	     << "' already exists, skipping." << endl;
       continue;
     }
     vpwentry vpw(alias, "*", 0, user);
@@ -96,10 +108,12 @@ void add_one(const mystring& line)
     if(!resp) {
       fout << endl;
       errors++;
-      ferr << "vaddusers: warning: adding the alias '" << alias
-	   << "' failed:\n  " << resp.msg << endl;
+      if(!o_quiet)
+	ferr << "vaddusers: warning: adding the alias '" << alias
+	     << "' failed:\n  " << resp.msg << endl;
     }
-    fout << ", alias '" << alias << "'";
+    if(!o_quiet)
+      fout << ", alias '" << alias << "'";
   }
   fout << endl;
 }
@@ -112,7 +126,8 @@ int cli_main(int, char*[])
   while(fin.getline(line))
     add_one(line);
   if(errors) {
-    ferr << "vaddusers: " << errors << " errors were encountered." << endl;
+    if(!o_quiet)
+      ferr << "vaddusers: " << errors << " errors were encountered." << endl;
     return 1;
   }
   return 0;

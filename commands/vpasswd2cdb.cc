@@ -33,7 +33,14 @@ const char* cli_help_suffix =
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 static bool getpw(fdibuf& in, vpwentry& out)
 {
@@ -41,7 +48,7 @@ static bool getpw(fdibuf& in, vpwentry& out)
   if(!in.getline(buf))
     return false;
 
-  int first = buf.find(':');
+  int first = buf.find_first(':');
   if(first < 0) return false;
 
   out.set_defaults();
@@ -55,27 +62,32 @@ int cli_main(int, char* [])
 
   fdibuf in(password_file.c_str());
   if(!in) {
-    ferr << "Can't open password table named '"
-	 << password_file << "'." << endl;
+    if(!o_quiet)
+      ferr << "Can't open password table named '"
+	   << password_file << "'." << endl;
     return 1;
   }
   mystring cdbname = password_file + ".cdb";
   mystring cdbtmp = cdbname + ".tmp";
   cdb_writer cdb(cdbtmp, 0600);
   if(!cdb) {
-    ferr << "Can't open CDB temporary file named '" << cdbtmp << "'." << endl;
+    if(!o_quiet)
+      ferr << "Can't open CDB temporary file named '" << cdbtmp << "'."
+	   << endl;
     return 1;
   }
   vpwentry vpw;
   while(getpw(in, vpw)) {
     if(!cdb.put(vpw.name, vpw.to_record())) {
-      ferr << "Failed to add record to CDB table." << endl;
+      if(!o_quiet)
+	ferr << "Failed to add record to CDB table." << endl;
       return 1;
     }
   }
   if(!cdb.end(cdbname)) {
-    ferr << "Failed to finish CDB table into '"
-	 << password_file << ".cdb'." << endl;
+    if(!o_quiet)
+      ferr << "Failed to finish CDB table into '"
+	   << password_file << ".cdb'." << endl;
     return 1;
   }
   return 0;

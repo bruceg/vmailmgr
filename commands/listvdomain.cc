@@ -27,12 +27,16 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "[user [user ...]]";
 const int cli_args_min = 0;
 const int cli_args_max = -1;
-static int o_noaliases = 0;
-static int o_nousers = 0;
+static int o_noaliases = false;
+static int o_nousers = false;
+static int o_quiet = false;
+
 cli_option cli_options[] = {
-  { 'a', "aliases", cli_option::flag, 1, &o_nousers,
+  { 'a', "aliases", cli_option::flag, true, &o_nousers,
     "Show only accounts without a mailbox", 0 },
-  { 'u', "users", cli_option::flag, 1, &o_noaliases,
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  { 'u', "users", cli_option::flag, true, &o_noaliases,
     "Show only accounts with a mailbox", 0 },
   {0}  
 };
@@ -59,7 +63,8 @@ int cli_main(int argc, char* argv[])
     return 1;
 
   if(o_noaliases && o_nousers) {
-    ferr << "listvdomain: specify only one of -a and -u" << endl;
+    if(!o_quiet)
+      ferr << "listvdomain: specify only one of -a and -u" << endl;
     return 1;
   }
   
@@ -71,8 +76,10 @@ int cli_main(int argc, char* argv[])
     vpwentry* vpw;
     for(int i = 0; i < argc; i++) {
       vpw = table->getbyname(argv[i]);
-      if(!vpw)
-	ferr << "listvdomain: unknown user '" << argv[i] << "'" << endl;
+      if(!vpw) {
+	if(!o_quiet)
+	  ferr << "listvdomain: unknown user '" << argv[i] << "'" << endl;
+      }
       else {
 	show_user(*vpw);
 	delete vpw;
@@ -81,7 +88,8 @@ int cli_main(int argc, char* argv[])
   }
   else {
     if(!table->start()) {
-      ferr << "listvdomain: Can't open password table" << endl;
+      if(!o_quiet)
+	ferr << "listvdomain: Can't open password table" << endl;
       return 1;
     }
     vpwentry vpw;

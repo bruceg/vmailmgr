@@ -30,7 +30,14 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "USERNAME";
 const int cli_args_min = 1;
 const int cli_args_max = 1;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 int cli_main(int, char* argv[])
 {
@@ -47,13 +54,15 @@ int cli_main(int, char* argv[])
   response resp = domain.chattr(username, vdomain::ATTR_PASS, pass);
 
   if(!resp) {
-    ferr << "vpasswd: error changing the password for user '"
-	 << username << "':\n  " << resp.msg << endl;
+    if(!o_quiet)
+      ferr << "vpasswd: error changing the password for user '"
+	   << username << "':\n  " << resp.msg << endl;
     return 1;
   }
   else {
-    fout << "vpasswd: password for user '" << username
-	 << "' successfully changed." << endl;
+    if(!o_quiet)
+      fout << "vpasswd: password for user '" << username
+	   << "' successfully changed." << endl;
     return 0;
   }
 }

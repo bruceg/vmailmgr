@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "vcommand.h"
+#include "fdbuf/fdbuf.h"
 
 extern const char* cli_program;
 

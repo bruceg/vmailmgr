@@ -28,7 +28,7 @@ int gethostname(char *name, size_t len);
 
 void set_domain(mystring& name, mystring& domain)
 {
-  int sep = name.find_first(config->separators());
+  int sep = name.find_first_of(config->separators());
   if(sep >= 0) {
     domain = name.right(sep+1);
     name = name.left(sep);
@@ -64,7 +64,8 @@ void set_user(const pwentry* pw)
   config = &domain->config;
 }
 
-user_data* check(mystring fulluser, mystring password)
+static user_data* check(mystring fulluser, mystring password,
+			bool virtual_only)
 {
   mystring virtname;
   pwentry* basepw;
@@ -82,6 +83,8 @@ user_data* check(mystring fulluser, mystring password)
     setenv(vpw);
     return new user_data(basepw, vpw->mailbox, vpw->name);
   }
+  if(virtual_only)
+    return 0;
   if(!basepw->authenticate(password))
     fail_login("Invalid or incorrect password");
   return new user_data(basepw, "", "");
@@ -91,13 +94,10 @@ user_data* authenticate(mystring name, mystring pass, mystring domain,
 			bool virtual_only)
 {
   mystring baseuser;
-  if(!is_local(domain))
-    baseuser = find_virtual(domain);
-  if(!baseuser)
-    if(virtual_only)
-      return 0;
-    else
-      return check(name, pass);
-  else
-    return check(baseuser + "-" + name, pass);
+  if(!is_local(domain)) {
+    mystring baseuser = find_virtual(domain);
+    if(!!baseuser)
+      name = baseuser + "-" + name;
+  }
+  return check(name, pass, virtual_only);
 }

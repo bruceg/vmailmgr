@@ -4,12 +4,12 @@ EXTRA_DIST = mergelib.sh
 
 libvmailmgr_a_SOURCES=
 libvmailmgr.a: mergelib.sh cdb++/libcdb++.a misc/libmisc.a \
-	mystring/libmystring.a fdbuf/libfdbuf.a config/libconfig.a \
-	vpwentry/libvpwentry.a vpwtable/libvpwtable.a vdomain/libvdomain.a
+	config/libconfig.a vpwentry/libvpwentry.a vpwtable/libvpwtable.a \
+	vdomain/libvdomain.a fdbuf/libfdbuf.a mystring/libmystring.a
 	$(RM) -f $@
 	sh mergelib.sh $@ cdb++/libcdb++.a misc/libmisc.a \
-	mystring/libmystring.a fdbuf/libfdbuf.a config/libconfig.a \
-	vpwentry/libvpwentry.a vpwtable/libvpwtable.a vdomain/libvdomain.a
+	config/libconfig.a vpwentry/libvpwentry.a vpwtable/libvpwtable.a \
+	vdomain/libvdomain.a fdbuf/libfdbuf.a mystring/libmystring.a
 	
 libcli_a_SOURCES =
 libcli.a: cli/libcli.a mergelib.sh

@@ -31,7 +31,8 @@ const char* cli_args_usage = "VALUE USERNAME ...";
 const int cli_args_min = 2;
 const int cli_args_max = -1;
 
-int o_attr = 0;
+static int o_attr = 0;
+static int o_quiet = false;
 
 cli_option cli_options[] = {
   { 'c', "msgcount", cli_option::flag, vdomain::ATTR_MSGCOUNT, &o_attr,
@@ -42,6 +43,8 @@ cli_option cli_options[] = {
     "Set the user's soft quota (in KB)", 0 },
   { 'Q', "hardquota", cli_option::flag, vdomain::ATTR_HARDQUOTA, &o_attr,
     "Set the user's hard quota (in KB)", 0 },
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
   { 'z', "msgsize", cli_option::flag, vdomain::ATTR_MSGSIZE, &o_attr,
     "Set the user's message size limit", 0 },
   {0}
@@ -50,7 +53,8 @@ cli_option cli_options[] = {
 int cli_main(int argc, char* argv[])
 {
   if(!o_attr) {
-    ferr << "vchattr: Must select an attribute to change." << endl;
+    if(!o_quiet)
+      ferr << "vchattr: Must select an attribute to change." << endl;
     return 1;
   }
   
@@ -67,13 +71,15 @@ int cli_main(int argc, char* argv[])
     response resp = domain.chattr(username, o_attr, value);
 
     if(!resp) {
-      ferr << "vchattr: error changing the attribute for user '"
-	   << username << "':\n  " << resp.msg << endl;
+      if(!o_quiet)
+	ferr << "vchattr: error changing the attribute for user '"
+	     << username << "':\n  " << resp.msg << endl;
       errors++;
     }
     else
-      fout << "vchattr: attribute for user '" << username
-	   << "' successfully changed." << endl;
+      if(!o_quiet)
+	fout << "vchattr: attribute for user '" << username
+	     << "' successfully changed." << endl;
   }
   return errors;
 }

@@ -37,6 +37,8 @@ const int cli_args_max = 0;
 static int addufline = false;
 static int addrpline = true;
 static int adddtline = true;
+static int o_quiet = false;
+
 cli_option cli_options[] = {
   { 'D', 0, cli_option::flag, true, &adddtline,
     "Add a \"Delivered-To:\" line (default)", 0 },
@@ -48,6 +50,8 @@ cli_option cli_options[] = {
     "Do not add the \"Delivered-To:\" line", 0 },
   { 'f', 0, cli_option::flag, false, &addufline,
     "Do not add the \"From \" mailbox line (default)", 0 },
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
   { 'r', 0, cli_option::flag, false, &addrpline,
     "Do not add the \"Return-Path:\" line", 0 },
   {0}
@@ -66,13 +70,15 @@ const char* make_hostname()
 
 void exit_msg(const char* msg, int code)
 {
-  fout << "vdeliver: " << msg << endl;
+  if(!o_quiet)
+    fout << "vdeliver: " << msg << endl;
   exit(code);
 }
 
 void exit_msg(const char* msg1, const mystring& msg2, int code)
 {
-  fout << "vdeliver: " << msg1 << msg2 << endl;
+  if(!o_quiet)
+    fout << "vdeliver: " << msg1 << msg2 << endl;
   exit(code);
 }
 
@@ -172,7 +178,7 @@ void write_envelope(fdobuf& out,
 
   for(mystring_iter iter = recipient; iter; ++iter) {
     mystring r = *iter;
-    int at = r.find('@');
+    int at = r.find_first('@');
     out << 'T' << r;
 
     // If the address has no '@', add the virtual domain
@@ -231,7 +237,7 @@ void inject(mystring sender, mystring recip, mystring host)
 
 void enqueue(mystring recipient, mystring host, mystring sender)
 {
-  int f = sender.find('@');
+  int f = sender.find_first('@');
   if(f > 0) {
     setenv("QMAILUSER=", sender.left(f));
     setenv("QMAILHOST=", sender.right(f+1));
@@ -282,7 +288,8 @@ int cli_main(int, char*[])
     deliver_final();
 
   if(execute("vdeliver-postdeliver"))
-    fout << "Execution of vdeliver-postdeliver failed" << endl;
+    if(!o_quiet)
+      fout << "Execution of vdeliver-postdeliver failed" << endl;
 
   return 0;
 }

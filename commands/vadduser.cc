@@ -35,22 +35,23 @@ const char* cli_args_usage = "USERNAME [ALIAS1 ...]\n"
 const int cli_args_min = 1;
 const int cli_args_max = -1;
 
-const char* o_userdir = 0;
-cli_stringlist* o_forwards = 0;
-const char* o_personal = 0;
-int o_softquota = 0;
-int o_hardquota = 0;
-int o_msgsize = 0;
-int o_msgcount = 0;
-int o_expiry = 0;
-//cli_stringlist* o_extra = 0;
-int o_password = 1;
-int o_domailbox = 1;
+static const char* o_userdir = 0;
+static cli_stringlist* o_forwards = 0;
+static const char* o_personal = 0;
+static int o_softquota = 0;
+static int o_hardquota = 0;
+static int o_msgsize = 0;
+static int o_msgcount = 0;
+static int o_expiry = 0;
+//static cli_stringlist* o_extra = 0;
+static int o_password = true;
+static int o_domailbox = true;
+static int o_quiet = false;
 
 cli_option cli_options[] = {
   { 'c', "msgcount", cli_option::integer, 0, &o_msgcount,
     "Set the user's message count limit", 0 },
-  { 'D', "no-mailbox", cli_option::flag, 0, &o_domailbox,
+  { 'D', "no-mailbox", cli_option::flag, false, &o_domailbox,
     "Don't create a mailbox for this user", "true for vaddalias" },
   { 'd', "directory", cli_option::string, 0, &o_userdir,
     "Set the path to the user's mailbox", 0 },
@@ -58,7 +59,7 @@ cli_option cli_options[] = {
     "Set the account's expiry time (in seconds)", 0 },
   { 'f', "forward", cli_option::stringlist, 0, &o_forwards,
     "Add a forwarding address for this user", 0 },
-  { 'P', "no-password", cli_option::flag, 0, &o_password,
+  { 'P', "no-password", cli_option::flag, false, &o_password,
     "Do not ask for a password", 0 },
   { 'p', "personal", cli_option::string, 0, &o_personal,
     "Set the user's personal information", 0 },
@@ -66,6 +67,8 @@ cli_option cli_options[] = {
     "Set the user's hard quota (in KBytes)", 0 },
   { 'q', "softquota", cli_option::integer, 0, &o_softquota,
     "Set the user's soft quota (in KBytes)", 0 },
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
   //{ 'x', "extra", cli_option::stringlist, 0, &o_extra,
   //  "Add extra data for the user", 0 },
   { 'z', "msgsize", cli_option::integer, 0, &o_msgsize,
@@ -100,8 +103,9 @@ vpwentry* make_user(const mystring& name, const mystring& passcode)
   for(cli_stringlist* node = o_forwards; node; node = node->next) {
     response r = domain.validate_forward(node->string);
     if(!r) {
-      ferr << argv0base << ": invalid forwarding address:\n  "
-	   << r.msg << endl;
+      if(!o_quiet)
+	ferr << argv0base << ": invalid forwarding address:\n  "
+	     << r.msg << endl;
       exit(1);
     }
   }
@@ -136,8 +140,9 @@ void add_user(const mystring& user)
     response resp = domain.set(vpw, true, vpw->mailbox);
     delete vpw;
     if(!resp) {
-      ferr << argv0base << ": error adding the virtual user:\n  "
-	   << resp.msg << endl;
+      if(!o_quiet)
+	ferr << argv0base << ": error adding the virtual user:\n  "
+	     << resp.msg << endl;
       exit(1);
     }
   }
@@ -157,17 +162,20 @@ void add_alias(mystring user, mystring alias)
     vpw.set_defaults();
     response resp = domain.set(&vpw, true);
     if(!resp)
-      ferr << argv0base << ": warning: adding the alias '"
-	   << alias
-	   << "' failed:\n  "
-	   << resp.msg << endl;
+      if(!o_quiet)
+	ferr << argv0base << ": warning: adding the alias '"
+	     << alias
+	     << "' failed:\n  "
+	     << resp.msg << endl;
     else
-      fout << argv0base << ": alias '" << alias << "' successfully added"
-	   << endl;
+      if(!o_quiet)
+	fout << argv0base << ": alias '" << alias << "' successfully added"
+	     << endl;
   }
   else
-    ferr << argv0base << ": warning: alias '" << alias << "' already exists."
-	 << endl;
+    if(!o_quiet)
+      ferr << argv0base << ": warning: alias '" << alias << "' already exists."
+	   << endl;
 }
 
 void set_defaults()
@@ -188,7 +196,6 @@ void set_defaults()
     o_expiry += now;
 }
 
-  
 int cli_main(int argc, char* argv[])
 {
   if(!go_home())
@@ -197,7 +204,9 @@ int cli_main(int argc, char* argv[])
   set_defaults();
   
   add_user(argv[0]);
-  fout << argv0base << ": user '" << argv[0] << "' successfully added" << endl;
+  if(!o_quiet)
+    fout << argv0base << ": user '" << argv[0] << "' successfully added"
+	 << endl;
   
   for(int i = 1; i < argc; i++)
     add_alias(argv[0], argv[i]);

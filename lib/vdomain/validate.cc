@@ -21,7 +21,7 @@ static bool validate_field(mystring str, const char* bad_chars)
 {
   if(!str)
     return false;
-  if(str.find_first(bad_chars) >= 0)
+  if(str.find_first_of(bad_chars) >= 0)
     return false;
   return true;
 }
@@ -38,12 +38,12 @@ bool vdomain::validate_password(mystring pass) const
 
 response vdomain::validate_forward(mystring forward)
 {
-  int atchar = forward.find('@');
+  int atchar = forward.find_first('@');
   if(atchar < 0) {
     if(!exists(forward))
       RETURN(err, "User '" + forward + "' does not exist");
   }
-  else if(forward.find('@', atchar+1) >= 0)
+  else if(forward.find_first('@', atchar+1) >= 0)
     RETURN(err, "Address '" + forward + "' is invalid: "
 	   "  Address contains more than one at (@) symbol");
   RETURN(ok, "");

@@ -3,10 +3,15 @@ Changes in version 0.96.4
 
 New Features:
 - Added an upgrading section in the FAQ.
+- The command-line tools now have a "--quiet" option to suppress all
+  status messages.
 
 Internal Changes:
+- Minor updates to the mystring and fdbuf libraries.
 
 Bug Fixes:
+- Fixed a problem that caused the Courier IMAP authentication module to
+  fail for users of the form "baseuser-virtuser".
 -------------------------------------------------------------------------------
 Changes in version 0.96.3
 

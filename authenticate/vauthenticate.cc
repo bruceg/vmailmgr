@@ -18,6 +18,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include "authvlib.h"
+#include "fdbuf/fdbuf.h"
 
 void fail_login(const char*)
 {

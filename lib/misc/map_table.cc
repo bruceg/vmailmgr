@@ -29,7 +29,7 @@ map_table::map_table(const mystring& filename)
   mystring buf;
   while(in.getline(buf)) {
     buf = buf.rstrip();
-    int mid = buf.find(':');
+    int mid = buf.find_first(':');
     if(mid > 0)
       set(buf.left(mid), buf.right(mid+1));
   }

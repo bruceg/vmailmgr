@@ -31,7 +31,14 @@ const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
-cli_option cli_options[] = { {0} };
+
+static int o_quiet = false;
+
+cli_option cli_options[] = {
+  { 0, "quiet", cli_option::flag, true, &o_quiet,
+    "Suppress all status messages", 0 },
+  {0}
+};
 
 static int errors = 0;
 
@@ -55,8 +62,9 @@ void change_one(const mystring& line)
   mystring pass = get_word(str);
   if(!user || !pass) {
     ++errors;
-    ferr << "vpasswds: invalid line, ignoring:\n  "
-	 << line << endl;
+    if(!o_quiet)
+      ferr << "vpasswds: invalid line, ignoring:\n  "
+	   << line << endl;
     return;
   }
   user = user.lower();
@@ -65,13 +73,15 @@ void change_one(const mystring& line)
 
   if(!resp) {
     ++errors;
-    ferr << "vpasswds: error changing the password for user '"
-	 << user << "':\n  " << resp.msg << endl;
+    if(!o_quiet)
+      ferr << "vpasswds: error changing the password for user '"
+	   << user << "':\n  " << resp.msg << endl;
     return;
   }
   else
-    fout << "vpasswds: password for user '" << user
-	 << "' successfully changed.\n";
+    if(!o_quiet)
+      fout << "vpasswds: password for user '" << user
+	   << "' successfully changed.\n";
 }
 
 int cli_main(int, char*[])
@@ -82,7 +92,8 @@ int cli_main(int, char*[])
   while(fin.getline(str))
     change_one(str);
   if(errors) {
-    ferr << "vpasswds: " << errors << " errors were encountered." << endl;
+    if(!o_quiet)
+      ferr << "vpasswds: " << errors << " errors were encountered." << endl;
     return 1;
   }
   return 0;

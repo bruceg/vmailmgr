@@ -1,3 +1,36 @@
+2000-04-07  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* Updates for new mystring and fdbuf libraries.
+
+	* commands/vsetup.cc: Added a "quiet" flag.
+
+	* commands/vpopbull.cc: Added a "quiet" flag.
+
+	* commands/vpasswds.cc: Added a "quiet" flag.
+
+	* commands/vpasswd2cdb.cc: Added a "quiet" flag.
+
+	* commands/vpasswd.cc: Added a "quiet" flag.
+
+	* commands/vdeluser.cc: Added a "quiet" flag.
+
+	* commands/vaddusers.cc: Added a "quiet" flag.
+
+	* commands/vdeliver.cc: Added a "quiet" flag.
+
+	* commands/vchforwards.cc: Added a "quiet" flag.
+
+	* commands/vchattr.cc: Added a "quiet" flag.
+
+	* commands/listvdomain.cc: Added a "quiet" flag.
+
+	* commands/vadduser.cc: Added a "quiet" flag.
+
+	* authenticate/authvlib.cc (check): make the virtual / non-virtual
+	decision here rather than in authenticate, in order to handle
+	"baseuser-virtuser" type usernames.  This fixes the Courier-IMAP
+	auth module problems.
+
 2000-04-06  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* doc/FAQ.texi (Upgrading from Previous Versions): Added this

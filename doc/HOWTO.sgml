@@ -344,4 +344,29 @@
 </verb>
 </p>
 
+<sect1>Web-based interfaces for vmailmgr
+<p>
+  There are currently a few working solutions to administrate
+  your vmailmgr system via a web interface. Only requirement is
+  that the vmailmgrd daemon is running, and that you have
+  a webserver on your system.
+<enum>
+  <item>
+    For Python fans, there is vpyadmin by Bruce Guenter. The files can
+    be downloaded at <url url="http://em.ca/~bruceg/vpyadmin/">, and
+    the development code is online at <url
+    url="http://bruce-guenter.dyndns.org/cgi-bin/vpyadmin/">
+    (sample.org / samplevm).
+  <item>
+    And if you like PHP, you can use oMail-admin by Olivier Müller:
+    it fully supports all vmailmgr functions, and speaks englich,
+    french, italian, spanish, german and russian. Project homepage:
+    <url url="http://omail.omnis.ch">. Online demo:
+    <url url="http://admin.omnis.ch/omail/"> (test.com / test).
+  <item>
+    And there are also C-based CGI scripts in the <tt>cgi</tt>
+    directory of the vmailmgr distribution.
+</enum>
+</p>
+
 </article>

@@ -5,15 +5,16 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Copy in the new HOWTO and FAQ (and add note to AUTHORS)
+- Add CGI for new autoresponse daemon command (partially done in Python).
+
+- Fix bug in changing passwords from the daemon that doesn't initalize
+  the salt to different values.
 
 - Add FAQ or HOWTO to mailing list FAQ response.
 
-- Add note regarding configuring qmail+patches RPM to FAQ
+- Convert existing TeXinfo documentation to SGML
 
 - Add option to vdeluser to prevent deleting users that have a mailbox.
-
-- Add CGI for new autoresponse daemon command (partially done in Python).
 
 - Document the Python interface.
 

@@ -110,6 +110,13 @@
      before upgrading, and run the program `vpasswd2cdb' as each base user after upgrading, before re-enabling local deliveries. 
 </descrip>
 </p>
+<sect1>How do I configure qmail+patches to use vmailmgr for POP?
+<p>
+Put the string `<tt>checkvpw</tt>' into the file
+`<tt>/etc/qmail/control/checkpassword</tt>' and restart pop3d by
+typing
+`<tt>/etc/rc.d/init.d/pop3d restart</tt>'.
+</p>
 <sect>Usage
 <sect1>I can only use one IP address. How do I log in as a virtual user?
 <p>

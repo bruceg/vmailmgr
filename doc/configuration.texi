@@ -180,6 +180,7 @@ Each of the following sections identifies a single configuration file
 * password-file::               
 * postmaster-aliases::          
 * postmaster-email::            
+* qmail-root::                  
 * separators::                  
 * socket-file::                 
 * user-dir::                    
@@ -187,8 +188,8 @@ Each of the following sections identifies a single configuration file
 * user-dir-slices::             
 * vdeliver-postdeliver::        
 * vdeliver-predeliver::         
-* vsetup-pre::
-* vsetup-post::
+* vsetup-post::                 
+* vsetup-pre::                  
 @end menu
 
 @c ============================================================================
@@ -508,7 +509,7 @@ This should @emph{always} contain both @samp{postmaster} and
 @end table
 
 @c ============================================================================
-@node postmaster-email, separators, postmaster-aliases, Configuration Files
+@node postmaster-email, qmail-root, postmaster-aliases, Configuration Files
 @section postmaster-email
 
 @table @strong
@@ -531,7 +532,24 @@ will result and all mail to this address will bounce.
 @end table
 
 @c ============================================================================
-@node separators, socket-file, postmaster-email, Configuration Files
+@node qmail-root, separators, postmaster-email, Configuration Files
+@section qmail-root
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{/var/qmail}
+@item Used By
+checkvpw, vdeliver, vmailmgrd
+@item Description
+Specifies the location of the base directory of your qmail install.
+Set this to whatever you put into @file{conf-home} when you built and
+installed qmail.
+@end table
+
+@c ============================================================================
+@node separators, socket-file, qmail-root, Configuration Files
 @section separators
 
 @table @strong
@@ -648,7 +666,7 @@ delivery does not fail, as failure would lead to duplicates.
 @end table
 
 @c ============================================================================
-@node vdeliver-predeliver,  , vdeliver-postdeliver, Configuration Files
+@node vdeliver-predeliver, vsetup-post, vdeliver-postdeliver, Configuration Files
 @section vdeliver-predeliver
 
 @table @strong
@@ -666,7 +684,7 @@ not set them itself.
 @end table
 
 @c ============================================================================
-@node vsetup-post,  , vsetup-pre, Configuration Files
+@node vsetup-post, vsetup-pre, vdeliver-predeliver, Configuration Files
 @section vsetup-pre
 
 @table @strong

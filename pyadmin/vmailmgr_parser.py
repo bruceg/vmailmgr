@@ -15,6 +15,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import re
+import string
 import sys
 
 ###############################################################################
@@ -32,8 +33,19 @@ def iif(cond, true, false):
     else:
         return false
 
+html_escapes = ( ('&', '&amp;'),
+                 ('<', '&lt;'),
+                 ('>', '&gr;'),
+                 ('"', '&quot;') )
+
+def escape(str, escapes = html_escapes):
+    for (needle, replacement) in escapes:
+        str = string.replace(str, needle, replacement)
+    return str
+
 global_context = {
     'iif': iif,
+    'escape': escape,
     'math': __import__('math'),
     'random': __import__('random'),
     're': __import__('re'),

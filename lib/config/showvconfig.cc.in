@@ -3,6 +3,7 @@
 #include "misc/pwentry.h"
 #include "vdomain/vdomain.h"
 #include "configrc.h"
+#include "fdbuf/fdbuf.h"
 
 template<class T>
 void show_val(const char* name, T value)

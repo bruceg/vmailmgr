@@ -69,7 +69,7 @@ static vpwentry* (*getpw)();
 int open_table()
 {
   vpwtable_in = domain.table()->start_read();
-  if(vpwtable_in)
+  if(vpwtable_in && !!*vpwtable_in)
     getpw = getpw_vpwtable;
   else {
     passwd_in = new fdibuf(password_file.c_str());

@@ -1,5 +1,8 @@
 2004-03-15  Bruce.Guenter.dyndns.org  <bruce@lorien.untroubled.org>
 
+	* commands/vupgrade.cc (open_table): Fixed up the test to see if
+	the new vpwtable reader is valid.
+
 	* commands/dumpvuser.cc: Added new source.
 
 	* commands/vadduser.cc (add_alias), commands/vsetup.cc

@@ -65,6 +65,8 @@ int cli_main(int argc, char* argv[])
   if(!go_home())
     return 1;
 
+  int errors = 0;
+  
   if(o_noaliases && o_nousers) {
     if(!o_quiet)
       ferr << "listvdomain: specify only one of -a and -u" << endl;
@@ -82,6 +84,7 @@ int cli_main(int argc, char* argv[])
       if(!vpw) {
 	if(!o_quiet)
 	  ferr << "listvdomain: unknown user '" << argv[i] << "'" << endl;
+	errors = 1;
       }
       else {
 	show_user(*vpw);
@@ -100,5 +103,5 @@ int cli_main(int argc, char* argv[])
       show_user(vpw);
     table->end();
   }
-  return 0;
+  return errors;
 }

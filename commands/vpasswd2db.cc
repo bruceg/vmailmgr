@@ -66,11 +66,11 @@ int cli_main(int, char* [])
     return 1;
   }
 
-  vpwtable out(&domain);
+  vpwtable* out = domain.table();
 
   vpwentry vpw;
   while(getpw(in, vpw)) {
-    if(!out.put(&vpw, true)) {
+    if(!out->put(&vpw, true)) {
       if(!o_quiet)
 	ferr << "Failed to add record to vpwtable." << endl;
       return 1;

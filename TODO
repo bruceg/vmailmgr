@@ -5,23 +5,11 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Write a "vupgrade" tool to replace vpasswd2db that:
-  - If the passwd.cdb file exists:
-    - Open a reader on it
-  - Else if the old passwd file exists:
-    - Open a reader on it
-  - Else fail.
-  - Open a writer on the output table
-  - For each account in the table:
-    - create an account directory if one doesn't already exist
-    - set the flags in the vpwentry
-    - write out the vpwentry
-  - Close the output table
-
 - Add tests for:
   - authvmailmgr
   - execution of presetuid and postsetuid hooks in authvmailmgr
   - daemon "stat" command
+  - daemon adduser3 command
 
 - Make sure that exit 99 from vdeliver-predeliver causes delivery to be
   skipped.

@@ -65,6 +65,7 @@ are being used and the programs will be built accordingly.
 * What other software is needed to run vmailmgr?::  
 * How do I record the output of vmailmgrd with syslog?::  
 * How do I record the output of vmailmgrd with accustamp/cyclog?::  
+* Upgrading from Previous Versions::  
 @end menu
 
 @c ============================================================================
@@ -94,7 +95,7 @@ To use logger, pipe the output of vmailmgrd into the comamand
 See the respective man pages of these two programs for more information.
 
 @c ============================================================================
-@node How do I record the output of vmailmgrd with accustamp/cyclog?,  , How do I record the output of vmailmgrd with syslog?, Setup and Configuration
+@node How do I record the output of vmailmgrd with accustamp/cyclog?, Upgrading from Previous Versions, How do I record the output of vmailmgrd with syslog?, Setup and Configuration
 @section How do I record the output of vmailmgrd with accustamp/cyclog?
 
 Make a directory into which the output will go, for example
@@ -103,6 +104,63 @@ Pipe the output of vmailmgrd into the command @samp{accustamp | cyclog
 /var/log/vmailmgrd}.
 See the man page for cyclog for more information on how to adjust its
 output.
+
+@c ============================================================================
+@node  Upgrading from Previous Versions,  , How do I record the output of vmailmgrd with accustamp/cyclog?, Setup and Configuration
+@section Upgrading from Previous Versions
+
+If you are upgrading from an older version, you may need to make some
+changes to your system before or after doing the upgrade.
+The following table outlines the necessary changes.
+Note that you need to follow the instructions for all later versions of
+the software.
+
+If you are upgrading from version:
+
+@table @strong
+
+@item 0.96.2 or earlier
+
+Make sure the @file{vmailmgrd} daemon and vmailmgr CGIs are disabled
+before upgrading, and upgrade them along with the main package.
+Changes were made to the daemon interface that will cause adding users
+and aliases to flake out.
+As well, the listdomain interface was completely redone.
+
+@item 0.94 or earlier, using the POP bulletin facility
+
+The POP bulletin facility has been moved into a stand-alone program that
+needs to be executed through @file{checkvpw-postsetuid}.
+
+@item 0.93 or earlier
+
+If you do not use the CGIs, you no longer need to run the
+@file{vmailmgrd} daemon.
+
+@item 0.92.2 or earlier
+
+The configuration changed from reading a single file to reading a set of
+files in a directory.
+Read the configuration documentation and run the program
+@file{vconf2dir}.
+
+@item 0.90.2 or earlier
+
+The name of the user to which mail to an unknown user is delivered
+changed from @samp{*} to @samp{+}.
+If you were using this feature, either change all your domains to
+accomodate this change, or set the @file{default-username} config
+file to contain @samp{*}.
+
+@item 0.88 or earlier
+
+The file format of the virtual password tables has changed from plain
+text files to CDB tables.
+You will need to suspend local deliveries before upgrading, and run the
+program @file{vpasswd2cdb} as each base user after upgrading, before
+re-enabling local deliveries.
+
+@end table
 
 @c ****************************************************************************
 @node Usage, Troubleshooting, Setup and Configuration, Top
@@ -180,14 +238,13 @@ configuration.
 
 @menu
 * How do I get in contact with other users?::  
-* How do I get in contact with the author?::  
 * Does vmailmgr support IMAP?::  
 * How does incoming email get handled?::  
 * How does outgoing email get handled?::  
 @end menu
 
 @c ============================================================================
-@node How do I get in contact with other users?, How do I get in contact with the author?, Miscelaneous, Miscelaneous
+@node How do I get in contact with other users?, Does vmailmgr support IMAP?, Miscelaneous, Miscelaneous
 @section How do I get in contact with other users?
 
 There is a mailing list run by the author.
@@ -209,7 +266,7 @@ attempt
 Please do not contact the author directly with vmailmgr questions.
 
 @c ============================================================================
-@node Does vmailmgr support IMAP?, How does incoming email get handled?, How do I get in contact with the author?, Miscelaneous
+@node Does vmailmgr support IMAP?, How does incoming email get handled?, How do I get in contact with other users?, Miscelaneous
 @section Does vmailmgr support IMAP?
 
 No, because there are no IMAP servers that use the checkpassword

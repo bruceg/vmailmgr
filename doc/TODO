@@ -5,6 +5,13 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Modifiy the pop bulletin command to take the bulletin directory on the
+  command line.
+
+- Add a section to the FAQ regarding upgrading to the current version.
+
+- Add a -q/--quiet option to all the command-line tools
+
 - Continue to seperate the "misc" library directory into modules.
 
 - Document the Python interface.

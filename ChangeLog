@@ -1,3 +1,9 @@
+2000-04-06  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* doc/FAQ.texi (Upgrading from Previous Versions): Added this
+	section to answer questions regarding what needs to be done to
+	upgrade to the current version.
+
 2000-04-04  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* doc/vmailmgr-cgi.texi (Top): Expanded the "vadduser" section to

@@ -23,7 +23,7 @@
 
 	* commands/vcheckquota.cc (exit_msg): Fixed typo (used to say
 	"vdeliver:").
-	(cli_main): Fixed another type -- VUSER_MAILDIR is not set, plain
+	(cli_main): Fixed another typo -- VUSER_MAILDIR is not set, plain
 	MAILDIR is.
 
 	* authenticate/checkvpw.cc (main): Removed call to execute

@@ -23,6 +23,8 @@ Bug Fixes:
   non-virtual users from authenticating.
 - The daemon now exits immediately if a SIGALRM or SIGPIPE is caught,
   instead of completing the action.
+- Fixed a bug in autodetecting Python.  It should now work with any
+  version of make.
 -------------------------------------------------------------------------------
 Changes in version 0.96.8
 

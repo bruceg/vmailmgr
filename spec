@@ -138,7 +138,7 @@ fi
 %config /etc/rc.d/init.d/vmailmgrd
 %config /etc/rc.d/rc?.d/*vmailmgrd
 /usr/sbin/vmailmgrd
-%dir /var/service/vmailmgrd
+%attr(1755,root,root) %dir /var/service/vmailmgrd
 %dir /var/service/vmailmgrd/log
 /var/service/vmailmgrd/log/run
 /var/service/vmailmgrd/run

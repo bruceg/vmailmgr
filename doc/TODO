@@ -5,6 +5,8 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Set up scripts for using autoresponder with vmailmgr.
+
 - Complete the remainder of the commands in vmailmgr.py
 
 - Fix bug in changing passwords from the daemon that doesn't initalize
@@ -13,6 +15,9 @@ can keep the development periods shorter.
 - Add FAQ or HOWTO to mailing list FAQ response.
 
 - Convert existing TeXinfo documentation to SGML
+
+- Investigate IP-based virtual domain problem with Courier IMAP not
+  setting TCPREMOTEHOST.
 
 - Add option to vdeluser to prevent deleting users that have a mailbox.
 

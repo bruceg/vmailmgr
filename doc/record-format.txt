@@ -9,7 +9,7 @@ Syntax notes:
 
 New version 2 records have the following format:
 	0x02
-	( flag-number flag-value ) NUL
+	( flag-number flag-value )* NUL
 	password-crypt NUL
 	{ mailbox } NUL
 	( alias NUL )* NUL

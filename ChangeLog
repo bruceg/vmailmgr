@@ -1,5 +1,7 @@
 2000-07-05  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
+	* Released version 0.96.7.
+
 	* lib/vpwtable/cdb_read.cc: Added CDB support for the vpwtable
 	reader class.
 

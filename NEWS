@@ -21,7 +21,8 @@ Bug Fixes:
 - The daemon now initializes its random number generator each time it
   handles a command, which should make it generate different salts for
   password hashes.
-- The python subdirectory no longer requires GNU make to build.
+- The python subdirectory no longer requires GNU make to build, and
+  should no longer build at all if Python cannot be located.
 -------------------------------------------------------------------------------
 Changes in version 0.96.6
 

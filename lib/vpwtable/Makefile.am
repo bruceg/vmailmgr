@@ -38,4 +38,5 @@ else
 GDBMSOURCES =
 endif
 
-libvpwtable_a_SOURCES = $(CDBSOURCES) $(GDBMSOURCES)
+libvpwtable_a_SOURCES = $(CDBSOURCES) $(GDBMSOURCES) \
+	reader.cc

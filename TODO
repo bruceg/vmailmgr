@@ -8,19 +8,29 @@ can keep the development periods shorter.
 - Add note to FAQ regarding PHP error code 255 meaning the daemon is not
   running properly (once it's been confirmed).
 
-- Use the vpwtable writer to support a more portable version of vrehash
+- Make vdeliver write to both the output file and the queue
+  simultaneously, to avoid needing to do rewinds:
+  - make pipe
+  - open tmp maildir file
+  - fork (child exec's qmail-queue)
+  - read data from stdin
+  - write data to file and pipe
+  - if write to pipe fails, delete maildir tmp file and fail
+  - if write to file fails, close pipe and fail
+  - write envelope to qmail-queue
+  - catch exit from qmail-queue
+  - close & sync maildir tmp file
 
 - Add tests for:
   - authvmailmgr
   - execution of presetuid and postsetuid hooks in authvmailmgr
+  - daemon "stat" command
 
-- Add note to FAQ or HOWTO regarding the two interfaces
+- Add note to FAQ or HOWTO regarding the two web interfaces
 
 - Fix checkvpw to set MAILDIR before executing postsetuid somehow
 
 - Convert existing TeXinfo documentation to SGML
-
-- Add a mailbox size daemon command
 
 - Make all virtual users have a directory -- distinguish between the
   directory and the mailbox in it.
@@ -35,8 +45,7 @@ can keep the development periods shorter.
 
 - Add Courier IMAP support to the bulletin facility
 
-- Figure out how to make vdeliver write to both the output file and the
-  queue simultaneously, to avoid needing to do rewinds.
+- Use the vpwtable writer to support a more portable version of vrehash
 
 RELEASE TARGET 0.97
 

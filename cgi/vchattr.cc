@@ -22,13 +22,13 @@
 CGI_MAIN 
 {
   CGI_INPUT(username);
-  CGI_INPUT(destination);
   CGI_INPUT(attribute);
+  CGI_INPUT(newvalue);
   
   username = username.lower();
 
   response resp = server_call("chattr", vdomain, username, password,
-			      attribute, destination).call();
+			      attribute, newvalue).call();
   if(!resp)
     error(resp.msg);
   else

@@ -31,8 +31,20 @@ CGI_MAIN
     error("The passwords you entered do not match");
   else {
     mystring errmsg;
-    response resp = server_call("adduser2", vdomain, username, password,
-				newpass1, "", destination).call();
+    unsigned dests = destination.count(',') + 1;
+
+    server_call call("adduser2", dests + 5);
+    call.operand(0, vdomain);
+    call.operand(1, username);
+    call.operand(2, password);
+    call.operand(3, newpass1);
+    call.operand(4, "");
+    
+    unsigned i = 5;
+    for(mystring_iter iter(destination, ','); iter; ++iter, ++i)
+      call.operand(i, *iter);
+
+    response resp = call.call();
     if(!resp)
       errmsg = resp.msg;
     if(!errmsg)

@@ -5,6 +5,10 @@ New Features:
 - Added an upgrading section in the FAQ.
 - The command-line tools now have a "--quiet" option to suppress all
   status messages.
+- Added a "vchforwards" CGI interface.
+- Modified the "vaddalias" CGI program to accept a comma-seperated list
+  of destinations.
+- Added some sample HTML pages for the CGIs.
 
 Internal Changes:
 - Minor updates to the mystring and fdbuf libraries.

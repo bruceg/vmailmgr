@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Sample VMailMgr "vchattr" Page</title>
+</head>
+<body>
+<center><p><h1>Sample VMailMgr "vchattr" Page</h1></p></center>
+<hr>
+<form method=post action="/cgi-bin/vchattr">
+<p>Domain name: <input type=text name=domain></p>
+<p>Pass phrase: <input type=password name=password></p>
+<p>Virtual user name: <input type=text name=username></p>
+<p>Attribute: <select name=attribute>
+<option value=3>Hard quota
+<option value=4>Soft quota
+<option value=5>Message size limit
+<option value=6>Message count limit
+<option value=7>Account expiry time
+</select></p>
+<p>New value: <input type=text name=newvalue></p>
+<p><input type=submit></p>
+</form>
+</body>
+</html>

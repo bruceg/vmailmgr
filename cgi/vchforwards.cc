@@ -27,8 +27,19 @@ CGI_MAIN
   
   username = username.lower();
 
-  response resp = server_call("chattr", vdomain, username, password,
-			      itoa(vdomain::ATTR_DEST), destination).call();
+  unsigned dests = destination.count(',') + 1;
+
+  server_call call("chattr", dests + 4);
+  call.operand(0, vdomain);
+  call.operand(1, username);
+  call.operand(2, password);
+  call.operand(3, itoa(vdomain::ATTR_DEST));
+
+  unsigned i = 4;
+  for(mystring_iter iter(destination, ','); iter; ++iter, ++i)
+    call.operand(i, *iter);
+
+  response resp = call.call();
   if(!resp)
     error(resp.msg);
   else

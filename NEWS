@@ -6,7 +6,8 @@ New Features:
   mailbox.
 - Brand new Python-based web administration package, replacing all the
   old Python code.  Between this interface and the PHP code, the C++
-  CGIs are depricated and will be removed in a future version.
+  CGIs are depricated and will be removed in a future version, unless
+  somebody violently objects.
 
 Internal Changes:
 - Cleaned up the vpwtable API.
@@ -18,6 +19,8 @@ Bug Fixes:
   errors.
 - Fixed a bug in the Courier IMAP authentication module that prevented
   non-virtual users from authenticating.
+- The daemon now exits immediately if a SIGALRM or SIGPIPE is caught,
+  instead of completing the action.
 -------------------------------------------------------------------------------
 Changes in version 0.96.8
 

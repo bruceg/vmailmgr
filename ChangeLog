@@ -1,3 +1,13 @@
+2000-09-15  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* authenticate/authvlib.cc (check): Always set VUSER, even if
+	virtname is blank.
+
+2000-09-14  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/main.cc: Exit immediately if a SIGPIPE or SIGALRM is
+	caught.
+
 2000-09-12  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* pyadmin/vmailmgr_lib.py (Flag.html): Added this method to print

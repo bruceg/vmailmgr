@@ -47,14 +47,13 @@ Group: Development/Libraries
 This package contains the include files necessary to call VMailMgr
 functions from PHP.
 
-%package python
-Summary: Python modules and CGIs for vmailmgr
+%package pyadmin
+Summary: Python-based web administration for vmailmgr
 Group: Utilities/System
 Requires: python >= 1.5
 Requires: vmailmgr-daemon = %{PACKAGE_VERSION}
-%description python
-This package contains vmailmgr code written in/for Python, including one
-CGI.
+%description pyadmin
+This package contains the Python-based web administration interface.
 
 %prep
 %setup
@@ -149,9 +148,9 @@ fi
 %doc php/vmail.features
 /home/httpd/php/*
 
-%files python
+%files pyadmin
 %defattr(-,root,root)
-%doc python/*.html
-/home/httpd/cgi-bin/vautoresponse
-/home/httpd/cgi-bin/vcommand
+%doc pyadmin/*.txt pyadmin/templates
+/home/httpd/cgi-bin/vmailmgr-pyadmin
 /usr/lib/python1.5/*
+

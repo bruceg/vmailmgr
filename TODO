@@ -7,14 +7,10 @@ can keep the development periods shorter.
 
 See pyadmin/TODO for notes on vmailmgr-pyadmin.
 
-- Add note to FAQ(?) about enforcing quotas.
-
 - Add note to FAQ regarding PHP error code 255 meaning the daemon is not
   running properly (once it's been confirmed).
 
-- Add or modify tests for:
-  - new lookup command
-  - new check command
+- Add tests for:
   - authvmailmgr
   - execution of presetuid and postsetuid hooks in authvmailmgr
 
@@ -56,12 +52,6 @@ RELEASE TARGET 0.97
 - The authentication module checks for a custom authentication type
   based on the command name, does authentication, does setuid,chdir,
   and executes the actual command.
-
-- Rewrite the daemon headers so that the commands can be built into
-  stand-alone modules.
-
-- Move the parsing of server commands out of dispatch and into the
-  commands themselves.
 
 RELEASE TARGET 1.00
 

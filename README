@@ -1,6 +1,6 @@
 vmailmgr
-version 0.96.8
-2000-08-10
+version 0.96.9
+2000-09-15
 Bruce Guenter <bruceg@em.ca>
 
 Vmailmgr provides a virtualizing password-checking interface to

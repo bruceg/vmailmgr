@@ -42,4 +42,4 @@ vmailmgr_lib.pyo: vmailmgr_lib.py vmailmgr_local.py
 
 dist-hook:
 	mkdir $(distdir)/templates
-	cp -a templates/*.http templates/*.html $(distdir)/templates
+	cp -a templates/*.v* $(distdir)/templates

@@ -26,6 +26,7 @@ private:
   cdb_reader cdb;
 public:
   cdb_vpwtable_reader(const mystring& filename);
+  ~cdb_vpwtable_reader();
   bool operator!() const;
   bool get(vpwentry& out);
   bool rewind();
@@ -40,6 +41,11 @@ vpwtable_reader* vpwtable::start_read() const
 cdb_vpwtable_reader::cdb_vpwtable_reader(const mystring& filename)
   : cdb(filename)
 {
+}
+
+cdb_vpwtable_reader::~cdb_vpwtable_reader()
+{
+  end();
 }
 
 bool cdb_vpwtable_reader::operator !() const

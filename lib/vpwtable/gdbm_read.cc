@@ -26,6 +26,7 @@ private:
   datum key;
 public:
   gdbm_vpwtable_reader(const mystring& filename);
+  ~gdbm_vpwtable_reader();
   bool operator!() const;
   bool get(vpwentry& out);
   bool rewind();
@@ -44,6 +45,11 @@ gdbm_vpwtable_reader::gdbm_vpwtable_reader(const mystring& filename)
     key = gdbm_firstkey(dbf);
   else
     key.dptr = 0;
+}
+
+gdbm_vpwtable_reader::~gdbm_vpwtable_reader()
+{
+  end();
 }
 
 bool gdbm_vpwtable_reader::operator!() const

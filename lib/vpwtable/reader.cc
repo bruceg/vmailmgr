@@ -19,5 +19,4 @@
 
 vpwtable_reader::~vpwtable_reader()
 {
-  end();
 }

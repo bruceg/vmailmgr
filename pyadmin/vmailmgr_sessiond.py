@@ -30,7 +30,8 @@ class Session:
 
 def make_socket(socket_file):
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    os.unlink(socket_file)
+    try: os.unlink(socket_file)
+    except OSError: pass
     s.bind(socket_file)
     os.chmod(socket_file, 0777)
     s.listen(256)

@@ -1,16 +1,45 @@
 if VPWTABLE_CDB
 CDBPROGS = vpasswd2cdb vrehash
+CDBSCRIPTS = allvpasswd2cdb
+CDBMANS = vpasswd2cdb.1
+CDBPODS = vpasswd2cdb.pod
+CDBHTMLS = vpasswd2cdb.html
 else
 CDBPROGS =
+CDBSCRIPTS =
+CDBMANS =
+CDBPODS =
+CDBHTMLS =
 endif
 
-bin_PROGRAMS = listvdomain vadduser vaddusers vchattr vchforwards \
-	vcheckquota vdeliver vdeluser vpasswd vpasswd2db vpasswds \
-	vpopbull vsetup $(CDBPROGS)
-bin_SCRIPTS = vaddalias vconf2dir
+bin_PROGRAMS = $(CDBPROGS) \
+	listvdomain vadduser vaddusers vchattr vchforwards vcheckquota \
+	vdeliver vdeluser vpasswd vpasswd2db vpasswds vpopbull vsetup
+bin_SCRIPTS = $(CDBSCRIPTS) vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
-EXTRA_DIST = vaddalias vconf2dir \
+
+man_MANS = $(noinst_PODS:.pod=.1)
+noinst_HTMLS = $(noinst_PODS:.pod=.html)
+noinst_PODS = $(bin_PROGRAMS:=.pod)
+
+CLEANFILES = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS) \
+	pod2html-dircache pod2html-itemcache
+EXTRA_DIST = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS) $(bin_SCRIPTS) \
 	vpasswd2cdb.cc vrehash.cc
+
+all: docs
+
+docs: $(noinst_HTMLS) $(noinst_TXTS)
+
+dist-hook:
+	touch $(distdir)/*.html
+	touch $(distdir)/*.txt
+	touch $(distdir)/*.[123456789]
+
+%.pod: %.cc ../configure.in ../lib/cli/cli2pod.pl
+	perl ../lib/cli/cli2pod.pl $< >$@
+%.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
+%.html: %.pod; $(POD2HTML) $< >$@
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = -I../lib -DBINDIR=\"@bindir@\"

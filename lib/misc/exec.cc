@@ -54,8 +54,12 @@ int execute_one(const char* args[])
       if(waitpid(pid, &status, 0) == -1) {
 	if(errno != EINTR)
 	  return -1;
-      } else
-	return status;
+      } else {
+	if(WIFEXITED(status))
+	  return WEXITSTATUS(status);
+	else
+	  return -1;
+      }
     }
   }
   return 0;

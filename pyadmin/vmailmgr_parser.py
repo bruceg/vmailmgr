@@ -44,11 +44,10 @@ global_context = {
 
 class Context:
     def __init__(self, initdict = { }):
-        #self.stack = [ initdict ]
-        #self.pop()
-        #def pop(self):
-        #self.dict = self.stack.pop()
-        self.dict = initdict
+        self.stack = [ initdict ]
+        self.pop()
+    def pop(self):
+        self.dict = self.stack.pop()
         self.get = self.dict.get
         self.has_key = self.dict.has_key
         self.items = self.dict.items
@@ -66,8 +65,8 @@ class Context:
         return self.dict[key]
     def __setitem__(self, key, val):
         self.dict[key] = val
-    #def push(self):
-    #    self.stack.append(self.dict.copy())
+    def push(self):
+        self.stack.append(self.dict.copy())
 
 def do_exec(body, context):
     exec(body, global_context, context.dict)

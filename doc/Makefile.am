@@ -16,6 +16,7 @@ noinst_PODS = vdeliver.pod vmailmgrd.pod checkvpw.pod \
 	vmailmgr.pod vpasswd5.pod vpasswd.pod \
 	vadduser.pod vdeluser.pod vauthenticate.pod vchattr.pod \
 	vaddusers.pod vpasswds.pod vsetup.pod vrehash.pod vpopbull.pod
+noinst_MISC = translation.ps
 EXTRA_DIST = ChangeLog-pre-vmailmgr ChangeLog-pre-0.70 \
 	changelog2html.pl news2html.pl \
 	TODO YEAR2000 translation.fig translation.ps \
@@ -34,13 +35,13 @@ POD2HTML= pod2html --noindex
 TEXI2HTML= texi2html -monolithic -number
 CL2HTML	= perl changelog2html.pl
 NEWS2HTML = perl news2html.pl
-FIG2PS = fig2dev -L ps -c -P
+FIG2PS = fig2dev -L ps -c
 SGML2HTML = sgml2html --split=0
 SGML2TXT = sgml2txt
 
 SUFFIXES = .1 .5 .7 .8 .pod .html .texi .txt .ps .fig .sgml
 
-all: $(noinst_HTMLS) $(noinst_TXTS)
+all: $(noinst_HTMLS) $(noinst_TXTS) $(noinst_MISC)
 
 dist-hook:
 	touch $(distdir)/*.html

@@ -15,6 +15,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
+#include <limits.h>
 #include "utoa.h"
 
 static const mystring dash = "-";
@@ -24,7 +25,7 @@ mystring utoa(unsigned u)
 {
   if(!u)
     return zero;
-  else if(u == (unsigned)-1)
+  else if(u == UINT_MAX)
     return dash;
   else {
     char buf[30];

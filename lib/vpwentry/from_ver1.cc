@@ -31,6 +31,9 @@ bool vpwentry::from_ver1_record(const mystring& text)
 
   if((ptr = decode_base(ptr, end)) == 0) return false;
   if((ptr = decode_values(ptr, end)) == 0) return false;
-
+  
+  // Set defaults
+  is_mailbox_enabled = true;
+  
   return ptr == end;
 }

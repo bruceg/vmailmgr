@@ -16,6 +16,7 @@
 
 #include <config.h>
 #include <ctype.h>
+#include <limits.h>
 
 unsigned strtou(const char* ptr, const char** endptr)
 {
@@ -24,7 +25,7 @@ unsigned strtou(const char* ptr, const char** endptr)
     while(*ptr && isspace(*ptr))
       ++ptr;
     if(*ptr == '-') {
-      uint = (unsigned)-1;
+      uint = UINT_MAX;
       ++ptr;
       while(isdigit(*ptr))
 	++ptr;

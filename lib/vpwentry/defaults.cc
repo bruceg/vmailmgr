@@ -16,6 +16,7 @@
 
 #include <config.h>
 #include <time.h>
+#include <limits.h>
 #include "vpwentry.h"
 #include "config/configrc.h"
 
@@ -27,12 +28,12 @@ void vpwentry::set_defaults()
   msgcount = config->default_msgcount();
   ctime = 0;
   unsigned de = config->default_expiry();
-  if(de == (unsigned)-1)
+  if(de == UINT_MAX)
     expiry = de;
   else {
     unsigned now = time(0);
     expiry = now + de;
     if(expiry < now)
-      expiry = (unsigned)-1;
+      expiry = UINT_MAX;
   }
 }

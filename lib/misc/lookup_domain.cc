@@ -15,6 +15,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
+#include <limits.h>
 #include "lookup.h"
 #include "list_table.h"
 #include "map_table.h"
@@ -35,7 +36,7 @@ mystring find_virtual(mystring domain)
   map_table tbl(tblname.c_str());
   if(!tbl)
     return "";
-  for(unsigned i = 0; i != (unsigned)-1 && i < domain.length();
+  for(unsigned i = 0; i != UINT_MAX && i < domain.length();
       i = domain.find_first('.', i+1)) {
     mystring tmp = tbl[domain.c_str()+i];
     if(!!tmp)

@@ -1,3 +1,17 @@
+2000-05-24  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* Added SGML documentation from Dan Kuykendall.
+
+2000-05-16  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* python/vmailmgr_cgi.py.in: Moved all the CGI specific
+	functionality into this new module.
+
+	* python/vmailmgr.py.in: Removed the "Response" class and turned
+	error responses into exceptions.  The server socket is not closed
+	at the end of a command to allow a listdomain command to read more
+	data after the initial response.
+
 2000-05-09  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* commands/vdeliver.cc (cli_main): Error exits from executing

@@ -30,6 +30,12 @@ can keep the development periods shorter.
 
 - Add Courier IMAP support to the bulletin facility
 
+- Add support to the vpwtable template that allows writing a batch of
+  users in a more efficient manner
+  - start writing (locks the table for other writes, enter nosync mode)
+  - append record (check for prior existance of record, add it)
+  - stop writing (sync data and unlock the table)
+
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd
   - creates the new user directory

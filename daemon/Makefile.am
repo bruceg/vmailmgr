@@ -12,7 +12,6 @@ vmailmgrd_SOURCES = daemon.h \
 	command.h command.cc \
 	deluser.cc \
 	dispatch.cc \
-	fork.cc \
 	listdomain.cc \
 	log.h log.cc \
 	lookup.cc \

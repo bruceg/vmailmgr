@@ -24,7 +24,6 @@ extern CMD(autoresponse);
 extern CMD(chattr);
 extern CMD(check);
 extern CMD(deluser);
-extern CMD(forkstat);
 extern CMD(listdomain);
 extern CMD(lookup);
 
@@ -73,7 +72,6 @@ dispatch dispatch_table[] = {
   ENTRY(autoresponse, 4,  5, true),
   ENTRY(deluser,      3,  3, true),
   ENTRY(listdomain,   2,  2, false),
-  ENTRY(forkstat,     0,  0, false),
 #ifdef TEST_DAEMON
   ENTRY(echo,         0, -1, false), // For testing purposes only
   ENTRY(fecho,        0, -1, false), // For testing purposes only

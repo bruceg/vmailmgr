@@ -1,2 +1,2 @@
 #!/bin/sh
-exec vmailmgrd
+exec unixserver -v /tmp/.vmailmgrd vmailmgrd

@@ -19,13 +19,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <sys/socket.h>
 #include <sys/stat.h>
-#include <sys/un.h>
 #include <signal.h>
 #include <unistd.h>
 #include "daemon.h"
-#include "misc/un.h"
 
 // configuration variables -- set by command line options
 bool opt_log_all = true;
@@ -33,37 +30,17 @@ bool opt_verbose = false;
 
 #define TIMEOUT 1
 
-static int fd = -1;
-
-mystring socket_file;
-
-static void exit_fn()
-{
-  close(fd);
-  unlink(socket_file.c_str());
-#if 0
-  extern unsigned fork_active;
-  while(fork_active) {
-    log() << fork_active << " active forked processes, "
-      "waiting until they exit..." << endl;
-    sleep(1);
-  }
-#endif
-  log("Exiting");
-}
-
 static inline void die(const char* msg)
 {
   perror(msg);
-  exit_fn();
   exit(1);
 }
 
 static void finishreq()
 {
   alarm(0);
-  close(fd);
-  fd = -1;
+  close(0);
+  close(1);
 }
 
 static void abortreq(const char* m)
@@ -81,37 +58,20 @@ static RETSIGTYPE handle_hup(int)
 static RETSIGTYPE handle_alrm(int)
 {
   signal(SIGALRM, handle_alrm);
-  if(fd >= 0)
-    abortreq("Timed out waiting for remote");
-  else
-    log("Stray SIGALRM caught");
+  abortreq("Timed out waiting for remote");
 }
 
 static RETSIGTYPE handle_pipe(int) 
 {
   signal(SIGPIPE, handle_pipe);
-  if(fd >= 0)
-    abortreq("Connection to client lost");
-  else
-    log("Stray SIGPIPE caught");
+  abortreq("Connection to client lost");
 }
-
-bool exiting = false;
 
 static RETSIGTYPE handle_intr(int)
 {
   signal(SIGINT, handle_intr);
   signal(SIGTERM, handle_intr);
-  if(fd >= 0) {
-    log("Interrupted, exiting after completing request");
-    exiting = true;
-  }
-  else {
-    signal(SIGPIPE, SIG_IGN);
-    log("Interrupted, exiting immediately");
-    exit_fn();
-    exit(0);
-  }
+  log("Stray interrupt caught");
 }
 
 bool decode_string(mystring& str, uchar*& buf, ssize_t& buflen)
@@ -152,7 +112,7 @@ command* read_data()
   alarm(TIMEOUT); // avoid denial-of-service by faulty clients
 
   uchar hdrbuf[3];
-  switch(read(fd, &hdrbuf, 3)) {
+  switch(read(0, &hdrbuf, 3)) {
   case -1: FAIL("read system call failed or was interrupted");
   case 3: break;
   default: FAIL("Short read while reading protocol header");
@@ -161,43 +121,10 @@ command* read_data()
     FAIL("Invalid protocol from client");
   ssize_t length = (hdrbuf[1] << 8) | hdrbuf[2];
   uchar buf[length];
-  if(read(fd, buf, length) != length)
+  if(read(0, buf, length) != length)
     FAIL("Short read while reading message data");
   alarm(0);
   return decode_data(buf, length);
-}
-
-static void handle_connection(int s)
-{
-  do {
-    fd = accept(s, NULL, NULL);
-    // All the listed error return values are not possible except for
-    // buggy code, so just try again if accept fails.
-  } while(fd < 0);
-
-  if(opt_verbose)
-    log("Accepted connection");
-  switch(do_fork()) {
-  case -1: // could not fork
-    abortreq("Could not fork");
-    break;
-  case 0: {
-    command* cmd = read_data();
-    if(cmd) {
-      response resp = dispatch_cmd(*cmd, fd);
-      logresponse(resp);
-      alarm(TIMEOUT);
-      if(!resp.write(fd))
-	abortreq("Error writing response");
-      finishreq();
-      delete cmd;
-    }
-    exit(0);
-  }
-  default:
-    close(fd);
-    fd = -1;
-  }
 }
 
 bool parse_options(int argc, char* argv[])
@@ -218,27 +145,9 @@ bool parse_options(int argc, char* argv[])
   return true;
 }
 
-int make_socket() 
-{
-  sockaddr_un saddr;
-  saddr.sun_family = AF_UNIX;
-  strcpy(saddr.sun_path, socket_file.c_str());
-  unlink(socket_file.c_str());
-  int old_umask = umask(0);
-  int s = socket(AF_UNIX, SOCK_STREAM, 0);
-  if(s < 0)
-    die("socket");
-  if(bind(s, (sockaddr*)&saddr, SUN_LEN(&saddr)) != 0)
-    die("bind");
-  if(listen(s, 128) != 0)
-    die("listen");
-  umask(old_umask);
-  return s;
-}
-
 void usage()
 {
-  fout << "usage: vmailmgrd [options]\n"
+  ferr << "usage: vmailmgrd [options]\n"
        << "  -d  Log only requests that fail\n"
        << "  -D  Log all requests (default)\n"
        << "  -v  Log non-verbosely (default)\n"
@@ -252,29 +161,25 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  socket_file = config->socket_file();
-  int s = make_socket();
-
-  // The following should cause the passwd libraries to be pre-loaded
-  setpwent();
-  getpwent();
-  endpwent();
-  
   signal(SIGALRM, handle_alrm);
   signal(SIGPIPE, handle_pipe);
   signal(SIGINT, handle_intr);
   signal(SIGTERM, handle_intr);
   signal(SIGHUP, handle_hup);
   signal(SIGQUIT, handle_intr);
-  signal(SIGCHLD, handle_children);
   
-  log("Starting");
-  log() << "Logging "
-	<< (opt_log_all ? "all" : "only error")
-	<< " requests" << endl;
-  while(!exiting)
-    handle_connection(s);
+  if(opt_verbose)
+    log("Accepted connection");
+  command* cmd = read_data();
+  if(cmd) {
+    response resp = dispatch_cmd(*cmd, 1);
+    logresponse(resp);
+    alarm(TIMEOUT);
+    if(!resp.write(1))
+      abortreq("Error writing response");
+    finishreq();
+    delete cmd;
+  }
 
-  exit_fn();
   return 0;
 }

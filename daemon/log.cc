@@ -20,7 +20,7 @@
 mystring logstr;
 
 extern bool opt_log_all;
-extern pid_t forked_pid;
+static pid_t pid = 0;
 
 const mystring LOG_PASSWORD = "<password>";
 const mystring LOG_NEWPASS = "<newpass>";
@@ -31,9 +31,10 @@ static const char* request_str = "Request: ";
 
 fdobuf& log()
 {
-  if(forked_pid)
-    fout << '[' << forked_pid << "] ";
-  return fout;
+  if(!pid)
+    pid = getpid();
+  ferr << '[' << pid << "] ";
+  return ferr;
 }
 
 void log(const char* msg)

@@ -4,7 +4,7 @@ bin_PROGRAMS = @CDBPROGS@ \
 bin_SCRIPTS = @CDBSCRIPTS@ vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
 
-noinst_PODS = vpasswd2cdb.pod vrehash.pod \
+noinst_PODS = vrehash.pod \
 	listvdomain.pod vadduser.pod vadduser.pod vchattr.pod \
 	vchforwards.pod vcheckquota.pod vdeliver.pod vdeluser.pod \
 	vpasswd.pod vpasswd2db.pod vpasswds.pod vpopbull.pod vsetup.pod
@@ -14,10 +14,10 @@ man_MANS = $(noinst_PODS:.pod=.1)
 CLEANFILES = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS) \
 	pod2html-dircache pod2html-itemcache
 EXTRA_DIST = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS) $(bin_SCRIPTS) \
-	vpasswd2cdb.cc vrehash.cc
+	vrehash.cc
 
-EXTRA_PROGRAMS = vpasswd2cdb vrehash
-EXTRA_SCRIPTS = allvpasswd2cdb
+EXTRA_PROGRAMS = vrehash
+EXTRA_SCRIPTS = allvpasswd2db
 
 all: docs
 
@@ -74,9 +74,6 @@ vsetup_SOURCES = vsetup.cc vcommand.cc
 vsetup_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 if VPWTABLE_CDB
-
-vpasswd2cdb_SOURCES = vpasswd2cdb.cc vcommand.cc
-vpasswd2cdb_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vrehash_SOURCES = vrehash.cc vcommand.cc
 vrehash_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

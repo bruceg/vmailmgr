@@ -7,10 +7,10 @@ while IFS=: read name pass uid gid gecos home shell; do
   fi
   if [ -f passwd -a -d users ] && \
      fgrep vdeliver .qmail-default >/dev/null 2>&1; then
-    if [ -f passwd.cdb ]; then
+    if [ -f passwd.*db* ]; then
       echo Skipping, has already been converted.
     else
-      su - $name sh -c 'exec vpasswd2cdb'
+      su - $name sh -c 'exec vpasswd2db'
       echo Converted.
     fi
   else

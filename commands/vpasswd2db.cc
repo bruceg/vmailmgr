@@ -24,7 +24,7 @@
 #include "vcommand.h"
 
 const char* cli_program = "vpasswd2db";
-const char* cli_help_prefix = "Converts text password tables to current vpwtable DB format\n";
+const char* cli_help_prefix = "Converts text password tables to vpwtable DB format\n";
 const char* cli_help_suffix =
 "Reads in a standard virtual password table in the current directory,
 and writes it out to a table.  The file names for the input and output
@@ -38,7 +38,7 @@ static int o_quiet = false;
 cli_option cli_options[] = {
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
-  {0}
+  {0,}
 };
 
 static bool getpw(fdibuf& in, vpwentry& out)
@@ -66,15 +66,20 @@ int cli_main(int, char* [])
     return 1;
   }
 
-  vpwtable* out = domain.table();
+  vpwtable_writer* out = domain.table()->start_write();
 
   vpwentry vpw;
   while(getpw(in, vpw)) {
-    if(!out->put(&vpw, true)) {
+    if(!out->put(vpw)) {
       if(!o_quiet)
 	ferr << "Failed to add record to vpwtable." << endl;
       return 1;
     }
+  }
+  if(!out->end()) {
+    if(!o_quiet)
+      ferr << "Failed to finish writing vpwtable." << endl;
+    return 1;
   }
   return 0;
 }

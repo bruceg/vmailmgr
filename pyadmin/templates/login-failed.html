@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>vmailmgr admin login</title>
+</head>
+<body>
+<? if set(message) ?>
+<p>Login failed: %(message)s</p>
+<? end ?>
+<form method=post>
+Domain name: <input name=domain><br>
+User name (blank for admins): <input name=username><br>
+Pass phrase: <input type=password name=password><br>
+<input type=submit>
+</form>
+</body>
+</html>

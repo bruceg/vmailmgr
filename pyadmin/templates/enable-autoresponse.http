@@ -1,0 +1,3 @@
+<? if vmailmgr.autoresponse_enable() ?>
+Location: user?username=%(USERNAME)s
+<? end ?>

@@ -1,0 +1,14 @@
+<? if USERNAME ?>
+I'm a user!
+<? else ?>
+<p>User list:
+<table border=1>
+<tr><th>Name</th><th>Mailbox</th><th>Forwards</th></tr>
+<? foreach vmailmgr.list_domain() ?>
+<tr><td><a href="user?username=%(username)s">%(username)s</a></td>
+<td>%(mailbox)s</td><td>%(forwards)s</td></tr>
+<? end ?>
+</table></p>
+<? end ?>
+
+<p><a href="">Reload</a></p>

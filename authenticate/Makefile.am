@@ -20,7 +20,6 @@ dist-hook:
 %.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@
 
-CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = $(CIINCLUDES) -I../lib
 
 checkvpw_SOURCES = checkvpw.cc authvlib.cc authvlib.h

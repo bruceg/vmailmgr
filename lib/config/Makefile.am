@@ -3,7 +3,6 @@ bin_PROGRAMS = showvconfig
 EXTRA_DIST = configrc.in build-config.sh \
 	configrc.h.in Makefile.am.in configvar.in showvconfig.cc.in
 
-CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = -I..
 
 libconfig_a_SOURCES = \

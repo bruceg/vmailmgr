@@ -28,7 +28,6 @@ dist-hook:
 %.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@
 
-CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = -I../lib -DBINDIR=\"@bindir@\"
 
 listvdomain_SOURCES = listvdomain.cc vcommand.cc

@@ -3,7 +3,6 @@ EXTRA_DIST = listvdomain.html vaddalias.html vadduser.html vchalias.html \
 cgi_PROGRAMS = vpasswd vadduser vdeluser vaddalias vchattr vchforwards \
 	listvdomain
 
-CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = -I../lib
 
 vpasswd_SOURCES = vpasswd.cc

@@ -8,6 +8,8 @@ Internal Changes:
 
 Bug Fixes:
 - Fixed a typo in the vmailmgrd run script.
+- Fixed a bug in the daemon that would cause actions to be applied to
+  the default virtual user if the named virtual user did not exist.
 -------------------------------------------------------------------------------
 Changes in version 0.96.7
 

@@ -1,3 +1,9 @@
+2000-07-31  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/lookup.cc (lookup_and_validate): Set the "nodefault" flag
+	in vdomain::lookup to true instead of false -- it's never correct
+	to look up the default user in the daemon.
+
 2000-07-18  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* commands/vcheckquota.cc: Added this new program, originally

@@ -247,7 +247,7 @@ throttle hackers.
 @item Type
 executable
 @item Default
-@samp {vpopbull}
+@samp{vpopbull}
 @item Used By
 authvmailmgr
 @item Description
@@ -386,7 +386,7 @@ This is executed by checkvpw after the subcommand successfully completes.
 @item Type
 executable
 @item Default
-@samp {vpopbull}
+@samp{vpopbull}
 @item Used By
 checkvpw
 @item Description
@@ -715,7 +715,7 @@ This is prefixed with @samp{./} before it is used in the password table.
 @item Used By
 vmailmgrd and command-line programs when creating new users.
 @item Description
-@xref{user-dir-slices}
+@xref{user-dir-slices}.
 @end table
 
 @c ============================================================================

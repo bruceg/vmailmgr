@@ -34,17 +34,12 @@ const int cli_args_max = 0;
 int opt_log_all = true;
 int opt_verbose = false;
 
-// This program is the local server that controls the operation of many
-// parts of this package.
-// It is currently used to handle password checking and virtual user
-// lookups, but will eventually contain the functionality to handle adding
-// and deleting users and aliases, and changing passwords.
+// This program is the local server that is used to handle managing
+// virtual domains from a web or remote interface.
 //
 // F<vmailmgrd> logs its activity to standard output, and as such
-// requires its output to be piped through a tool to
-// record those logs, such as F<accustamp> and F<cyclog> (from the
-// F<daemontools> package), or
-// F<splogger> (included with the F<qmail> package).
+// requires its output to be piped through a tool to record those
+// logs, such as F<multilog> (from the F<daemontools> package).
 
 cli_option cli_options[] = {
   { 'd', 0, cli_option::flag, 0, &opt_log_all,

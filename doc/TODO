@@ -7,6 +7,9 @@ can keep the development periods shorter.
 
 - Complete the remainder of the commands in vmailmgr.py
 
+- Add a note to the FAQ regarding difference between vmailmgr and
+  vpopmail.
+
 - Convert existing TeXinfo documentation to SGML
 
 - Add option to vdeluser to prevent deleting users that have a mailbox.

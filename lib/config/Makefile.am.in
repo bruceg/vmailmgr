@@ -3,7 +3,7 @@ bin_PROGRAMS = showvconfig
 EXTRA_DIST = configrc.in build-config.sh \
 	configrc.h.in Makefile.am.in configvar.in showvconfig.cc.in
 
-INCLUDES = -I../../include
+INCLUDES = -I.. -I../fdbuf -I../misc -I../mystring -I../vpw
 
 libconfig_a_SOURCES = \
 %%LIST%%
@@ -13,5 +13,4 @@ libconfig_a_SOURCES = \
 
 showvconfig_SOURCES = showvconfig.cc
 showvconfig_LDADD = libconfig.a ../fdbuf/libfdbuf.a ../misc/libmisc.a \
-	../mystring/libmystring.a
-
+	../mystring/libmystring.a ../vpw/libvpw.a

@@ -49,3 +49,26 @@ Old style records had the following format:
 	":" password-crypt ":" destination
 The destination was prefixed with '&' for a forward, and with either '.'
 or '/' for a mailbox.
+
+Proposed Record Format
+----------------------
+
+New version 3 records have the following format:
+	0x03
+	( flag-number flag-value )* NUL
+	password-crypt NUL
+	{ mailbox } NUL
+	( alias NUL )* NUL
+	personal-information NUL
+	hard-quota NUL
+	soft-quota NUL
+	message-size-limit NUL
+	message-count-limit NUL
+	creation-time NUL
+	expiry-time NUL
+	last-modified-time NUL
+
+flag-number and flag-value are single-byte values.  The flag numbers are
+the same as the attribute number defined in vdomain/vdomain.h.  The flag
+value is either ASCII '0' for false/off or ASCII '1' for true/on.
+

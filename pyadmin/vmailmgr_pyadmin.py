@@ -155,12 +155,13 @@ def del_session(key):
 ###############################################################################
 # Login/out actions
 
-def do_login_failed(form, reason):
+def do_login_form(form, reason = None):
     if reason:
+        form['failed'] = 1
         form['reason'] = reason
-        format_page('login-failed', form)
     else:
-        format_page('login-form', form)
+        form['failed'] = 0
+    format_page('login-form', form)
 
 def do_login(form):
     (domain,password) = require(form, 'domain', 'password')
@@ -168,7 +169,7 @@ def do_login(form):
     try:
         vmailmgr_lib.check(domain, username, password)
     except vmailmgr_lib.Error, msg:
-        return do_login_failed(form, "Login failed: %s" % msg)
+        return do_login_form(form, msg)
     session = { }
     session['domain'] = domain
     session['username'] = username
@@ -277,11 +278,11 @@ class VmailmgrWrapper:
 def handle_login(page, form):
     if not form.has_key('domain') and \
        not form.has_key('password'):
-        return do_login_failed(form, '')
+        return do_login_form(form)
     if not form.has_key('domain'):
-        return do_login_failed(form, 'Form was missing the domain name')
+        return do_login_form(form, 'Form was missing the domain name')
     if not form.has_key('password'):
-        return do_login_failed(form, 'Form was missing the pass phrase')
+        return do_login_form(form, 'Form was missing the pass phrase')
     return do_login(form)
 
 def set_session(form):

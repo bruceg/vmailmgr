@@ -18,8 +18,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "mystring.h"
-#include "fdbuf.h"
+#include "mystring/mystring.h"
+#include "fdbuf/fdbuf.h"
 #include "configrc.h"
 
 #if 0

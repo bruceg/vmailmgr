@@ -23,7 +23,7 @@
 #include <unistd.h>
 #include "exec.h"
 #include "utoa.h"
-#include "configrc.h"
+#include "config/configrc.h"
 
 int setenv(const char* prefix, const mystring& value)
 {

@@ -16,8 +16,8 @@
 
 #include <config.h>
 #include "vdomain.h"
-#include "autodelete.h"
-#include "maildir.h"
+#include "misc/autodelete.h"
+#include "misc/maildir.h"
 
 response vdomain::deluser(mystring user)
 {

@@ -26,7 +26,7 @@ unsigned configuration::read_uns(const mystring& file,
 {
   if(!cache.value) {
     mystring tmp;
-    unsigned result;
+    unsigned result = 0;
     const configuration* node;
     for(node = this; node; node = node->parent)
       if(config_read(node->directory, file, tmp)) {

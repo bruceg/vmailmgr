@@ -16,29 +16,36 @@
 
 #include <config.h>
 #include "vdomain.h"
-#include "crc_hash.h"
+#include "misc/autodelete.h"
 
-mystring vdomain::userdir(mystring username) const
+#if 0
+response vdomain::lookup(mystring username)
 {
-  unsigned slices = config.user_dir_slices();
-  unsigned bits = config.user_dir_bits();
-  static crc_hash hasher;
-  static const char bin2hex[16+1] = "0123456789abcdef";
-  unsigned hash = hasher(username);
-  mystring dir = config.user_dir();
-  const unsigned hexdigits = (bits+3)/4;
-  const unsigned bitmask = ~(~0U << bits);
-  char hexbuf[hexdigits+1];
-  hexbuf[hexdigits] = 0;
-  for(; slices > 0; --slices, hash >>= bits) {
-    unsigned slice = hash & bitmask;
-    for(unsigned i = hexdigits; i > 0; --i, slice >>= 4)
-      hexbuf[i-1] = bin2hex[slice & 0xf];
-    dir += hexbuf;
-    dir += "/";
+  autodelete<vpwentry> vpw = table()->getbyname(username);
+  if(!vpw)
+    RETURN(err, "Invalid or unknown virtual user");
+  const mystring dest = vpw->dest;
+  if(dest.empty())
+    RETURN(err, "Invalid virtual password entry");
+  else
+    RETURN(ok, dest);
+}
+#endif
+
+bool vdomain::exists(mystring name)
+{
+  return table()->exists(name);
+}
+
+vpwentry* vdomain::lookup(mystring name, bool nodefault)
+{
+  vpwentry* vpw;
+  if(!name)
+    vpw = 0;
+  else {
+    vpw = table()->getbyname(name);
+    if(!vpw && !nodefault)
+      vpw = table()->getbyname(config.default_username());
   }
-  dir += username.subst('.', ':');
-  if(!!subdir)
-    dir = subdir + "/" + dir;
-  return dir;
+  return vpw;
 }

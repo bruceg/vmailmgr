@@ -1,8 +1,8 @@
 #ifndef VMAILMGR__EXEC__H__
 #define VMAILMGR__EXEC__H__
 
-#include "vpwentry.h"
-#include "strlist.h"
+#include "vpwentry/vpwentry.h"
+#include "misc/strlist.h"
 
 int setenv(const char* prefix, const mystring& value);
 void setenv(const vpwentry*);

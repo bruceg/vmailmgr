@@ -1,7 +1,7 @@
 #ifndef CRC_HASH__H__
 #define CRC_HASH__H__
 
-#include "crc32.h"
+#include "misc/crc32.h"
 
 class crc_hash
 {

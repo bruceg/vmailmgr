@@ -1,7 +1,7 @@
 #ifndef VMAILMGR__LOOKUP__H__
 #define VMAILMGR__LOOKUP__H__
 
-#include "pwentry.h"
+#include "misc/pwentry.h"
 
 extern bool is_local(mystring);
 extern mystring find_virtual(mystring);

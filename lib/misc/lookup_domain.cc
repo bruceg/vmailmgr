@@ -18,7 +18,7 @@
 #include "lookup.h"
 #include "list_table.h"
 #include "map_table.h"
-#include "configrc.h"
+#include "config/configrc.h"
 
 bool is_local(mystring domain)
 {

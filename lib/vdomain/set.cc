@@ -16,36 +16,25 @@
 
 #include <config.h>
 #include "vdomain.h"
-#include "autodelete.h"
+#include "misc/maildir.h"
 
-#if 0
-response vdomain::lookup(mystring username)
+response vdomain::set(const vpwentry* vpw, bool onlyadd,
+		      mystring maildir)
 {
-  autodelete<vpwentry> vpw = table()->getbyname(username);
   if(!vpw)
-    RETURN(err, "Invalid or unknown virtual user");
-  const mystring dest = vpw->dest;
-  if(dest.empty())
-    RETURN(err, "Invalid virtual password entry");
-  else
-    RETURN(ok, dest);
-}
-#endif
-
-bool vdomain::exists(mystring name)
-{
-  return table()->exists(name);
-}
-
-vpwentry* vdomain::lookup(mystring name, bool nodefault)
-{
-  vpwentry* vpw;
-  if(!name)
-    vpw = 0;
-  else {
-    vpw = table()->getbyname(name);
-    if(!vpw && !nodefault)
-      vpw = table()->getbyname(config.default_username());
+    RETURN(err, "Internal error: no vpwentry");
+  if(!validate_username(vpw->name))
+    RETURN(bad, "Virtual user or alias name contains invalid characters");
+  if(!validate_password(vpw->pass))
+    RETURN(bad, "Password field contains invalid characters");
+  if(!!maildir && !make_maildir(maildir.c_str()))
+    RETURN(err, "Can't create the mail directory '" + maildir + "'");
+  if(!table()->put(vpw, onlyadd)) {
+    if(!!maildir)
+      delete_maildir(maildir.c_str());
+    RETURN(err, "Can't add the user to the password file");
   }
-  return vpw;
+  RETURN(ok, !maildir
+	 ? "Alias added successfully"
+	 : "User added successfully");
 }

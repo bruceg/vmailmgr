@@ -1,9 +1,9 @@
 #ifndef VMAILMGR__MAP_TABLE__H__
 #define VMAILMGR__MAP_TABLE__H__
 
-#include "hash_table.h"
-#include "crc_hash.h"
-#include "mystring.h"
+#include "misc/hash_table.h"
+#include "misc/crc_hash.h"
+#include "mystring/mystring.h"
 
 class map_table : public hash_table<mystring,hash_node<mystring>,crc_hash>
 {

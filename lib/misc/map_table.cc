@@ -18,7 +18,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "map_table.h"
-#include "fdbuf.h"
+#include "fdbuf/fdbuf.h"
 
 map_table::map_table(const mystring& filename)
   : valid(false)

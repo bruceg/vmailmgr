@@ -17,7 +17,7 @@
 #ifndef HASH_TABLE__H__
 #define HASH_TABLE__H__
 
-#include "mystring.h"
+#include "mystring/mystring.h"
 
 struct hash_base
 {

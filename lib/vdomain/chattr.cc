@@ -17,8 +17,8 @@
 #include <config.h>
 #include <ctype.h>
 #include "vdomain.h"
-#include "pwcrypt.h"
-#include "autodelete.h"
+#include "misc/pwcrypt.h"
+#include "misc/autodelete.h"
 
 response vdomain::chattr(mystring username, unsigned attr, mystring newval)
 {

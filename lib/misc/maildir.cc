@@ -20,7 +20,7 @@
 #include <string.h>
 #include "ac/dirent.h"
 #include "stat_fns.h"
-#include "mystring.h"
+#include "mystring/mystring.h"
 
 static inline int rmdir(const mystring& n)
 {

@@ -1,11 +1,11 @@
 #ifndef VMAILMGR__VDOMAIN__H__
 #define VMAILMGR__VDOMAIN__H__
 
-#include "mystring.h"
-#include "configrc.h"
-#include "pwentry.h"
-#include "vpwtable.h"
-#include "response.h"
+#include "mystring/mystring.h"
+#include "config/configrc.h"
+#include "misc/pwentry.h"
+#include "vpwtable/vpwtable.h"
+#include "misc/response.h"
 
 class vdomain
 {

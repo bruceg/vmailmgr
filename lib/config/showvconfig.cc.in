@@ -1,7 +1,7 @@
 #include <config.h>
 #include <unistd.h>
-#include "pwentry.h"
-#include "vdomain.h"
+#include "misc/pwentry.h"
+#include "vdomain/vdomain.h"
 #include "configrc.h"
 
 template<class T>

@@ -1,5 +1,5 @@
 noinst_LIBRARIES = libmisc.a
-INCLUDES = -I.. -I../cdb++ -I../config -I../fdbuf -I../mystring -I../vpw
+INCLUDES = -I..
 EXTRA_DIST = krbauth.c
 
 if KRB5
@@ -35,11 +35,4 @@ libmisc_a_SOURCES = $(KRB5_SRCS) \
 	strlist_read.cc \
 	strlist_write.cc \
 	un.h \
-	utoa.h utoa.cc \
-	vdomain.h vdomain.cc \
-	vdomain_chattr.cc \
-	vdomain_deluser.cc \
-	vdomain_lookup.cc \
-	vdomain_set.cc \
-	vdomain_userdir.cc \
-	vdomain_validate.cc
+	utoa.h utoa.cc

@@ -16,25 +16,22 @@
 
 #include <config.h>
 #include "vdomain.h"
-#include "maildir.h"
+#include "misc/pwcrypt.h"
+#include "misc/autodelete.h"
 
-response vdomain::set(const vpwentry* vpw, bool onlyadd,
-		      mystring maildir)
+response vdomain::chpass(mystring username, mystring password)
 {
+  autodelete<vpwentry> vpw = table()->getbyname(username);
   if(!vpw)
-    RETURN(err, "Internal error: no vpwentry");
-  if(!validate_username(vpw->name))
-    RETURN(bad, "Virtual user or alias name contains invalid characters");
-  if(!validate_password(vpw->pass))
-    RETURN(bad, "Password field contains invalid characters");
-  if(!!maildir && !make_maildir(maildir.c_str()))
-    RETURN(err, "Can't create the mail directory '" + maildir + "'");
-  if(!table()->put(vpw, onlyadd)) {
-    if(!!maildir)
-      delete_maildir(maildir.c_str());
-    RETURN(err, "Can't add the user to the password file");
-  }
-  RETURN(ok, !maildir
-	 ? "Alias added successfully"
-	 : "User added successfully");
+    RETURN(err, "Invalid or unknown virtual user");
+  return chpass(vpw, password);
+}
+
+response vdomain::chpass(const vpwentry* vpw, mystring password)
+{
+  vpwentry newpw(*vpw);
+  newpw.pass = pwcrypt(password);
+  if(!table()->set(&newpw))
+    RETURN(err, "Error changing the password table");
+  RETURN(ok, "Password changed");
 }

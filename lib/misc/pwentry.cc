@@ -18,7 +18,7 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "configrc.h"
+#include "config/configrc.h"
 #include "pwentry.h"
 
 pwentry::pwentry()

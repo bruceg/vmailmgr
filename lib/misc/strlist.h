@@ -1,7 +1,7 @@
 #ifndef VMAILMGR__STR_LIST__H__
 #define VMAILMGR__STR_LIST__H__
 
-#include "mystring.h"
+#include "mystring/mystring.h"
 
 class fdibuf;
 class fdobuf;

@@ -1,8 +1,8 @@
 #ifndef VMAILMGR__CONFIG_IO__H__
 #define VMAILMGR__CONFIG_IO__H__
 
-#include "mystring.h"
-#include "configrc.h"
+#include "mystring/mystring.h"
+#include "config/configrc.h"
 
 bool config_read(const mystring& dir, const mystring& name, mystring& result);
 

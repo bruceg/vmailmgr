@@ -1,7 +1,7 @@
 #ifndef VMAILMGR__RESPONSE__H__
 #define VMAILMGR__RESPONSE__H__
 
-#include "mystring.h"
+#include "mystring/mystring.h"
 
 struct response
 {

@@ -16,22 +16,29 @@
 
 #include <config.h>
 #include "vdomain.h"
-#include "pwcrypt.h"
-#include "autodelete.h"
+#include "misc/crc_hash.h"
 
-response vdomain::chpass(mystring username, mystring password)
+mystring vdomain::userdir(mystring username) const
 {
-  autodelete<vpwentry> vpw = table()->getbyname(username);
-  if(!vpw)
-    RETURN(err, "Invalid or unknown virtual user");
-  return chpass(vpw, password);
-}
-
-response vdomain::chpass(const vpwentry* vpw, mystring password)
-{
-  vpwentry newpw(*vpw);
-  newpw.pass = pwcrypt(password);
-  if(!table()->set(&newpw))
-    RETURN(err, "Error changing the password table");
-  RETURN(ok, "Password changed");
+  unsigned slices = config.user_dir_slices();
+  unsigned bits = config.user_dir_bits();
+  static crc_hash hasher;
+  static const char bin2hex[16+1] = "0123456789abcdef";
+  unsigned hash = hasher(username);
+  mystring dir = config.user_dir();
+  const unsigned hexdigits = (bits+3)/4;
+  const unsigned bitmask = ~(~0U << bits);
+  char hexbuf[hexdigits+1];
+  hexbuf[hexdigits] = 0;
+  for(; slices > 0; --slices, hash >>= bits) {
+    unsigned slice = hash & bitmask;
+    for(unsigned i = hexdigits; i > 0; --i, slice >>= 4)
+      hexbuf[i-1] = bin2hex[slice & 0xf];
+    dir += hexbuf;
+    dir += "/";
+  }
+  dir += username.subst('.', ':');
+  if(!!subdir)
+    dir = subdir + "/" + dir;
+  return dir;
 }

@@ -1,9 +1,9 @@
 #ifndef VMAILMGR__SERVER__H__
 #define VMAILMGR__SERVER__H__
 
-#include "mystring.h"
-#include "response.h"
-#include "configrc.h"
+#include "mystring/mystring.h"
+#include "misc/response.h"
+#include "config/configrc.h"
 
 class server_call
 {

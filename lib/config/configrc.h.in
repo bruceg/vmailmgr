@@ -9,8 +9,8 @@
 #define LOCAL_CONFIG_DIR ".vmailmgr"
 #endif
 
-#include "mystring.h"
-#include "strlist.h"
+#include "misc/mystring.h"
+#include "misc/strlist.h"
 
 template<class T>
 struct config_cache

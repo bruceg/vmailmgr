@@ -17,7 +17,7 @@
 #include <config.h>
 #include <ctype.h>
 #include "list_table.h"
-#include "fdbuf.h"
+#include "fdbuf/fdbuf.h"
 
 list_table::list_table(const mystring& filename)
   : valid(false)

@@ -16,7 +16,7 @@
 
 #include <config.h>
 #include "strlist.h"
-#include "fdbuf.h"
+#include "fdbuf/fdbuf.h"
 
 bool strlist::write(const mystring& filename) const
 {

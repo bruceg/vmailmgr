@@ -22,8 +22,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <ctype.h>
-#include "fdbuf.h"
-#include "mystring.h"
+#include "fdbuf/fdbuf.h"
+#include "mystring/mystring.h"
 #include "stat_fns.h"
 
 #ifdef HAVE_CRYPT_H

@@ -1,12 +1,12 @@
 #ifndef VMAILMGR__PWENTRY_TABLE__H__
 #define VMAILMGR__PWENTRY_TABLE__H__
 
-#include "pwentry.h"
+#include "misc/pwentry.h"
 
 #if 0
 
-#include "hash_table.h"
-#include "crc_hash.h"
+#include "misc/hash_table.h"
+#include "misc/crc_hash.h"
 
 class pwentry_table : public hash_table<pwentry*,hash_ptr_node<pwentry>,crc_hash>
 {

@@ -18,8 +18,8 @@
 #define VMAILMGR__PWENTRY__H__
 
 #include <sys/types.h>
-#include "mystring.h"
-#include "configrc.h"
+#include "mystring/mystring.h"
+#include "config/configrc.h"
 
 struct pwentry
 {

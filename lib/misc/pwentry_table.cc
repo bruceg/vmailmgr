@@ -18,7 +18,7 @@
 #include "pwentry_table.h"
 #include <pwd.h>
 #include <ctype.h>
-#include "configrc.h"
+#include "config/configrc.h"
 #ifdef HAVE_SHADOW_H
 #include <shadow.h>
 #endif

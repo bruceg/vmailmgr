@@ -19,7 +19,7 @@ Bug Fixes:
 - Fixed a bug in the PHP library that caused long listdomains to fail.
 - Exit code 99 from vdeliver-predeliver now causes vdeliver to exit
   (with code 99) without delivering the message.
-- Fixed a bug that cuased creating directories with a trailing slash to
+- Fixed a bug that caused creating directories with a trailing slash to
   fail.
 -------------------------------------------------------------------------------
 Changes in version 0.96.9

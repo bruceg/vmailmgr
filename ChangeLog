@@ -1,4 +1,29 @@
+2000-04-13  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* Released version 0.96.5
+
+	* doc/vchattr.pod: Wrote a man page for the vchattr command.
+
 2000-04-12  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* commands/vdeliver.cc (cli_main): Check if the account has
+	expired before delivering.
+
+	* authenticate/authvlib.cc (check): Check if the acount has
+	expired and fail if so.
+
+	* lib/vpwentry/export_env.cc (export_env): Set
+	"VUSER_MAILBOX_ENABLED" to the new flag.
+
+	* authenticate/authvlib.cc (check): If looking up the base user
+	fails, and virtual_only is set, return instead of failing hard.
+
+	* daemon/chattr.cc (CMD): Allow mailbox enabled flag to be changed
+	by virtual users.
+
+	* commands/listvdomain.cc (show_user): Print out "(disabled)" next
+	to the mailbox directory if the "is_mailbox_enabled" flag is not
+	set.
 
 	* cgi/listvdomain.cc (show_user): Adapted to using
 	vpwentry::from_record instead of vpwentry::from_ver1_record.

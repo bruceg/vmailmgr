@@ -21,6 +21,8 @@
 
 mystring vpwentry::to_record() const
 {
+  static const mystring prefix = "\02";
+  
   mystring f;
   if(!!forwards)
     f = forwards + mystring::NUL;
@@ -30,7 +32,7 @@ mystring vpwentry::to_record() const
     0
   };
   mystring flags(flagstmp, 3);
-  return "\02" + flags + pass + mystring::NUL +
+  return prefix + flags + pass + mystring::NUL +
     mailbox + mystring::NUL +
     f + mystring::NUL +
     personal + mystring::NUL +

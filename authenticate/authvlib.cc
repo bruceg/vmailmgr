@@ -16,6 +16,7 @@
 
 #include <config.h>
 #include <stdlib.h>
+#include "ac/time.h"
 #include <unistd.h>
 #include "authvlib.h"
 #include "misc/exec.h"
@@ -69,9 +70,12 @@ static user_data* check(mystring fulluser, mystring password,
 {
   mystring virtname;
   pwentry* basepw;
-  if(!lookup_baseuser(fulluser, basepw, virtname))
-    // FIXME: if virtual_only, we might not want to fail here
-    fail_login("Invalid or unknown base user or domain");
+  if(!lookup_baseuser(fulluser, basepw, virtname)) {
+    if(virtual_only)
+      return 0;
+    else
+      fail_login("Invalid or unknown base user or domain");
+  }
   presetenv("VUSER=", virtname);
   set_user(basepw);
   vpwentry* vpw = 0;
@@ -81,6 +85,8 @@ static user_data* check(mystring fulluser, mystring password,
       fail_login("Invalid or unknown virtual user");
     if(!vpw->authenticate(password))
       fail_login("Invalid or incorrect password");
+    if(vpw->expiry < (unsigned)time(0))
+      fail_login("Account has expired");
     vpw->export_env();
     return new user_data(basepw, vpw->mailbox, vpw->name);
   }

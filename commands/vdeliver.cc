@@ -272,7 +272,9 @@ int cli_main(int, char*[])
   vpwentry* vpw = domain.lookup(ext, false);
   if(!vpw)
     die_fail(mystring("Invalid or unknown virtual user '" + ext + "'").c_str());
-
+  if(vpw->expiry < (unsigned)time(0))
+    die_fail(mystring("Virtual user '" + ext + "' has expired").c_str());
+  
   vpw->export_env();
   bool enabled = vpw->is_mailbox_enabled && !!vpw->mailbox;
 

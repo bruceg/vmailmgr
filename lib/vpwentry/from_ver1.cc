@@ -26,8 +26,8 @@ bool vpwentry::from_ver1_record(const mystring& text)
   if(text[text.length()-1] != 0)
     return false;
 
-  const char* ptr = text.c_str() + 1;
-  const char* const end = ptr + text.length();
+  const char* ptr = text.c_str();
+  const char* const end = ptr++ + text.length();
 
   if((ptr = decode_base(ptr, end)) == 0) return false;
   if((ptr = decode_values(ptr, end)) == 0) return false;

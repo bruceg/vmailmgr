@@ -32,12 +32,16 @@ CMD(chattr)
   
   unsigned aval = strtoul(attr.c_str(), 0, 0);
   bool userpass = false;
-  if(aval == vdomain::ATTR_PASS) {
-    userpass = true;
+  switch(aval) {
+  case vdomain::ATTR_PASS:
     args[3] = LOG_NEWPASS;
-  }
-  if(aval == vdomain::ATTR_DEST)
     userpass = true;
+    break;
+  case vdomain::ATTR_DEST:
+  case vdomain::ATTR_MAILBOX_ENABLED:
+    userpass = true;
+    break;
+  }
   args[1] = LOG_PASSWORD;
   logcommand(args);
 

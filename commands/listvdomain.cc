@@ -50,8 +50,11 @@ void show_user(const vpwentry& vpw)
   fout << vpw.name;
   if(!vpw.mailbox)
     fout << " -";
-  else
+  else {
     fout << ' ' << vpw.mailbox;
+    if(!vpw.is_mailbox_enabled)
+      fout << "(disabled)";
+  }
   for(mystring_iter iter(vpw.forwards, '\0'); iter; ++iter)
     fout << ' ' << *iter;
   fout << '\n';

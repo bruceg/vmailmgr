@@ -51,10 +51,12 @@ response vdomain::chpass(vpwentry* vpw, mystring pass)
 
 response vdomain::chdest(vpwentry* vpw, mystring dest)
 {
-  for(mystring_iter iter = dest; iter; ++iter) {
-    response r = validate_forward(*iter);
-    if(!r)
-      return r;
+  if(!!dest) {
+    for(mystring_iter iter = dest; iter; ++iter) {
+      response r = validate_forward(*iter);
+      if(!r)
+	return r;
+    }
   }
   vpw->forwards = dest;
   RETURN(ok, "Forwarding address(es) changed");

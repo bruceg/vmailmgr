@@ -1,4 +1,19 @@
 -------------------------------------------------------------------------------
+Changes in version 0.96.5
+
+New Features:
+- Mailbox delivery can be temporarily disabled on a per-virtual-user
+  basis, through either the CGIs, command-line tools, or PHP, without
+  deleting the mailbox.
+- Account expiry is handled by the authentication tools and by vdeliver.
+
+Internal Changes:
+- The binary record format has changed to handle the new boolean flags.
+  Note that this new format is backwards compatible, so no conversion is
+  needed.
+
+Bug Fixes: None
+-------------------------------------------------------------------------------
 Changes in version 0.96.4
 
 New Features:

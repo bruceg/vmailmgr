@@ -27,14 +27,15 @@ static int presetenv(const char* prefix, unsigned value)
 bool vpwentry::export_env() const
 {
   return presetenv("VUSER=", name) == 0 &&
-    presetenv("MAILDIR=", mailbox)== 0 &&
-    presetenv("VUSER_CTIME=", ctime)== 0 &&
-    presetenv("VUSER_EXPIRY=", expiry)== 0 &&
-    presetenv("VUSER_MSGCOUNT=", msgcount)== 0 &&
-    presetenv("VUSER_MSGSIZE=", msgsize)== 0 &&
-    presetenv("VUSER_PERSONAL=", personal)== 0 &&
-    presetenv("VUSER_HARDQUOTA=", hardquota)== 0 &&
-    presetenv("VUSER_SOFTQUOTA=", softquota)== 0;
+    presetenv("MAILDIR=", mailbox) == 0 &&
+    presetenv("VUSER_CTIME=", ctime) == 0 &&
+    presetenv("VUSER_EXPIRY=", expiry) == 0 &&
+    presetenv("VUSER_MSGCOUNT=", msgcount) == 0 &&
+    presetenv("VUSER_MSGSIZE=", msgsize) == 0 &&
+    presetenv("VUSER_PERSONAL=", personal) == 0 &&
+    presetenv("VUSER_HARDQUOTA=", hardquota) == 0 &&
+    presetenv("VUSER_SOFTQUOTA=", softquota) == 0 &&
+    presetenv("VUSER_MAILBOX_ENABLED=", is_mailbox_enabled) == 0;
   //for(mystring_iter iter(data.str(), '\0'); iter; ++iter)
   //  presetenv("VUSER_"+...+"=", *iter);
 }

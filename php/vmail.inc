@@ -271,5 +271,9 @@ function venableautoresponse($domain, $password, $username){
 return vm_daemon_raw($command);
 }
 
+function vautoresponsestatus($domain, $password, $username){
+	$command = array("autoresponse", $domain, $username, $password, "status");
+	return vm_daemon_raw($command);
+}
 
 ?>

@@ -94,166 +94,121 @@ def do_eval(body, context):
     return result
 
 ###############################################################################
-# Parsing mechanism
+# Node types
 
-class Stack:
-    def __init__(self):
-        self.stack = [ ]
-        self.fake_depth = 0
-    def push(self, token):
-        self.stack.append(token)
-    def fake_push(self):
-        self.fake_depth = self.fake_depth + 1
-    def pop(self):
-        if self.fake_depth:
-            self.fake_depth = self.fake_depth - 1
-            return None
-        return self.stack.pop()
-    def top(self):
-        return self.stack[-1]
-    def empty(self):
-        return len(self.stack) == 0
-    def append_or_print(self, section, context):
-        frame = len(self.stack)
-        while section and frame > 0:
-            frame = frame - 1
-            section = self.stack[frame].append(section)
-        if section:
-            section.format(context)
-            sys.stdout.write(str(section))
-
-class Token:
-    '''Token placeholder class
-
-    All tokens must define the following methods:
-    * apply(stack, context) -- used to "execute" the token.
-    Syntax tokens manipulate the stack and context here.
-    
-    Tokens on the stack must define the following methods:
-    * do_end(stack, context) -- called *after* the token is popped off
-    the stack by an end token.
-    * append(section) -- either appends the section to the current token
-    and returns None, or returns the section (potentially formatting it
-    in the process).
-    * is_true() -- Returns true if tokens are to be pushed onto the stack.
-    
-    Tokens that handle an "else" clause must define:
-    * do_else()
-    '''
-    
+class Node:
     pass
 
-class Start(Token):
-    '''Is pushed onto the stack initially to provide for a non-empty stack'''
-    def __init__(self):
-        pass
-    def apply(self, stack, context):
-        stack.push(self)
-    def do_end(self, stack, context):
-        pass
-    def append(self, section):
-        return section
-    def is_true(self):
-        return 1
+def indent(level): return ' - ' * level
 
-class Section(Token):
+class Body(Node):
+    def __init__(self):
+        self.list = [ ]
+    def append(self, node):
+        self.list.append(node)
+    def showtree(self, level):
+        print indent(level), "Body"
+        for item in self.list:
+            item.showtree(level+1)
+    def execute(self, context):
+        for item in self.list:
+            item.execute(context)
+
+class Section(Node):
     '''Encapsulates an optionally formatted text section'''
     def __init__(self, string, formatted=0):
         self.section = string
-        self.formatted = formatted
-    def apply(self, stack, context):
-        stack.append_or_print(self, context)
-    def format(self, context):
-        if not self.formatted:
-            self.section = self.section % context
-            self.formatted = 1
-    def __str__(self):
-        return self.section
-    def __repr__(self):
-        return "Section('%s', %s)" % (self.section, self.formatted)
-    def copy(self):
-        return Section(self.section, self.formatted)
+    def showtree(self, level):
+        print indent(level), "Section(%d bytes)" % len(self.section)
+    def execute(self, context):
+        return sys.stdout.write(self.section % context)
 
-class End(Token):
-    '''Ends a block token, like Start, Foreach, and If'''
+class End(Node):
+    '''Ends a block node, like Start, Foreach, and If'''
     rx = re.compile(r'^end(\s+.*|)$')
     def __init__(self, groups):
         pass
-    def apply(self, stack, context):
-        top = stack.pop()
-        if top:
-            return top.do_end(stack, context)
-        return None
 
-class If(Token):
+class If(Node):
     rx = re.compile(r'^if\s+(.+)$')
     def __init__(self, groups):
         self.expr = groups[0]
-    def apply(self, stack, context):
-        if stack.top().is_true():
-            self.truth = do_eval(self.expr, context)
-            self.depth = 0
-            stack.push(self)
-        else:
-            stack.fake_push()
-    def do_end(self, stack, context):
-        pass
-    def do_else(self):
-        self.truth = not self.truth
-    def append(self, section):
-        if not self.truth:
-            section = None
-        return section
-    def is_true(self):
-        return self.truth
+        self.body = None
+        self.else_node = None
+        self.elseifs = [ ]
+    def append_elseif(self, node):
+        self.elseifs.append(node)
+    def showtree(self, level):
+        print indent(level), "If", self.expr
+        self.body.showtree(level+1)
+        for elseif in self.elseifs:
+            elseif.showtree(level)
+        if self.else_node:
+            self.else_node.showtree(level)
+    def execute(self, context):
+        if do_eval(self.expr, context):
+            return self.body.execute(context)
+        for elseif in self.elseifs:
+            if elseif.execute(context):
+                return
+        if self.else_node:
+            return self.else_node.execute(context)
 
-class Else(Token):
+class Else(Node):
     '''Negates an If clause'''
     rx = re.compile(r'^else$')
     def __init__(self, groups):
-        pass
-    def apply(self, stack, context):
-        stack.top().do_else()
+        self.body = None
+    def showtree(self, level):
+        print indent(level), "Else"
+        self.body.showtree(level+1)
+    def execute(self, context):
+        return self.body.execute(context)
 
-class Foreach(Token):
+class ElseIf(Node):
+    '''Additional clauses to an If clause'''
+    rx = re.compile(r'^else\s+if\s+(.+)$')
+    def __init__(self, groups):
+        self.expr = groups[0]
+        self.body = None
+    def showtree(self, level):
+        print indent(level), "ElseIf", self.expr
+        self.body.showtree(level+1)
+    def execute(self, context):
+        if do_eval(self.expr, context):
+            self.body.execute(context)
+            return 1
+        return None
+
+class Foreach(Node):
     '''Iterates over each item in a list'''
     rx = re.compile(r'^foreach\s+(.+)$')
     def __init__(self, groups):
         self.expr = groups[0]
-        self.sections = [ ]
-    def apply(self, stack, context):
-        if stack.top().is_true():
-            self.saved_context = context
-            self.results = do_eval(self.expr, context)
-            stack.push(self)
-        else:
-            stack.fake_push()
-    def copy_sections(self):
-        copy = range(len(self.sections))
-        for i in copy:
-            copy[i] = self.sections[i].copy()
-        return copy
-    def do_end(self, stack, context):
-        context = context.copy()
-        for item in self.results:
+        self.body = None
+    def showtree(self, level):
+        print indent(level), "Foreach", self.expr
+        self.body.showtree(level + 1)
+    def execute(self, context):
+        context.push()
+        list = do_eval(self.expr, context)
+        for item in list:
             context.update(item)
-            for section in self.copy_sections():
-                section.format(context)
-                stack.append_or_print(section, context)
-    def append(self, section):
-        self.sections.append(section)
-        return None
-    def is_true(self):
-        return 1
+            self.body.execute(context)
+        context.pop()
+    
+special_node_types = [ Else, ElseIf, End, Foreach, If ]
 
-special_token_types = [ Else, End, Foreach, If ]
-
-class Expr(Token):
+class Expr(Node):
     def __init__(self, expr):
         self.expr = expr
-    def apply(self, stack, context):
-        if stack.top().is_true():
-            do_exec(self.expr, context)
+    def showtree(self, level):
+        print indent(level), "Expr", self.expr
+    def execute(self, context):
+        return do_exec(self.expr, context)
+
+###############################################################################
+# Lexical analysis
 
 _rx_begin_cmd = re.compile(r'<\?\s*')
 _rx_end_cmd = re.compile(r'\s*\?>\s*\r?\n?')
@@ -263,15 +218,15 @@ class Lexer:
         self.currpos = 0
         self.after_escape = 0
         self.content = content
-    
-    def get_token(self):
+
+    def parse_node(self):
         if self.currpos >= len(self.content):
             return None
         if self.after_escape:
-            return self.get_token_after()
+            return self.parse_node_after()
         else:
-            return self.get_token_before()
-    def get_token_after(self):
+            return self.parse_node_before()
+    def parse_node_after(self):
         end = _rx_end_cmd.search(self.content, self.currpos)
         if not end:
             raise ValueError, "Unterminated command escape sequence"
@@ -279,7 +234,7 @@ class Lexer:
         cmd = self.content[self.currpos:end.start()]
         self.currpos = end.end()
         return self.parse_cmd(cmd)
-    def get_token_before(self):
+    def parse_node_before(self):
         start = _rx_begin_cmd.search(self.content, self.currpos)
         if start:
             self.after_escape = 1
@@ -290,28 +245,105 @@ class Lexer:
             self.currpos = len(self.content)
         return result
     def parse_cmd(self, cmdstr):
-        for type in special_token_types:
+        for type in special_node_types:
             match = type.rx.match(cmdstr)
             if match:
                 return type(match.groups())
         return Expr(cmdstr)
 
+###############################################################################
+# Parsing mechanism
+
+def parse(content):
+    '''Parse the content into nodes, and then order into a tree structure'''
+    list = [ ]
+    lexer = Lexer(content)
+    node = lexer.parse_node()
+    while node is not None:
+        print node
+        list.append(node)
+        node = lexer.parse_node()
+    (node,index) = parse_body(list, 0)
+    if index < len(list):
+        raise ValueError, "Parsing ended before end-of-file"
+    return node
+
+def parse_body(nodes, index):
+    body = Body()
+    (node,newindex) = parse_statement(nodes, index)
+    while node:
+        body.append(node)
+        (node,newindex) = parse_statement(nodes, newindex)
+    return (body,newindex)
+
+def parse_statement(nodes, index):
+    (node,newindex) = parse_text_section(nodes, index)
+    if node:
+        return (node,newindex)
+    (node,newindex) = parse_if_section(nodes, index)
+    if node:
+        return (node,newindex)
+    (node,newindex) = parse_foreach_section(nodes, index)
+    if node:
+        return (node,newindex)
+    (node,newindex) = parse_other_section(nodes, index)
+    if node:
+        return (node,newindex)
+    return (None, index)
+
+def parse_text_section(nodes, index):
+    if index < len(nodes) and isinstance(nodes[index], Section):
+        return (nodes[index], index+1)
+    return (None, index)
+
+def parse_if_section(nodes, index):
+    if index < len(nodes) and isinstance(nodes[index], If):
+        top = nodes[index]
+        (body, newindex) = parse_body(nodes, index+1)
+        if body:
+            top.body = body
+            while newindex < len(nodes) and \
+                  isinstance(nodes[newindex], ElseIf):
+                (body, tmpindex) = parse_body(nodes, newindex+1)
+                if body:
+                    nodes[newindex].body = body
+                    top.append_elseif(nodes[newindex])
+                    newindex = tmpindex
+            if newindex < len(nodes) and isinstance(nodes[newindex], Else):
+                (body, tmpindex) = parse_body(nodes, newindex+1)
+                if body:
+                    nodes[newindex].body = body
+                    top.else_node = nodes[newindex]
+                    newindex = tmpindex
+            if newindex < len(nodes) and isinstance(nodes[newindex], End):
+                return (top, newindex+1)
+    return (None, index)
+
+def parse_foreach_section(nodes, index):
+    if index < len(nodes) and isinstance(nodes[index], Foreach):
+        top = nodes[index]
+        (body, endindex) = parse_body(nodes, index+1)
+        if body and \
+           endindex < len(nodes) and isinstance(nodes[endindex], End):
+            top.body = body
+            return (top, endindex+1)
+    return (None, index)
+
+def parse_other_section(nodes, index):
+    if index < len(nodes) and isinstance(nodes[index], Expr):
+        return (nodes[index], index+1)
+    return (None, index)
+
 def format(content, context):
     if not isinstance(context, Context):
         context = Context(context)
-    
-    stack = Stack()
-    Start().apply(stack, context)
-
-    lex = Lexer(content)
-    token = lex.get_token()
-    while token:
-        token.apply(stack, context)
-        token = lex.get_token()
-
-    while not stack.empty():
-        End(None).apply(stack, context)
+    tree = parse(content)
+    return tree.execute(context)
 
 if __name__ == '__main__':
-    format(sys.stdin.read(),
-           { 'domain':'testdomain.org', 'username':'nobody' })
+    body = sys.stdin.read()
+    tree = parse(body)
+    tree.showtree(0)
+    context = Context({'username':'nobody', 'domain':'testdomain.org'})
+    tree.execute(context)
+    print context.dict

@@ -1,7 +1,3 @@
 - Add an "include" feature to parser.
 
-- <? ?> statements within a foreach block are evaluated once when the
-  statement is pushed on the stack instead of once each time through the
-  loop.
-
-- Make stacking contexts work for things like while loops and includes.
+- Document the parser features, what modules are available, etc.

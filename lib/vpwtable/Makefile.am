@@ -15,7 +15,7 @@ EXTRA_DIST = vpwtable.h \
 	gdbm_read.cc
 
 if VPWTABLE_CDB
-libvpwtable_a_SOURCES = \
+CDBSOURCES = \
 	cdb_vpwtable.cc \
 	cdb_del.cc \
 	cdb_exists.cc \
@@ -23,13 +23,19 @@ libvpwtable_a_SOURCES = \
 	cdb_put.cc \
 	cdb_read.cc
 else
+CDBSOURCES =
+endif
+
 if VPWTABLE_GDBM
-libvpwtable_a_SOURCES = \
+GDBMSOURCES = \
 	gdbm_vpwtable.cc \
 	gdbm_del.cc \
 	gdbm_exists.cc \
 	gdbm_getbyname.cc \
 	gdbm_put.cc \
 	gdbm_read.cc
+else
+GDBMSOURCES =
 endif
-endif
+
+libvpwtable_a_SOURCES = $(CDBSOURCES) $(GDBMSOURCES)

@@ -1,7 +1,6 @@
 if COURIER_IMAP
 CIPROGS = authvmailmgr
-CILIBS = -L@COURIER_IMAP_DIR@/authlib -lauthmod -lauth
-CIINCLUDES = -I@COURIER_IMAP_DIR@
+CILIBS = -L../lib/courier-authlib -lauthmod
 else
 CIPROGS =
 endif

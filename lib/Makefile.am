@@ -1,4 +1,5 @@
-SUBDIRS = misc vdomain vpwentry vpwtable cdb++ cgi cli fdbuf mystring config
+SUBDIRS = misc vdomain vpwentry vpwtable cdb++ cgi cli fdbuf mystring config \
+	courier-authlib
 noinst_LIBRARIES = libvmailmgr.a libcgi.a libcli.a
 EXTRA_DIST = mergelib.sh
 

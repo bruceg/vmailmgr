@@ -106,6 +106,7 @@ AC_OUTPUT(Makefile
 	  lib/cgi/Makefile
 	  lib/cli/Makefile
 	  lib/config/Makefile
+	  lib/courier-authlib/Makefile
 	  lib/fdbuf/Makefile
 	  lib/misc/Makefile
 	  lib/mystring/Makefile

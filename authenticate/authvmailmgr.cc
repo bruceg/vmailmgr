@@ -18,8 +18,8 @@
 #include "misc/exec.h"
 #include "authvlib.h"
 // Courier-IMAP includes
-#include "authlib/auth.h"
-#include "authlib/authmod.h"
+#include "courier-authlib/auth.h"
+#include "courier-authlib/authmod.h"
 
 static mystring username;
 static mystring passcode;

@@ -54,7 +54,7 @@ int cli_main(int argc, char* argv[])
   mystring username = argv[0];
   username = username.lower();
   
-  vpwentry* vpw = domain.lookup(username, false);
+  vpwentry* vpw = domain.lookup(username, true);
   if(!vpw) {
     if(!o_quiet)
       ferr << "vchforwards: User '" << username << "' does not exist." << endl;

@@ -15,29 +15,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
-#include "vpwentry.h"
-#include "misc/utoa.h"
-#include "vdomain/vdomain.h"
+#include "misc/strtou.h"
 
-mystring vpwentry::to_record() const
+const char* from_uint(const char* ptr, unsigned& uint)
 {
-  mystring f;
-  if(!!forwards)
-    f = forwards + mystring::NUL;
-  char flagstmp[] = {
-    vdomain::ATTR_MAILBOX_ENABLED,
-    is_mailbox_enabled,
-    0
-  };
-  mystring flags(flagstmp, 3);
-  return "\02" + flags + pass + mystring::NUL +
-    mailbox + mystring::NUL +
-    f + mystring::NUL +
-    personal + mystring::NUL +
-    utoa(hardquota) + mystring::NUL +
-    utoa(softquota) + mystring::NUL +
-    utoa(msgsize) + mystring::NUL +
-    utoa(msgcount) + mystring::NUL +
-    utoa(ctime) + mystring::NUL +
-    utoa(expiry) + mystring::NUL /* + data.str() + mystring::NUL */ ;
+  const char* tmp;
+  uint = strtou(ptr, &tmp);
+  return (*tmp == 0) ? ++tmp : 0;
 }

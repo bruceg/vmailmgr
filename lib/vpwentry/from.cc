@@ -17,16 +17,16 @@
 #include <config.h>
 #include "vpwentry.h"
 
-bool vpwentry::from_record(vpwentry& vpw,
-			   const mystring& name,
-			   const mystring& text)
+bool vpwentry::from_record(const mystring& vname, const mystring& text)
 {
-  vpw.name = name;
+  name = vname;
   switch(text[0]) {
+  case 2:
+    return from_ver2_record(text);
   case 1:
-    return from_ver1_record(vpw, text);
+    return from_ver1_record(text);
   case ':':
-    return from_old_record(vpw, text);
+    return from_old_record(text);
   default:
     return false;
   }

@@ -6,6 +6,15 @@
 
 struct vpwentry 
 {
+protected:
+  const char* decode_flags(const char*, const char*);
+  const char* decode_base(const char*, const char*);
+  const char* decode_values(const char*, const char*);
+
+  bool from_ver1_record(const mystring& text);
+  bool from_ver2_record(const mystring& text);
+  bool from_old_record(const mystring& text);
+  
 public:
   mystring name;
   mystring pass;
@@ -18,6 +27,7 @@ public:
   unsigned msgcount;
   unsigned ctime;
   unsigned expiry;
+  bool is_mailbox_enabled;
   // keystrlist data;
   
   vpwentry();
@@ -34,18 +44,10 @@ public:
 
   bool authenticate(const mystring& phrase) const;
   
-  static bool from_record(vpwentry& vpw, const mystring& name,
-			  const mystring& text);
-  static bool from_ver1_record(vpwentry& vpw, const mystring& text);
-  static bool from_old_record(vpwentry& vpw, const mystring& text);
-  
+  bool from_record(const mystring& name, const mystring& text);
   mystring to_record() const;
 
   bool export_env() const;
-
-  bool is_enabled() const;
-  bool enable() const;
-  bool disable() const;
 };
 
 #endif

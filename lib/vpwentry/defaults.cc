@@ -21,6 +21,7 @@
 
 void vpwentry::set_defaults()
 {
+  is_mailbox_enabled = true;
   softquota = config->default_softquota();
   hardquota = config->default_hardquota();
   msgsize = config->default_msgsize();

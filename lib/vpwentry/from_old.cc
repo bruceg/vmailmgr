@@ -19,25 +19,25 @@
 #include <string.h>
 #include "vpwentry.h"
 
-bool vpwentry::from_old_record(vpwentry& vpw, const mystring& text)
+bool vpwentry::from_old_record(const mystring& text)
 {
-  const char* pass = text.c_str()+1;
-  const char* end = strchr(pass, ':');
+  const char* passptr = text.c_str()+1;
+  const char* end = strchr(passptr, ':');
   if(!end) return false;
 
-  vpw.pass = text.sub(1, end-pass);
+  pass = text.sub(1, end-passptr);
   ++end;
   if(*end == '.' || *end == '/') {
-    vpw.mailbox = end;
-    vpw.forwards = 0;
+    mailbox = end;
+    forwards = 0;
   }
   else {
     if(*end == '&')
       ++end;
-    vpw.mailbox = 0;
-    vpw.forwards = end;
-    vpw.forwards = vpw.forwards.subst(',', '\0');
+    mailbox = 0;
+    forwards = end;
+    forwards = forwards.subst(',', '\0');
   }
-  vpw.set_defaults();
+  set_defaults();
   return true;
 }

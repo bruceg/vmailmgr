@@ -26,6 +26,6 @@ types.pyc: types.py local.py
 types.pyo: types.py local.py
 
 .py.pyc:
-	python -c 'import $*'
+	python -c 'import $*' && touch $@
 .py.pyo:
-	python -O -c 'import $*'
+	python -O -c 'import $*' && touch $@

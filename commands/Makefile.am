@@ -4,9 +4,9 @@ bin_PROGRAMS = @CDBPROGS@ \
 bin_SCRIPTS = @CDBSCRIPTS@ vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
 
-man_MANS = $(noinst_PODS:.pod=.1)
-noinst_HTMLS = $(noinst_PODS:.pod=.html)
 noinst_PODS = $(bin_PROGRAMS:=.pod)
+noinst_HTMLS = $(noinst_PODS:.pod=.html)
+man_MANS = $(noinst_PODS:.pod=.1)
 
 CLEANFILES = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS) \
 	pod2html-dircache pod2html-itemcache
@@ -18,12 +18,10 @@ EXTRA_SCRIPTS = allvpasswd2cdb
 
 all: docs
 
-docs: $(noinst_HTMLS) $(noinst_TXTS)
+docs: $(noinst_HTMLS) $(man_MANS)
 
 dist-hook:
-	touch $(distdir)/*.html
-	touch $(distdir)/*.txt
-	touch $(distdir)/*.[123456789]
+	touch $(distdir)/*.html $(distdir)/*.[123456789]
 
 %.pod: %.cc ../configure.in ../lib/cli/cli2pod.pl
 	perl ../lib/cli/cli2pod.pl $< >$@

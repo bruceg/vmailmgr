@@ -13,9 +13,7 @@ all: docs
 docs: $(noinst_HTMLS) $(noinst_TXTS)
 
 dist-hook:
-	touch $(distdir)/*.html
-	touch $(distdir)/*.txt
-	touch $(distdir)/*.[123456789]
+	touch $(distdir)/*.html $(distdir)/*.[123456789]
 
 vmailmgrd.pod: main.cc ../configure.in ../lib/cli/cli2pod.pl
 	perl ../lib/cli/cli2pod.pl $< >$@

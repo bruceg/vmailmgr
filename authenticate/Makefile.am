@@ -12,12 +12,10 @@ EXTRA_DIST = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS)
 
 all: docs
 
-docs: $(noinst_HTMLS) $(noinst_TXTS)
+docs: $(noinst_HTMLS) $(man_MANS)
 
 dist-hook:
-	touch $(distdir)/*.html
-	touch $(distdir)/*.txt
-	touch $(distdir)/*.[123456789]
+	touch $(distdir)/*.html $(distdir)/*.[123456789]
 
 %.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@

@@ -17,6 +17,14 @@ public:
   virtual bool end() = 0;
 };
 
+class vpwtable_writer
+{
+public:
+  virtual ~vpwtable_writer();
+  virtual bool put(const vpwentry& vpw) = 0;
+  virtual bool end() = 0;
+};
+
 class vpwtable
 {
 private:
@@ -28,7 +36,8 @@ public:
   ~vpwtable();
 
   vpwtable_reader* start_read() const;
-
+  vpwtable_writer* start_write() const;
+  
   vpwentry* getbyname(const mystring& name) const;
   bool exists(const mystring& name) const;
   

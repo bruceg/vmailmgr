@@ -7,12 +7,14 @@ EXTRA_DIST = vpwtable.h \
 	cdb_getbyname.cc \
 	cdb_put.cc \
 	cdb_read.cc \
+	cdb_write.cc \
 	gdbm_vpwtable.cc \
 	gdbm_del.cc \
 	gdbm_exists.cc \
 	gdbm_getbyname.cc \
 	gdbm_put.cc \
-	gdbm_read.cc
+	gdbm_read.cc \
+	gdbm_write.cc
 
 if VPWTABLE_CDB
 CDBSOURCES = \
@@ -21,7 +23,8 @@ CDBSOURCES = \
 	cdb_exists.cc \
 	cdb_getbyname.cc \
 	cdb_put.cc \
-	cdb_read.cc
+	cdb_read.cc \
+	cdb_write.cc
 else
 CDBSOURCES =
 endif
@@ -33,10 +36,11 @@ GDBMSOURCES = \
 	gdbm_exists.cc \
 	gdbm_getbyname.cc \
 	gdbm_put.cc \
-	gdbm_read.cc
+	gdbm_read.cc \
+	gdbm_write.cc
 else
 GDBMSOURCES =
 endif
 
 libvpwtable_a_SOURCES = $(CDBSOURCES) $(GDBMSOURCES) \
-	reader.cc
+	reader.cc writer.cc

@@ -71,6 +71,7 @@ static user_data* check(mystring fulluser, mystring password,
   pwentry* basepw;
   if(!lookup_baseuser(fulluser, basepw, virtname))
     fail_login("Invalid or unknown base user or domain");
+  presetenv("VUSER=", virtname);
   if(!virtname) {
     if(virtual_only)
       return 0;
@@ -80,7 +81,6 @@ static user_data* check(mystring fulluser, mystring password,
     return new user_data(basepw, "", "");
   }
   else {
-    presetenv("VUSER=", virtname);
     set_user(basepw);
     vpwentry* vpw = domain->lookup(virtname, true);
     if(!vpw || !vpw->mailbox)

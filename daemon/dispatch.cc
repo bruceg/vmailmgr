@@ -65,7 +65,7 @@ struct dispatch
 
 #define ENTRY(NAME,MIN,MAX,DV) { #NAME , NAME##_cmd , unsigned(MIN), unsigned(MAX), DV }
 dispatch dispatch_table[] = {
-  ENTRY(lookup,       2,  2, true),
+  ENTRY(lookup,       3,  3, true),
   ENTRY(check,        3,  3, true),
   ENTRY(chattr,       5, -1, true),
   ENTRY(adduser2,     5, -1, true),

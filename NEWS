@@ -7,7 +7,9 @@ New Features:
   authvmailmgr-presetuid and authvmailmgr-postsetuid before and after
   executing the setuid respectively, just like checkvpw.
 
-Internal Changes: None
+Internal Changes:
+- The daemon lookup command now returns all of the virtual user data,
+  not just the mailbox and forwarding.
 
 Bug Fixes:
 - Fixed a typo in the vmailmgrd run script.

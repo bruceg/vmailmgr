@@ -1,5 +1,8 @@
 2000-08-03  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
+	* daemon/lookup.cc: Rewritten to output the entire virtual user
+	data instead of just the mailbox and aliases.
+
 	* commands/vcheckquota.cc: Changed many instances of "int" to
 	"unsigned".
 	(check_quota): Always check incoming message size, and check max

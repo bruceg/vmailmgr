@@ -60,28 +60,19 @@ response lookup_and_validate(const mystring& fullname,
   }
 }
 
-CMD(lookup)
-  // Usage: lookup username-virtname
-  // Result: [mailbox] ( NUL address )*
-  // or an empty string if the user is non-virtual
+CMD_FD(lookup)
+  // Usage: lookup username-virtname password
+  // Result: binary vpwentry data
 {
   mystring fulluser = args[0];
+  mystring password = args[1];
+  args[1] = LOG_PASSWORD;
   logcommand(args);
-  
-  mystring virtname;
-  pwentry* basepw;
-  if(!lookup_baseuser(fulluser, basepw, virtname))
-    RETURN(err, "Invalid or unknown base user or domain");
-  state = new saved_state(basepw);
-  vpwentry* virtpw = state->domain.lookup(virtname, false);
-  if(!!virtname && !virtpw)
-    RETURN(err, "Invalid or unknown virtual user");
-  if(virtpw) {
-    mystring result = virtpw->mailbox;
-    if(!!virtpw->forwards)
-      result = result + mystring::NUL + virtpw->forwards;
-    RETURN(ok, result);
-  }
-  else
-    RETURN(ok, "");
+
+  pwentry* pw;
+  vpwentry* vpw;
+  OK_RESPONSE(lookup_and_validate(fulluser, pw, vpw, password, true, true));
+
+  response(response::ok, vpw->to_record()).write(fd);
+  RETURN(ok, "Wrote virtual user data");
 }

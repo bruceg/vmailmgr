@@ -1,0 +1,29 @@
+# Syntax elements
+
+body ::= ( statement )*
+
+statement ::= text_section |
+	if_section |
+	foreach_section |
+	include_section |
+	other_statement
+
+if_section ::= if_statement body
+	( elseif_statement body )*
+	( else_statement body )?
+	end_statement
+
+foreach_section ::= foreach_statement body end_statement
+
+# Text tokens
+
+text_section ::= # block not containing "<?"
+include_section ::= "<? include expression ?>"
+
+if_statement ::= "<? if expression ?>"
+else_statement ::= "<? else ?>"
+elseif_statement ::= "<? else if expression ?>"
+end_statement ::= "<? end ?>"
+foreach_statement ::= "<? foreach expression ?>"
+other_statement ::= "<? .* ?>"
+

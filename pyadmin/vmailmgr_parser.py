@@ -190,8 +190,21 @@ class Foreach(Node):
             context.update(item)
             self.body.execute(context)
         context.pop()
-    
-special_node_types = [ Else, ElseIf, End, Foreach, If ]
+
+class Include(Node):
+    '''Reads in and parses another file'''
+    rx = re.compile(r'^include\s+(.+)$')
+    def __init__(self, groups):
+        self.expr = groups[0]
+    def showtree(self, level):
+        print indent(level), "Include", self.expr
+    def execute(self, context):
+        filename = do_eval(self.expr, context)
+        content = open(filename, 'r').read()
+        tree = parse(content)
+        tree.execute(context)
+
+special_node_types = [ Else, ElseIf, End, Foreach, If, Include ]
 
 class Expr(Node):
     def __init__(self, expr):
@@ -232,11 +245,16 @@ class Lexer:
         start = _rx_begin_cmd.search(self.content, self.currpos)
         if start:
             self.after_escape = 1
-            result = Section(self.content[self.currpos:start.start()])
-            self.currpos = start.end()
+            endpos = start.start()
+            nextpos = start.end()
         else:
-            result = Section(self.content[self.currpos:])
-            self.currpos = len(self.content)
+            endpos = len(self.content)
+            nextpos = endpos
+        if self.currpos == endpos:
+            self.currpos = nextpos
+            return self.parse_node_after()
+        result = Section(self.content[self.currpos:endpos])
+        self.currpos = nextpos
         return result
     def parse_cmd(self, cmdstr):
         for type in special_node_types:
@@ -277,6 +295,9 @@ def parse_statement(nodes, index):
     if node:
         return (node,newindex)
     (node,newindex) = parse_foreach_section(nodes, index)
+    if node:
+        return (node,newindex)
+    (node,newindex) = parse_include_section(nodes, index)
     if node:
         return (node,newindex)
     (node,newindex) = parse_other_section(nodes, index)
@@ -320,6 +341,11 @@ def parse_foreach_section(nodes, index):
            endindex < len(nodes) and isinstance(nodes[endindex], End):
             top.body = body
             return (top, endindex+1)
+    return (None, index)
+
+def parse_include_section(nodes, index):
+    if index < len(nodes) and isinstance(nodes[index], Include):
+        return (nodes[index], index+1)
     return (None, index)
 
 def parse_other_section(nodes, index):

@@ -27,9 +27,9 @@ import time
 import vmailmgr_parser
 import vmailmgr_lib
 
-template_dir = 'templates'
+template_dir = sys.argv[0] + '-templates'
 default_page = 'index'
-sessiond_socket = '/tmp/.sessiond'
+sessiond_socket = '/tmp/.vmailmgr-sessiond'
 
 PAGE = intern('PAGE')
 FIELD = intern('FIELD')
@@ -202,6 +202,7 @@ def trap_vmailmgr_response(context, fn, args):
 class VmailmgrWrapper:
     def __init__(self, session, context):
         self.session = session
+        self.context = context
         self.domain = session['domain']
         self.password = session['password']
         username = self.session['username'] or \
@@ -238,14 +239,16 @@ class VmailmgrWrapper:
             self.domain, self.username, self.password, 'write', body ) )
 
     def lookup_user(self):
-        vuser = vmailmgr_lib.lookup(self.domain, self.context[USERNAME],
-                                    self.password)
+        vuser = vmailmgr_lib.lookup(self.domain, self.username, self.password)
         self.context.update(vuser.dict())
         return 1
 
-    def list_domain(self):
-        return map(lambda x:x.dict(),
+    def list_domain(self, sortkey = 'username'):
+        key = intern(sortkey)
+        list = map(lambda x:x.dict(),
                    vmailmgr_lib.listdomain(self.domain, self.password))
+        list.sort(lambda x,y,key=key:cmp(x[key],y[key]))
+        return list
 
     def deluser(self):
         return trap_vmailmgr_response(self.context, vmailmgr_lib.deluser, (
@@ -299,7 +302,7 @@ def cgi_main(form):
             form[USERNAME] = session['username']
             context = vmailmgr_parser.Context(form)
             vmailmgr_fns = VmailmgrWrapper(session, context)
-            global_context['vmailmgr'] = vmailmgr_fns
+            vmailmgr_parser.global_context['vmailmgr'] = vmailmgr_fns
             format_page(page or default_page, context)
             #save_session(form[SESSION], session)
     except vmailmgr_lib.Econn, message:

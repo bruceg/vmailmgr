@@ -150,7 +150,8 @@ if ($password=="") return array(1, "Empty domain password");
 if ($username=="") return array(1, "Empty username");
 if ($userpass=="") return array(1, "No user password supplied");
 if ($forwards[0]=="") return array(1, "Empty forwarding address");
-	$command=array("adduser", $domain, $username, $password, $userpass);
+	$command=array("adduser2", $domain, $username, $password,
+	               $userpass, $username);
 	for ($x=0; $x < sizeof($forwards); $x++)
 		if ($forwards[$x]!="")
 			$command[]=$forwards[$x];
@@ -168,9 +169,8 @@ if ($domain=="") return array(1, "Empty domain");
 if ($password=="") return array(1, "Empty domain password");
 if ($username=="") return array(1, "Empty username");
 if ($forwards[0]=="") return array(1, "Empty forwarding destination");
-	if ($userpass=="")
-		$command=array("addalias", $domain, $username, $password);
-	else	$command=array("addaliasp", $domain, $username, $password, $userpass);
+	$command=array("adduser2", $domain, $username, $password,
+	               $userpass, "");
 	for ($x=0; $x < sizeof($forwards); $x++)
 		if ($forwards[$x]!="")
 			$command[]=$forwards[$x];

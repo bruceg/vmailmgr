@@ -19,12 +19,11 @@ can keep the development periods shorter.
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
 
-RELEASE TARGET 0.96.3
-
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd
   - creates the new user directory
   - su's to that user and runs vsetup
+  - fixes the user's home directory permissions
   - adds entries to control/virtualdomains
   - adds entries to control/rcpthosts
 
@@ -40,8 +39,6 @@ RELEASE TARGET 0.96.3
   get/set the dynamic data.
 
 - Per-user quotas, implemented as a program to be called by the above
-
-RELEASE TARGET 0.96.4
 
 - Set up the necessary structures to completely seperate the virtual
   domain information and the real user information, such that each user

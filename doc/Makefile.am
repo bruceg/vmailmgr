@@ -1,8 +1,8 @@
 man_MANS = vdeliver.1 vmailmgrd.8 checkvpw.1 vmailmgr.7 vpasswd.5 \
 	vpasswd.1 vadduser.1 vdeluser.1 vauthenticate.1 vchattr.1 \
 	vaddusers.1 vpasswds.1 vsetup.1 vrehash.1 vpopbull.1
-noinst_TEXINFOS = FAQ.texi HOWTO.texi \
-	configuration.texi vmailmgr-cgi.texi
+noinst_SGMLS = FAQ.sgml HOWTO.sgml
+noinst_TEXINFOS = configuration.texi vmailmgr-cgi.texi
 noinst_HTMLS = vdeliver.html vmailmgrd.html checkvpw.html vmailmgr.html \
 	vpasswd5.html vpasswd.html vadduser.html vdeluser.html \
 	vaddusers.html vpasswds.html vauthenticate.html vchattr.html \
@@ -21,6 +21,7 @@ EXTRA_DIST = ChangeLog-pre-vmailmgr ChangeLog-pre-0.70 \
 	TODO YEAR2000 translation.fig translation.ps \
 	$(man_MANS) \
 	$(noinst_PODS) \
+	$(noinst_SGMLS) \
 	$(noinst_TEXINFOS) \
 	$(noinst_HTMLS) \
 	$(noinst_TXTS)
@@ -34,8 +35,10 @@ TEXI2HTML= texi2html -monolithic -number
 CL2HTML	= perl changelog2html.pl
 NEWS2HTML = perl news2html.pl
 FIG2PS = fig2dev -L ps -c -P
+SGML2HTML = sgml2html --split=0
+SGML2TXT = sgml2txt
 
-SUFFIXES = .1 .5 .7 .8 .pod .html .texi .txt .ps .fig
+SUFFIXES = .1 .5 .7 .8 .pod .html .texi .txt .ps .fig .sgml
 
 all: $(noinst_HTMLS) $(noinst_TXTS)
 
@@ -57,6 +60,8 @@ NEWS.html: ../NEWS
 %.5: %.pod ../configure.in; $(POD2MAN) --section=5 $< >$@
 %.7: %.pod ../configure.in; $(POD2MAN) --section=7 $< >$@
 %.8: %.pod ../configure.in; $(POD2MAN) --section=8 $< >$@
+%.html: %.sgml; $(SGML2HTML) $<
+%.txt: %.sgml; $(SGML2TXT) $<
 %.html: %.pod; $(POD2HTML) $< >$@
 %.html: %.texi; $(TEXI2HTML) $< >$@
 %.txt: %.html; $(HTML2TXT) $< >$@

@@ -1,5 +1,12 @@
 2000-05-02  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
+	* cgi/vchforwards.cc (CGI_MAIN ): Fixed an internal glitch -- the
+	new "do_enable" and "do_disable" internal variables were
+	duplicated.
+
+	* daemon/lookup.cc (lookup_and_validate): Modified to use the new
+	set_defaults method.
+
 	* commands/vchattr.cc: Make size limits refer to bytes.
 
 	* doc/configuration.texi: Indicate that size limits are in units

@@ -25,7 +25,9 @@ flag-number and flag-value are single-byte values.  The flag numbers are
 the same as the attribute number defined in vdomain/vdomain.h.
 
 The maximum values for limits (quota, etc.) are expressed in the file as
-"-" and internally as -1.  Records with an unknown creation time have
+"-" and internally as UINT_MAX.  Records with an unknown creation time
+have the creation-time set to the UNIX epoch (midnight GMT January 1,
+1970).
 
 Old Record Formats
 ------------------
@@ -47,4 +49,3 @@ Old style records had the following format:
 	":" password-crypt ":" destination
 The destination was prefixed with '&' for a forward, and with either '.'
 or '/' for a mailbox.
-the creation-time set to "0".

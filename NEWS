@@ -13,7 +13,10 @@ Internal Changes:
   now always built.
 - The Courier IMAP module is now part of the standard RPM.
 
-Bug Fixes: None
+Bug Fixes:
+- Fixed a problem with converting from old records that didn't set the
+  virtual user flags properly.
+- Fixed a problem with the virtual user creation not being set properly.
 -------------------------------------------------------------------------------
 Changes in version 0.96.5
 

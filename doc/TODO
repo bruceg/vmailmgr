@@ -17,7 +17,8 @@ can keep the development periods shorter.
 
 - Add options to the listvdomain programs to expand their output.
 
-- Expand the record format to include a "last modified" field.
+- Expand the record format to include a "last modified" field, and to
+  change the flag values from binary 0/1 to ASCII.
 
 - Add the necessary code for compile-time switchable support for CDB,
   [GN]DBM, and MySQL virtual user databases -> goes into vpwtable.

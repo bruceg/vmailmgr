@@ -1,5 +1,8 @@
 Bruce Guenter <bruceg@em.ca>
 
+Dan Kuykendall <dan@kuykendall.org> extended the FAQ and HOWTO and
+converted them to SGML.
+
 Mike Bell <mike@mikebell.org> has contributed the current PHP3 module
 and several patches.
 

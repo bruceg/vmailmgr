@@ -271,13 +271,13 @@
 </enum>
   Example: `<tt>/var/qmail/control/virtualdomains</tt>' contains 
 <verb>
-  testdomain.org:testuser
+  mydomain.com:myuser
 </verb>
   User `<tt>myuser</tt>' exists, and has set up a virtual mailbox with
   the name `<tt>me</tt>'. The `<tt>separators</tt>' variable in
   `<tt>/etc/vmailmgr/</tt>' contains `<tt>@:</tt>'. This virtual user
   could log in as `<tt>me@mydomain.com</tt>',
-  `<tt>me:mydomain.cm</tt>', or `<tt>myuser-me</tt>'.
+  `<tt>me:mydomain.com</tt>', or `<tt>myuser-me</tt>'.
 <p>
 
 <sect1>Catching all misdirected mail in a virtual domain

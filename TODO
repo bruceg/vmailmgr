@@ -5,6 +5,8 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Fix adduser2 daemon command to add explicit has-mailbox flag.
+
 - Write a "vupgrade" tool to replace vpasswd2db that:
   - If the passwd.cdb file exists:
     - Open a reader on it

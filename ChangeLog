@@ -1,3 +1,9 @@
+2000-10-25  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/adduser.cc (CMD(adduser3)): Renamed the file adduser2.cc
+	to adduser.cc; Renamed the adduser2 command to adduser3 to make
+	the additional argument explicit.
+
 2000-10-13  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* Most code was restructured to accomodate the below two changes.

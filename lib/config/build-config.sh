@@ -3,6 +3,7 @@
 newfile() {
   local old=$1
   local new=${old}.new
+  cat >$new
   if cmp -s $old $new; then
     echo "$old is unchanged." >&2
     rm -f $new
@@ -21,13 +22,11 @@ newfile() {
 	-e "s|%TYPE%|$type|g" \
 	-e "s|%DEFAULT%|$default|g" \
 	-e "s|%FILENAME%|$filename|g" \
-	configvar.in >_${name}.cc.new
-    newfile _${name}.cc
+	configvar.in | newfile _${name}.cc
     echo "  show_$ext(\"${filename}\", config->${name}());"
   done <configrc.in
   sed -e '1,/^%%LIST%%$/d' showvconfig.cc.in
-} >showvconfig.cc.new
-newfile showvconfig.cc
+} | newfile showvconfig.cc
 
 {
   sed -e '/^%%LIST%%$/,$d' configrc.h.in
@@ -36,8 +35,7 @@ newfile showvconfig.cc
     echo "private: config_cache<$type> ${name}_cache;"
   done <configrc.in
   sed -e '1,/^%%LIST%%$/d' configrc.h.in
-} >configrc.h.new
-newfile configrc.h
+} | newfile configrc.h
 
 {
   sed -e '/^%%LIST%%$/,$d' Makefile.am.in
@@ -45,5 +43,4 @@ newfile configrc.h
     echo "	_${name}.cc \\"
   done <configrc.in
   sed -e '1,/^%%LIST%%$/d' Makefile.am.in
-} >Makefile.am.new
-newfile Makefile.am
+} | newfile Makefile.am

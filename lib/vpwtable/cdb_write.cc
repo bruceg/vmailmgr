@@ -32,6 +32,7 @@ public:
   bool operator!() const;
   bool put(const vpwentry& vpw);
   bool end();
+  bool abort();
 };
 
 vpwtable_writer* vpwtable::start_write() const
@@ -66,4 +67,12 @@ bool cdb_vpwtable_writer::end()
     return false;
   opened = false;
   return out.end(cdbname);
+}
+
+bool cdb_vpwtable_writer::abort()
+{
+  if(!opened)
+    return false;
+  opened = false;
+  return unlink(tmpname.c_str()) == 0;
 }

@@ -24,6 +24,7 @@ public:
   virtual bool operator!() const = 0;
   virtual bool put(const vpwentry& vpw) = 0;
   virtual bool end() = 0;
+  virtual bool abort() = 0;
 };
 
 class vpwtable

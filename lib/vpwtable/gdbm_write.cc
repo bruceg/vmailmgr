@@ -23,7 +23,7 @@ class gdbm_vpwtable_writer : public vpwtable_writer
 {
 private:
   const mystring& tmpname;
-  const mystring& cdbname;
+  const mystring& destname;
   GDBM_FILE out;
   bool opened;
 public:
@@ -32,6 +32,7 @@ public:
   bool operator!() const;
   bool put(const vpwentry& vpw);
   bool end();
+  bool abort();
 };
 
 vpwtable_writer* vpwtable::start_write() const
@@ -40,7 +41,7 @@ vpwtable_writer* vpwtable::start_write() const
 }
 
 gdbm_vpwtable_writer::gdbm_vpwtable_writer(const mystring& filename)
-  : tmpname(filename + ".tmp"), cdbname(filename),
+  : tmpname(filename + ".tmp"), destname(filename),
     out(gdbm_open((char*)filename.c_str(), 0, GDBM_NEWDB|GDBM_FAST, 0600, 0)),
     opened(true)
 {
@@ -71,5 +72,15 @@ bool gdbm_vpwtable_writer::end()
     return false;
   gdbm_sync(out);
   opened = false;
-  return gdbm_close(out) == 0;
+  return gdbm_close(out) == 0 &&
+    rename(tmpname.c_str(), destname.c_str()) == 0;
+}
+
+bool gdbm_vpwtable_writer::abort()
+{
+  if(!opened)
+    return false;
+  opened = false;
+  gdbm_close(out);
+  return unlink(tmpname.c_str()) == 0;
 }

@@ -19,6 +19,7 @@ Bug Fixes:
   be written to.
 - Fixed a bug in the subprogram execution code that would cause the
   wrong exit status to be returned.
+- vdeliver now rewinds standard input before executing postdeliver.
 -------------------------------------------------------------------------------
 Changes in version 0.96.7
 

@@ -291,7 +291,11 @@ int cli_main(int, char*[])
   if(enabled)
     deliver_final();
 
-  if(execute("vdeliver-postdeliver"))
+  if(!fin.rewind()) {
+    if(!o_quiet)
+      fout << "Could not re-rewind standard input" << endl;
+  }
+  else if(execute("vdeliver-postdeliver"))
     if(!o_quiet)
       fout << "Execution of vdeliver-postdeliver failed" << endl;
 

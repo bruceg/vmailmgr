@@ -47,13 +47,16 @@ AC_PATH_PROG(LN, ln)
 
 AC_PATH_PROG(PYTHON, python)
 AC_CACHE_CHECK(Python library path, local_cv_python_lib_dir,
-[[if test "$PYTHON" != no; then
+[[if test -x "$PYTHON"; then
   local_cv_python_lib_dir=`$PYTHON -c "import sys;print sys.path[1]"`
+  WANTPYTHON="python"
 else
   local_cv_python_lib_dir=NONE
+  WANTPYTHON=""
 fi]])
 pythonlibdir="$local_cv_python_lib_dir"
 AC_SUBST(pythonlibdir)
+AC_SUBST(WANTPYTHON)
 
 phpdir="/home/httpd/php"
 AC_SUBST(phpdir)
@@ -118,5 +121,6 @@ AC_OUTPUT(Makefile
 	  lib/vdomain/Makefile
 	  lib/vpwentry/Makefile
 	  lib/vpwtable/Makefile
+	  scripts/Makefile
 	  php/Makefile
 	  python/Makefile)

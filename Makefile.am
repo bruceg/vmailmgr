@@ -1,4 +1,4 @@
-SUBDIRS = python php lib authenticate commands daemon cgi doc
+SUBDIRS = @WANTPYTHON@ php lib authenticate commands daemon cgi doc scripts
 
 dist-hook:
 	cp -dP `find lib/ac -name CVS -prune -o \( -not -name '*~' -a -type f -o -type l \) -print` $(distdir)

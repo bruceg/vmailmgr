@@ -143,14 +143,16 @@ prefixed with @samp{VUSER_} are not set.
 The virtual user's creation time (or "0" if unknown).
 @item VUSER_EXPIRY
 The virtual user's expiry time (or "-" if not applicable).
+@item VUSER_HARDQUOTA
+The virtual user's total size hard quota (in bytes, or "-" if not applicable).
 @item VUSER_MSGCOUNT
 The virtual user's message count limit (or "-" if not applicable).
 @item VUSER_MSGSIZE
 The virtual user's message size limit (or "-" if not applicable).
 @item VUSER_PERSONAL
 The virtual user's personal data.
-@item VUSER_QUOTA
-The virtual user's total size quota (or "-" if not applicable).
+@item VUSER_SOFTQUOTA
+The virtual user's total size soft quota (in bytes, or "-" if not applicable).
 @end table
 
 @c ****************************************************************************

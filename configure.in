@@ -64,7 +64,7 @@ else
 fi]])
 pythonlibdir="$local_cv_python_lib_dir/vmailmgr"
 AC_SUBST(pythonlibdir)
-AM_CONDITIONAL(WANTPYTHON, test x$local_cv_python_lib_dir != x)
+AM_CONDITIONAL(WANTPYTHON, test x$local_cv_python_lib_dir != xNONE)
 
 phpdir="/home/httpd/php"
 AC_SUBST(phpdir)

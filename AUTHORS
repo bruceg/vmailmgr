@@ -1,4 +1,4 @@
-Bruce Guenter <bruceg@em.ca>
+Written by Bruce Guenter <bruceg@em.ca>
 
 Dan Kuykendall <dan@kuykendall.org> extended the FAQ and HOWTO and
 converted them to SGML.
@@ -18,4 +18,7 @@ The MD5 Message-Digest Algorithm library was written by Ulrich Drepper
 <drepper@gnu.ai.mit.edu>, 1995, and was taken from the GNU C Library
 
 Kerberos5 support written by Nickolai Zeldovich <kolya@zepa.net>
+
+Anil Madhavapeddy <anil@recoil.org> has contributed a makefile /
+configure.in patch.
 

@@ -2,16 +2,21 @@
 Changes in version 0.96.7
 
 New Features:
+- Contains configure-time switchable support for GDBM virtual user tables.
 
 Internal Changes:
 - Updated PHP code.
 - The daemon now relies on ucspi-unix to handle connections and forking
   instead of doing it internally.
+- The autoresponse is written into a new subdirectory of the virtual
+  user's mailbox directory.  This makes it work better with the
+  autoresponder, which requires a directory to store temporary files in.
 
 Bug Fixes:
 - The daemon now initializes its random number generator each time it
-  handles a command, which should help it generate different salts for
+  handles a command, which should make it generate different salts for
   password hashes.
+- The python subdirectory no longer requires GNU make to build.
 -------------------------------------------------------------------------------
 Changes in version 0.96.6
 

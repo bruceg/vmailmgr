@@ -1,3 +1,35 @@
+2000-06-25  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* python/vmailmgr.py.in: Added deluser and chattr commands.
+
+2000-06-24  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* doc/configuration.texi (socket-file): Reinstated this config
+	section.
+
+	* daemon/autoresponse.cc (autoresponse_delete): Added a new
+	command to delete the autoresponse data.
+
+	* lib/misc/maildir.cc (delete_directory): Renamed from
+	delete_maildir.
+
+	* daemon/autoresponse.cc (autoresponse_write): Create the
+	autoresponse directory if it does not already exist.
+
+2000-06-19  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* lib/vpwtable: Added GDBM support in the gdbm_*.cc files.
+
+	* lib/vpwtable/cdb_vpwtable.cc: Made the ".cdb" string a constant.
+
+	* lib/vpwtable: Renamed all the .cc files to "cdb_*.cc".
+
+2000-06-14  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* doc/configuration.texi: Added notes on the autoresponse
+	configuration items, removed the notes on max-fork and
+	socket-file.
+
 2000-06-13  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* daemon/main.cc (cli_main): Rewrote main to use the cli library.

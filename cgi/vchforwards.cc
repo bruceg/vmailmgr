@@ -24,9 +24,21 @@ CGI_MAIN
 {
   CGI_INPUT(username);
   CGI_INPUT(destination);
+  CGI_OPTINPUT(enable);
+  
+  bool do_disable = (!!enable) && enable == "0";
+  bool do_enable = (!!enable) && enable != "0";
   
   username = username.lower();
 
+  // Enable the account *BEFORE* changing the destination
+  if(!!enable && enable != "0") {
+    response resp = server_call("chattr", vdomain, username, password,
+				itoa(vdomain::ATTR_ENABLED), enable).call();
+    if(!resp)
+      error(resp.msg);
+  }
+  
   unsigned dests = destination.count(',') + 1;
 
   server_call call("chattr", dests + 4);
@@ -42,6 +54,13 @@ CGI_MAIN
   response resp = call.call();
   if(!resp)
     error(resp.msg);
-  else
-    success("The alias was succesfully changed.");
+
+  // Disable the account *AFTER* changing the destination.
+  if(!!enable && enable == "0") {
+    response resp = server_call("chattr", vdomain, username, password,
+				itoa(vdomain::ATTR_ENABLED), enable).call();
+    if(!resp)
+      error(resp.msg);
+  }
+  success("The alias was succesfully changed.");
 }

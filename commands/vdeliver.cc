@@ -274,17 +274,18 @@ int cli_main(int, char*[])
     die_fail(mystring("Invalid or unknown virtual user '" + ext + "'").c_str());
 
   vpw->export_env();
-  mystring r;
+  bool enabled = vpw->is_enabled();
+
   if(execute("vdeliver-predeliver"))
     die_temp("Execution of vdeliver-predeliver failed");
 
-  if(!!vpw->mailbox) {
+  if(enabled) {
     maildir = vpw->mailbox;
     deliver_partial();
   }
   if(!!vpw->forwards)
     enqueue(vpw->forwards, host, sender);
-  if(!!vpw->mailbox)
+  if(enabled)
     deliver_final();
 
   if(execute("vdeliver-postdeliver"))

@@ -19,6 +19,7 @@ private:
   // Helper functions for chattr
   response chpass(vpwentry*, mystring);
   response chdest(vpwentry*, mystring);
+  response chenabled(vpwentry*, mystring);
 public:
   vdomain(const pwentry&);
   vdomain(const pwentry&, mystring, mystring, const configuration&);
@@ -49,6 +50,7 @@ public:
   static const unsigned ATTR_MSGSIZE = 5;
   static const unsigned ATTR_MSGCOUNT = 6;
   static const unsigned ATTR_EXPIRY = 7;
+  static const unsigned ATTR_ENABLED = 8;
 };
 
 #endif // VMAILMGR__VDOMAIN__H__

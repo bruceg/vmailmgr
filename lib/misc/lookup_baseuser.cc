@@ -25,7 +25,7 @@ bool lookup_baseuser(mystring fulluser, pwentry* &pw, mystring& virtname)
   if(!pwtable)
     return false;
   for(size_t i = fulluser.length(); i > 0; ) {
-    mystring base(fulluser.c_str(), i);
+    mystring base = fulluser.left(i);
     pw = pwtable[base.lower()];
     if(pw) {
       virtname = fulluser.right(i+1);

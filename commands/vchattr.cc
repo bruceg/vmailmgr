@@ -39,6 +39,8 @@ cli_option cli_options[] = {
     "Set the user's message count limit", 0 },
   { 'e', "expiry", cli_option::flag, vdomain::ATTR_EXPIRY, &o_attr,
     "Set the account's expiry time (in seconds)", 0 },
+  { 'E', "enabled", cli_option::flag, vdomain::ATTR_ENABLED, &o_attr,
+    "Enable or disable delivery to the account", 0 },
   { 'q', "softquota", cli_option::flag, vdomain::ATTR_SOFTQUOTA, &o_attr,
     "Set the user's soft quota (in KB)", 0 },
   { 'Q', "hardquota", cli_option::flag, vdomain::ATTR_HARDQUOTA, &o_attr,

@@ -74,6 +74,26 @@ response vdomain::chdest(vpwentry* vpw, mystring dest)
   RETURN(ok, "Forwarding address(es) changed");
 }
 
+response vdomain::chenabled(vpwentry* vpw, mystring newval)
+{
+  const char* end;
+  unsigned value = strtou(newval.c_str(), &end);
+  if(*end)
+    RETURN(err, "Invalid number");
+  else if(value) {
+    if(vpw->enable())
+      RETURN(ok, "Delivery enabled");
+    else
+      RETURN(err, "Could not enable delivery");
+  }
+  else {
+    if(vpw->disable())
+      RETURN(ok, "Delivery disabled");
+    else
+      RETURN(err, "Could not disable delivery");
+  }
+}
+  
 #define CHATTR(V,X) do{ response tmp=ch##X(&(V),newval); if(!tmp) return tmp; okmsg=tmp.msg; }while(0)
 
 response vdomain::chattr(const vpwentry* vpw, unsigned attr, mystring newval)
@@ -81,6 +101,7 @@ response vdomain::chattr(const vpwentry* vpw, unsigned attr, mystring newval)
   vpwentry newpw(*vpw);
   mystring okmsg;
   switch(attr) {
+    // Static attributes require re-setting the vpw
   case ATTR_PASS:      CHATTR(newpw,pass); break;
   case ATTR_DEST:      CHATTR(newpw,dest); break;
   case ATTR_HARDQUOTA: CHATTR(newpw.hardquota,unsigned); break;
@@ -88,6 +109,8 @@ response vdomain::chattr(const vpwentry* vpw, unsigned attr, mystring newval)
   case ATTR_MSGSIZE:   CHATTR(newpw.msgsize,unsigned); break;
   case ATTR_MSGCOUNT:  CHATTR(newpw.msgcount,unsigned); break;
   case ATTR_EXPIRY:    CHATTR(newpw.expiry,unsigned); break;
+    // Dynamic attributes, which don't require re-setting the vpw
+  case ATTR_ENABLED:   return chenabled(&newpw,newval);
   default:
     RETURN(bad, "Invalid attribute type");
   }

@@ -42,6 +42,10 @@ public:
   mystring to_record() const;
 
   bool export_env() const;
+
+  bool is_enabled() const;
+  bool enable() const;
+  bool disable() const;
 };
 
 #endif

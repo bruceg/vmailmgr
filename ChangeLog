@@ -1,5 +1,33 @@
 2000-04-11  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
+	* cgi/vadduser.cc (CGI_MAIN ): Added code to handle adding
+	forwarding at the same time as the user.
+
+	* lib/misc/lookup_baseuser.cc (lookup_baseuser): Modified to use
+	mystring::left instead of a hacked-up constructor call.
+
+	* cgi/vchforwards.cc (CGI_MAIN ): Added code here to handle
+	enabling and disabling the mailbox.
+
+	* commands/vchattr.cc: Added handling in this code for the new
+	flag.
+
+	* lib/vdomain/chattr.cc (chenabled): Added this function to enable
+	or disable delivery to a virtual user.
+
+	* lib/vpwentry/is_enabled.cc (is_enabled): Modified this routine
+	to return false if no mailbox path is set.
+
+	* commands/vdeliver.cc (cli_main): Handle the "enabled" flag here
+	by not doing mailbox delivery if is_enabled returns false.
+
+	* lib/vpwentry/is_enabled.cc (is_enabled): Created this routine to
+	determine if the account has been disabled.
+
+	* lib/vpwentry/disable.cc: Created routines here to enable and
+	disable an account by removing and creating a "disabled" file in
+	the virtual user's mailbox directory.
+
 	* Released version 0.96.4
 
 	* lib/misc/exec.cc (presetenv): Changed this routine to allocate a

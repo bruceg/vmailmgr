@@ -285,6 +285,20 @@ and may be any combination of letters, digits, or punctuation symbols.
 
 @table @strong
 @item Field:
+        destination
+@item Description:
+The destination address or addresses to direct a copy of incoming mail,
+separated by commas.
+If an address does not contain a host name (separated from the user name
+with an @samp{@@}), it is treated as local to the virtual domain and
+must already exist.
+If this field is not present or blank, no forwarding will be done.
+@item Syntax:
+@samp{<input type=text name=destination>}
+@end table
+
+@table @strong
+@item Field:
         userdir
 @item Description:
 This field can be used to specify the user mail directory name relative
@@ -342,6 +356,10 @@ The message size limit.
 The message count limit.
 @item 7
 The account's expiry time.
+@item 8
+Set to zero to disable delivery to the account's mailbox (without
+deleting the account).
+Set to non-zero to enable delivery.
 @item Syntax:
 @samp{<input type=hidden name=attribute value=2>}
 @end table
@@ -390,6 +408,25 @@ with an @samp{@@}), it is treated as local to the virtual domain and
 must already exist.
 @item Syntax:
 @samp{<input type=text name=destination>}
+@end table
+
+@c ----------------------------------------------------------------------------
+@subsection Optional Form Fields
+
+@table @strong
+@item Field:
+        enable
+@item Description:
+Set this field to @samp{0} to cause mailbox delivery to this account to
+be disabled after changing the alias.
+Set it to any number except @samp{0} to cause mailbox delivery to be
+enabled before changing the alias.
+If it is not set, the mailbox is neither enabled nor disabled.
+@item Syntax:
+@samp{<select name=enable>
+<option value=0>Disable
+<option value=1>Enable
+</select>}
 @end table
 
 @c ****************************************************************************

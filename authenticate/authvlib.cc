@@ -70,6 +70,7 @@ static user_data* check(mystring fulluser, mystring password,
   mystring virtname;
   pwentry* basepw;
   if(!lookup_baseuser(fulluser, basepw, virtname))
+    // FIXME: if virtual_only, we might not want to fail here
     fail_login("Invalid or unknown base user or domain");
   presetenv("VUSER=", virtname);
   set_user(basepw);

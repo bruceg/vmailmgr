@@ -24,16 +24,29 @@ CGI_MAIN
   CGI_INPUT(newpass1);
   CGI_INPUT(newpass2);
   CGI_OPTINPUT(userdir);
+  CGI_OPTINPUT(destination);
   
   username = username.lower();
 
+  unsigned dests = !destination ? 0 : destination.count(',') + 1;
+  
   if(!userdir)
     userdir = username;
   if(newpass1 != newpass2)
     error("The passwords you entered do not match");
   else {
-    response resp = server_call("adduser2", vdomain, username, password,
-				newpass1, userdir).call();
+    server_call call("adduser2", dests + 5);
+    call.operand(0, vdomain);
+    call.operand(1, username);
+    call.operand(2, password);
+    call.operand(3, newpass1);
+    call.operand(4, userdir);
+
+    unsigned i = 0;
+    for(mystring_iter iter(destination, ','); i < dests && iter; ++iter, ++i)
+      call.operand(i+5, *iter);
+
+    response resp = call.call();
     if(!resp)
       error(resp.msg);
     else

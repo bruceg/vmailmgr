@@ -32,7 +32,10 @@ varies	string	Message or response data
 Strings are encoded as:
 
 Size	Type	Description
-4	int	Length of string
-length	char	String data (no trailing NUL byte)
+2	int	Length of string
+length	char	String data (no trailing NUL byte) (max 64K-1)
+
+Strings are limited to 64K in length, primarily to limit the possibility
+of attacks causing excessive memory allocation.
 
 All integers are unsigned, sent MSB first.

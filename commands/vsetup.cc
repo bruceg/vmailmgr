@@ -121,7 +121,7 @@ bool setup_alias(mystring alias, const mystring& dest)
 	   << "' already exists, skipping.\n";
     return true;
   }
-  vpwentry vpw(alias, "*", 0, dest, true);
+  vpwentry vpw(alias, "*", domain.userdir(alias), dest, true);
   response resp = domain.set(&vpw, true);
   if(!resp) {
     if(!o_quiet)

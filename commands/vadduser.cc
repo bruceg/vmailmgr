@@ -181,7 +181,7 @@ void add_alias(mystring user, mystring alias)
   alias = alias.lower();
   user = user.lower();
   if(!domain.exists(alias)) {
-    vpwentry vpw(alias, "*", 0, user, false);
+    vpwentry vpw(alias, "*", domain.userdir(alias), user, false);
     response resp = domain.set(&vpw, true);
     if(!resp)
       if(!o_quiet)

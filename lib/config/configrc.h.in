@@ -9,7 +9,7 @@
 #define LOCAL_CONFIG_DIR ".vmailmgr"
 #endif
 
-#include "misc/mystring.h"
+#include "mystring/mystring.h"
 #include "misc/strlist.h"
 
 template<class T>

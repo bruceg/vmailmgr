@@ -65,7 +65,7 @@ function vm_daemon_raw($arg)
 
 	if ($length == 0) {
 		while (!feof($vmailsock))
-			$out=fread($vmailsock, 65535);
+			$out.=fread($vmailsock, 65535);
 		fclose($vmailsock);
 		return $out;
 	}

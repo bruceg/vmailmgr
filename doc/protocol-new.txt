@@ -1,42 +1,44 @@
 Proposed Client-Server interaction
-----------------------------------
+==================================
 
 To execute a server call, the client opens the daemon's UNIX domain
 socket (as specified by SYSCONFDIR/socket-file), and sends across the
 following data:
 
+Command Header
+--------------
 Size	Type	Description
 1	int	Protocol number (always 3)
-varies	string	Command name
-varies	string	Domain name
-varies	string	Pass phrase
-varies	N/A	Command-specific data, typically:
-4	int	Total length of all following data
-1	int	Number of arguments
-varies	strings	Arguments
+2	int	Command header length
+varies	zstring	Command name
+varies	zstring	Domain name
+varies	zstring	Pass phrase
+varies	zstring	Command arguments
+varies	N/A	Command data (optional)
+                (not included in command header length)
 
 The command name, domain name, and pass phrase are passed to an
 authenticating shim which executes the command only if authentication
-succeeds.  Everything following the pass phrase is passed directly to
-the command module after authentication.
+succeeds.  The command arguments are passed on the command line to the
+command module after authentication, and the command data is passed on
+standard input.
 
-It then receives the following response from the server:
-
+Response
+--------
 Size	Type	Description
 1	int	Response code: one of the following
 		0: OK -- operation succeeded
 		1: Bad -- error in format or syntax
 		2: Autherr -- authentication failed
 		3: Error -- operation failed
-varies	string	Message or response data
+varies	zstring	Response message
+varies	N/A	Response data (optional)
 
-Strings are encoded as:
+Data types
+----------
+A "zstring" is a NUL terminated string
 
-Size	Type	Description
-2	int	Length of string
-length	char	String data (no trailing NUL byte) (max 64K-1)
-
-Strings are limited to 64K in length, primarily to limit the possibility
-of attacks causing excessive memory allocation.
+The command header is limited to 64K in length, primarily to limit the
+possibility of attacks causing excessive memory allocation.
 
 All integers are unsigned, sent MSB first.

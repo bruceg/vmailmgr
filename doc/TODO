@@ -5,8 +5,6 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Change note in FAQ and web site regarding support for IMAP.
-
 - Add tests for the new autoresponse command.
 
 - Document the Python interface.

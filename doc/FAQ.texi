@@ -269,12 +269,24 @@ Please do not contact the author directly with vmailmgr questions.
 @node Does vmailmgr support IMAP?, How does incoming email get handled?, How do I get in contact with other users?, Miscelaneous
 @section Does vmailmgr support IMAP?
 
-No, because there are no IMAP servers that use the checkpassword
-interface.
-There is a project that has been started by Russell Nelson to build such
-a server but it is far from fully functional yet.
-You can discuss the project by joining the mailing list by sending an
-email to @samp{imap-subscribe@qmail.org}.
+Yes, vmailmgr supports Courier IMAP.
+The default installation of vmailmgr installs a Courier IMAP
+authentication module in
+@file{/usr/local/lib/courier-imap/libexec/authlib/authvmailmgr}
+(assuming @samp{prefix} is left as @file{/usr/local}).
+You must then copy the above file to wherever your installation of
+Courier IMAP expects to find authentication modules (typically
+@file{/usr/lib/courier-imap/libexec/authlib}).
+If you have changed @samp{prefix} to @file{/usr} when running
+@file{configure}, no copying should be necessary.
+Finally modify the @samp{AUTHMODULES} statement in
+@file{/usr/lib/courier-imap/etc/imapd.config} and add authvmailmgr as
+the first authentication module.
+If you are installing from RPMs, the @file{vmailmgr-courier-imap}
+package will install the authentication module into the right place.
+
+For more information on Courier IMAP, go to its web site at
+@file{http://www.inter7.com/courierimap/}.
 
 @c ============================================================================
 @node How does incoming email get handled?, How does outgoing email get handled?, Does vmailmgr support IMAP?, Miscelaneous

@@ -1,5 +1,8 @@
 2000-04-18  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
+	* doc/FAQ.texi (Does vmailmgr support IMAP?): Updated to describe
+	current status of IMAP support.
+
 	* daemon/dispatch.cc: Added autoresponse dispatch entry.
 
 	* daemon/autoresponse.cc: Added autoresponse command from Mike Bell.

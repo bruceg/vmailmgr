@@ -16,9 +16,20 @@
 
 import config
 
+ok = 0
+bad = 1
+err = 2
+econn = 3
+
 class Bad(Exception):   pass
 class Error(Exception): pass
 class Econn(Exception): pass
+
+def encode_int(i):
+    return chr((i/256)%256) + chr(i%256)
+
+def encode_str(str):
+    return encode_int(len(str)) + str
 
 class Command:
     def __init__(self, name, args):
@@ -68,8 +79,9 @@ class Daemon:
             self.connect()
         except:
             raise Econn, "Unable to connect to the server"
+        data = command.encode()
         try:
-            self.socket.send(command.encode())
+            self.socket.send(data)
         except:
             raise Econn, "Server aborted the connection"
         # Don't close the socket here -- it will be closed

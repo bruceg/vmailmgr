@@ -15,8 +15,3 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 ATTR_MAILBOX_ENABLED = 8
-
-ok = 0
-bad = 1
-err = 2
-econn = 3

@@ -15,6 +15,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import daemon
+import string
 import types
 
 def execute(command, *args):
@@ -32,7 +33,7 @@ def listdomain(domain, password):
         if not r:
             break
         (username,data) = string.split(r, '\0', 1)
-        users.append(NamedVUser(username, VUser(data)))
+        users.append(types.NamedVUser(username, types.VUser(data)))
     return users
 
 def adduser(domain, newuser, password, newpass, maildir=None, forwards=[]):
@@ -41,7 +42,7 @@ def adduser(domain, newuser, password, newpass, maildir=None, forwards=[]):
                            maildir or newuser) + tuple(forwards))
 
 def lookup(domain, username, password):
-    return types.Vuser(execute('lookup', domain, username, password))
+    return types.VUser(execute('lookup', domain, username, password))
 
 def autoresponse(domain, user, password, action, message=None):
     cmd = [ domain, user, password, action ]

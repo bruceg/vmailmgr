@@ -29,15 +29,36 @@
 #include "misc/strtou.h"
 #include "misc/utoa.h"
 
-const char* cli_program = "checkquota";
-const char* cli_help_prefix = "Checks if the user is over quota\n";
-const char* cli_help_suffix = "\n"
-"Warning: the soft-message may be linked in multiple times.\n";
+const char* cli_program = "vcheckquota";
+const char* cli_help_prefix = "vmailmgr quota enforcement program\n";
+const char* cli_help_suffix = "
+Warning: the soft-message is linked into the users maildir once for each
+message that is received while the account is over its soft quota.  This may
+result in multiple warning messages.\n";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
 static unsigned soft_maxsize = 4096;
 static const char* soft_message = 0;
+
+// F<vcheckquota> ensures that the hard and soft quotas are enforced,
+// that message counts and sizes are appropriately limited.
+// The limits are set by the vadduser or vchattr command.
+//
+// The following rules are applied:
+//
+// If the message is larger than the message size limit, it is rejected.
+//
+// If the user has too many messages in their mailbox,
+// further messages are rejected.
+//
+// If the user is over their hard quota, all further messages are rejected
+// and no warning messages are linked in.
+//
+// If the user is over their soft quota, and the message is small
+// (as defined by I<soft-maxsize>), the message is accepted, otherwise
+// it is rejected.  If I<soft-message> is defined, a warning message
+// is linked into the mailbox in either case.
 
 cli_option cli_options[] = {
   { 'a', "soft-maxsize", cli_option::uinteger, 0, &soft_maxsize,
@@ -46,6 +67,10 @@ cli_option cli_options[] = {
     "The path to the soft quota warning message", "no message" },
   {0}
 };
+
+// SEE ALSO
+//
+// vadduser(1), vchattr(1)
 
 void exit_msg(const char* msg, int code)
 {

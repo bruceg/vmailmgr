@@ -31,6 +31,12 @@ static int o_noaliases = false;
 static int o_nousers = false;
 static int o_quiet = false;
 
+// This program lists all the users in a domain.
+// The listing consists of one user per line,
+// and each line has three columns:
+// the virtual user name, the mailbox directory (or C<-> if none is set),
+// and an optional list of forwarding addresses, all seperated by a space.
+
 cli_option cli_options[] = {
   { 'a', "aliases", cli_option::flag, true, &o_nousers,
     "Show only accounts without a mailbox", 0 },

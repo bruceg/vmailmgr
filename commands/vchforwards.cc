@@ -23,20 +23,28 @@
 
 const char* cli_program = "vchforwards";
 const char* cli_help_prefix =
-"Changes a virtual user's forwarding addresses.\n"
-"If no forwarding addresses are given, forwarding is disabled.\n";
-const char* cli_help_suffix = "";
+"Change virtual user forwarding addresses.\n";
+const char* cli_help_suffix =
+"If no forwarding addresses are given, forwarding is disabled.
+";
 const char* cli_args_usage = "USERNAME [DESTINATION1 ...]";
 const int cli_args_min = 1;
 const int cli_args_max = -1;
 
 static int o_quiet = false;
 
+// This program replaces the virtual user's list of forwarding addresses
+// with the given list.
+
 cli_option cli_options[] = {
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   {0}
 };
+
+// SEE ALSO
+//
+// vmailmgr(7)
 
 int cli_main(int argc, char* argv[])
 {

@@ -327,7 +327,10 @@ int cli_main(int, char*[])
 
   int r = execute("vdeliver-predeliver");
   if(r)
-    exit_msg("Execution of vdeliver-predeliver failed", r);
+    if(r == 99)
+      return 99;
+    else
+      exit_msg("Execution of vdeliver-predeliver failed", r);
 
   if(do_delivery) {
     maildir = vpw->directory;
@@ -342,9 +345,13 @@ int cli_main(int, char*[])
     if(!o_quiet)
       fout << "Could not re-rewind standard input" << endl;
   }
-  else if(execute("vdeliver-postdeliver"))
-    if(!o_quiet)
-      fout << "Execution of vdeliver-postdeliver failed" << endl;
-
+  else {
+    r = execute("vdeliver-postdeliver");
+    if(r && r != 99)
+      if(!o_quiet)
+	fout << "Execution of vdeliver-postdeliver failed" << endl;
+    return r;
+  }
+  
   return 0;
 }

@@ -33,7 +33,7 @@ mystring vpwentry::to_record() const
     is_mailbox_enabled,
     0
   };
-  mystring flags(flagstmp, 3);
+  mystring flags(flagstmp, 5);
   return prefix + flags + pass + mystring::NUL +
     directory + mystring::NUL +
     f + mystring::NUL +

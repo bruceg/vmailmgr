@@ -19,6 +19,16 @@ AC_ARG_WITH(krb5,
  AC_DEFINE(USE_KRB5)])
 AM_CONDITIONAL(KRB5, test x$with_krb5 != x -a x$with_krb5 != xno)
 
+AC_ARG_WITH(vpwtable,
+[  --with-vpwtable=type    Use "type" database for storage of virtual
+                           password tables.  Defaults to "cdb".],
+[case "${withval}" in
+ gdbm) vpwtable=gdbm;;
+ *)    AC_MSG_ERROR(bad value ${withval} for --enable-vpwtable);;
+ esac],[vpwtable=cdb])
+AM_CONDITIONAL(VPWTABLE_GDBM, test x$vpwtable = xgdbm)
+AM_CONDITIONAL(VPWTABLE_CDB,  test x$vpwtable = xcdb)
+
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX

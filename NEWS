@@ -1,9 +1,11 @@
 -------------------------------------------------------------------------------
-Changes in version 0.96.10
+Changes in version 0.97
 
 New Features:
+- Aliases can now have autoresponders.
 
 Internal Changes:
+- All accounts are created with an account directory now.
 - Created a vpwtable writer interface, and removed the CDB-specific
   commands.
 

@@ -5,6 +5,8 @@ releases.
 -------------------------------------------------------------------------------
 FOR VERSION 0.97:
 
+- Make daemon/chattr.cc handle changes to the "personal information".
+
 - Revert vdomain::lookup back to the single-argument case, and yank the
   dead code.
 

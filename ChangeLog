@@ -1,3 +1,16 @@
+2000-07-04  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* lib/vpwtable/gdbm_getbyname.cc (getbyname): Lowercase the name
+	before retrieving it.
+
+	* commands/listvdomain.cc (cli_main): Exit with error if listing
+	an individual user fails.
+
+	* lib/vpwtable/gdbm_get.cc (start): Fixed missing gdbm_firstkey.
+
+	* commands/vpasswd2db.cc: Added new utility to convert plain text
+	password tables into whatever vpwtable format was configured.
+
 2000-06-25  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* python/vmailmgr.py.in: Added deluser and chattr commands.

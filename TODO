@@ -31,8 +31,6 @@ FOR VERSION 0.97.1:
 - Always "touch" $VUSER/cur on successful authentication, to provide for
   a "last login time".
 
-- Add a checkpassword command suitable for use with SMTP-Auth+setuid.
-
 - Expand the record format to include a "last modified" field, and to
   change the flag values from binary 0/1 to ASCII.
 

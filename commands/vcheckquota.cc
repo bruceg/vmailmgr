@@ -89,8 +89,8 @@ void link_softquota_message(const mystring& mailbox)
   mystring newdir = mailbox + "/new/";
   pid_t pid = getpid();
   for(;;) {
-    mystring path = newdir + itoa(time(0)) + "." + itoa(pid) +
-      ".softquota-warning";
+    mystring path = newdir + itoa(time(0)) + ".";
+    path = path + itoa(pid) + ".softquota-warning";
     if(symlink(soft_message, path.c_str()) == 0)
       return;
     if(errno != EEXIST)

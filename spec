@@ -74,7 +74,7 @@ do
 done
 make	prefix=$RPM_BUILD_ROOT/usr \
 	cgidir=$RPM_BUILD_ROOT/home/httpd/cgi-bin \
-	pythonlibdir=$RPM_BUILD_ROOT/usr/lib/python1.5 \
+	pythonlibdir=$RPM_BUILD_ROOT/usr/lib/python1.5/vmailmgr \
 	phpdir=$RPM_BUILD_ROOT/home/httpd/php \
 	install-strip
 install -m 755 scripts/vmailmgrd.init $RPM_BUILD_ROOT/etc/rc.d/init.d/vmailmgrd

@@ -24,8 +24,7 @@
 #include "vcommand.h"
 
 const char* cli_program = "vchattr";
-const char* cli_help_prefix =
-"Changes the attributes on one or more virtual users\n";
+const char* cli_help_prefix = "Changes the attributes on one or more virtual users\n";
 const char* cli_help_suffix = "";
 const char* cli_args_usage = "VALUE USERNAME ...";
 const int cli_args_min = 2;
@@ -34,6 +33,11 @@ const int cli_args_max = -1;
 static int o_attr = 0;
 static int o_quiet = false;
 
+// This program changes the value of one attribute on a set of virtual
+// users.  It cannot be used to change the user's password or forwarding
+// addresses -- use B<vpasswd> and B<vchforwards> to accomplish those
+// tasks.
+
 cli_option cli_options[] = {
   { 'c', "msgcount", cli_option::flag, vdomain::ATTR_MSGCOUNT, &o_attr,
     "Set the user's message count limit", 0 },
@@ -41,6 +45,9 @@ cli_option cli_options[] = {
     "Set the account's expiry time (in seconds)", 0 },
   { 'E', "enabled", cli_option::flag, vdomain::ATTR_MAILBOX_ENABLED, &o_attr,
     "Enable or disable delivery to the account's mailbox", 0 },
+  // Enable (C<1>) or disable (C<0>) delivery to the virtual user's mailbox
+  // directory.  This does not delete the mailbox or any of the messages
+  // contained in or, nor prevent the user from logging in.
   { 'p', "personal", cli_option::flag, vdomain::ATTR_PERSONAL, &o_attr,
     "Set the user's personal information", 0 },
   { 'q', "softquota", cli_option::flag, vdomain::ATTR_SOFTQUOTA, &o_attr,
@@ -53,6 +60,23 @@ cli_option cli_options[] = {
     "Set the user's message size limit (in bytes)", 0 },
   {0}
 };
+
+// RETURN VALUE
+//
+// 0 if the given attribute was successfully changed for all users,
+// non-zero otherwise.
+// If any of the steps fail, a diagnostic message is printed.
+
+// SEE ALSO
+//
+// vadduser(1)
+
+// NOTES
+//
+// This program expects the environment variable C<HOME> to be set, and
+// executes a change directory to the contents of it before starting.  It
+// is also required that you change user to the domain owner before using
+// these utilities.
 
 int cli_main(int argc, char* argv[])
 {

@@ -41,24 +41,38 @@ static int o_hardquota = 0;
 static int o_msgsize = 0;
 static int o_msgcount = 0;
 static int o_expiry = 0;
-//static cli_stringlist* o_extra = 0;
 static int o_password = true;
 static int o_domailbox = true;
 static int o_quiet = false;
+
+// This program is used to set up a user within a virtual host.
+// If this program is reading from a tty,
+// it will then ask for a password (twice, to make sure you typed it in
+// correctly), otherwise it will read the password from the input with no
+// prompting.
+// It will then
+// add the user to the virtual password table in the current
+// directory and create a mail directory for the new user.
+// It will also add an entry for each of the named aliases.
 
 cli_option cli_options[] = {
   { 'c', "msgcount", cli_option::integer, 0, &o_msgcount,
     "Set the user's message count limit", 0 },
   { 'D', "no-mailbox", cli_option::flag, false, &o_domailbox,
-    "Don't create a mailbox for this user", "true for vaddalias" },
+    "Do not create a mailbox for this user", "true for vaddalias" },
   { 'd', "directory", cli_option::string, 0, &o_userdir,
     "Set the path to the user's mailbox", 0 },
+  // Set the path to the user's mailbox.
+  // Note that this directory is unconditionally prefixed with "./".
   { 'e', "expiry", cli_option::integer, 0, &o_expiry,
     "Set the account's expiry time (in seconds)", 0 },
   { 'f', "forward", cli_option::stringlist, 0, &o_forwards,
-    "Add a forwarding address for this user", 0 },
+    "Add a forwarding address to this user", 0 },
+  // Add a forwarding address to this user (this may be used multiple times).
   { 'P', "no-password", cli_option::flag, false, &o_password,
     "Do not ask for a password", 0 },
+  // Do not ask for a password,
+  // and instead set the pass phrase field to an unusable value.
   { 'p', "personal", cli_option::string, 0, &o_personal,
     "Set the user's personal information", 0 },
   { 'Q', "hardquota", cli_option::integer, 0, &o_hardquota,
@@ -67,12 +81,28 @@ cli_option cli_options[] = {
     "Set the user's soft quota (in bytes)", 0 },
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
-  //{ 'x', "extra", cli_option::stringlist, 0, &o_extra,
-  //  "Add extra data for the user", 0 },
   { 'z', "msgsize", cli_option::integer, 0, &o_msgsize,
     "Set the user's message size limit (in bytes)", 0 },
   {0}
 };
+
+// RETURN VALUE
+//
+// 0 if all steps were successful, non-zero otherwise.
+// If any of the steps fail, a diagnostic message is printed.
+
+// SEE ALSO
+//
+// vsetup(1)
+
+// NOTES
+// You must have either created the users subdirectory by hand or run the
+// F<vsetup> program before using this program.
+// 
+// This program expects the environment variable C<HOME> to be set, and
+// executes a change directory to the contents of it before starting.  It
+// is also required that you change user to the domain owner before using
+// these utilities.
 
 mystring list2str(cli_stringlist* list)
 {

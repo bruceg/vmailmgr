@@ -40,11 +40,57 @@ const int cli_args_max = 0;
 
 static int o_quiet = false;
 
+// Scans bulletin directories for any which are newer than the
+// F<.timestamp> file in the specified maildir.
+// For each bulletin that it finds, it adds a symlink to that bulletin to
+// the specified maildir.
+// Since no reformatting is done, these bulletins must be fully formatted
+// email messages, including full headers.
+//
+// This program is designed to be run from C<checkvpw-postsetuid>.
+
 cli_option cli_options[] = {
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   {0}
 };
+
+// RETURN VALUE
+//
+// Exits false if an error occurred during startup, true otherwise.
+
+// ENVIRONMENT
+//
+// This program expects the environment variable C<HOME> to be set, and
+// executes a change directory to the contents of it before starting.
+//
+// This program expects C<MAILDIR> to be set, and delivers any bulletins
+// that it finds into this maildir.
+//
+// If C<VUSER> is set, a local bulletin directory is searched as above.
+
+// FILES
+//
+// The following control files are used:
+//
+// F<global-bulletin-dir>
+//
+// This specifies the bulletin directory for all domains.
+//
+// F<bulletin-dir>
+//
+// This specifies the bulletin (sub)directory for virtual domains.
+
+// SEE ALSO
+//
+// vmailmgr(7),
+// checkvpw(8),
+// configuration.html
+
+// NOTES
+//
+// If either the global or local bulletin directories do not exist, they
+// are silently ignored without failing.
 
 #ifndef HAVE_GETHOSTNAME
 int gethostname(char *name, size_t len);

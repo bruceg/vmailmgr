@@ -30,6 +30,22 @@ const int cli_args_max = -1;
 static int o_quiet = false;
 static int o_domailbox = true;
 
+// This program will take the steps necessary to
+// remove a user from a virtual domain.
+//
+// For each user listed on the command line, it does the following:
+//
+// 1. It removes the named user's entry from the local password file.
+//
+// 2. It removes any qmail delivery files that point to the named user's
+// mail directory.
+//
+// 3. It removes the user's mail directory and all of its contents
+// (recursively).
+//
+// If any of the above steps fail, a warning is issued and processing
+// continues.
+
 cli_option cli_options[] = {
   { 'D', "no-mailbox", cli_option::flag, false, &o_domailbox,
     "Do not delete users that have a mailbox", 0 },
@@ -37,6 +53,16 @@ cli_option cli_options[] = {
     "Suppress all status messages", 0 },
   {0}
 };
+
+// NOTES
+//
+// You must have either created the users subdirectory by hand or run the
+// F<vsetup> program before using this program.
+//
+// This program expects the environment variable C<HOME> to be set, and
+// executes a change directory to the contents of it before starting.  It
+// is also required that you change user to the domain owner before using
+// these utilities.
 
 int cli_main(int argc, char* argv[])
 {

@@ -32,14 +32,47 @@
 #include "cdb++/cdb++.h"
 
 const char* cli_program = "vrehash";
-const char* cli_help_prefix =
+const char* cli_help_prefix = "Reorganize users directory\n"
 "Renames user directories in a virtual domain to match the current\n"
 "partitioning scheme\n";
 const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
-cli_option cli_options[] = { {0} };
+
+// This program is designed to be run after the sysadmin has changed the
+// C<user-dir-bits> or C<user-dir-slices> configuration variables.
+// It creates a new users directory called C<new.users>, where C<users>
+// is the configured name of the user directory.
+// It then traverses the password table, creates a new user directory name
+// for each user, and moves the user's mail directory to the new
+// directory name, creating any necessary directories as it goes.
+// Any alias entries in the password table are copied as-is.
+
+cli_option cli_options[] = {
+  {0}
+};
+
+// RETURN VALUE
+//
+// Returns 1 if any part of the process fails; 0 otherwise.
+
+// NOTES
+//
+// When the process is completed, a the old users directory will have
+// been moved to C<backup.users>.
+// If no errors occurred, you should be able to safely delete this
+// directory and all its subdirectories.
+// Check this directory first, though, to ensure that no important files
+// remain.
+
+// WARNINGS
+//
+// This program is not particularly careful to clean up after itself if
+// an error occurs.
+// If an error occurs, you will have to check the status of the current
+// directory, the virtual password file, and all the virtual users
+// subdirectories in both C<users> and C<new.users>.
 
 static cdb_reader* in = 0;
 static cdb_writer* out = 0;

@@ -33,11 +33,35 @@ const int cli_args_max = 0;
 
 static int o_quiet = false;
 
+// This program sets up the basic set of necessary files needed to use an
+// account as a virtual domain with vmailmgr.
+// The users directory is created if it does not exist.
+// A F<.qmail-default> file is created with the proper contents.
+// If a F<.qmail-default> previously existed, it is renamed to
+// F<.qmail-default~>.
+// Three system aliases (C<root>, C<mailer-daemon>, and C<postmaster>)
+// are created to point to the configured postmaster.
+
 cli_option cli_options[] = {
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   {0}
 };
+
+// RETURN VALUE
+//
+// 0 if all files and directories are successfully created, 1 otherwise.
+
+// SEE ALSO
+//
+// vdeliver(1), vmailmgrd(8)
+
+// NOTES
+//
+// This program expects the environment variable C<HOME> to be set, and
+// executes a change directory to the contents of it before starting.  It
+// is also required that you change user to the domain owner before using
+// these utilities.
 
 mystring user_dir;
 

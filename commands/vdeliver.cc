@@ -39,23 +39,53 @@ static int addrpline = true;
 static int adddtline = true;
 static int o_quiet = false;
 
+// vdeliver is the unified e-mail message delivery agent for virtual
+// domains managed by vmailmgr.
+// It is run from the F<.qmail-default> file, and automatically handles
+// delivery to any user within a virtual domain.
+
 cli_option cli_options[] = {
   { 'D', 0, cli_option::flag, true, &adddtline,
     "Add a \"Delivered-To:\" line (default)", 0 },
+  // Add the C<Return-Path:> line to the top of the message. (default)
   { 'F', 0, cli_option::flag, true, &addufline,
     "Add a \"From \" mailbox line", 0 },
   { 'R', 0, cli_option::flag, true, &addrpline,
     "Add a \"Return-Path:\" line (default)", 0 },
   { 'd', 0, cli_option::flag, false, &adddtline,
     "Do not add the \"Delivered-To:\" line", 0 },
+  //Do not add the C<Delivered-To:> line to the top of the message.
   { 'f', 0, cli_option::flag, false, &addufline,
     "Do not add the \"From \" mailbox line (default)", 0 },
+  // Do not add the C<From> mailbox line to the top of the message.
+  // Note that this line is never added when the message is being
+  // re-injected into the mail stream. (default)
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   { 'r', 0, cli_option::flag, false, &addrpline,
     "Do not add the \"Return-Path:\" line", 0 },
+  // Do not add the C<Return-Path:> line to the top of the message.
   {0}
 };
+
+// RETURN VALUE
+//
+// Returns 0 if delivery was successful,
+// 100 if a fatal error occurred,
+// or 111 if a temporary error occurred.
+
+// ENVIRONMENT
+//
+// F<vdeliver> expects to be run by F<qmail-local> as it requires several
+// of the environment variables that it sets.
+// See the I<qmail-command>(8) manual page for full details on these
+// variables.
+// In particular, it requires C<DTLINE>, C<EXT>, C<HOST>, C<RPLINE>,
+// C<SENDER>, C<UFLINE>, and C<USER>.
+
+// SEE ALSO
+//
+// checkvpw(1), I<qmail-command>(8)
 
 #ifndef HAVE_GETHOSTNAME
 int gethostname(char *name, size_t len);

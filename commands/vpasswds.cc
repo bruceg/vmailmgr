@@ -25,8 +25,7 @@
 #include "vcommand.h"
 
 const char* cli_program = "vpasswds";
-const char* cli_help_prefix =
-"Changes the passwords for a list of virtual users\n";
+const char* cli_help_prefix = "Changes the passwords for a list of virtual users\n";
 const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
@@ -34,11 +33,34 @@ const int cli_args_max = 0;
 
 static int o_quiet = false;
 
+// This program is used to change the password of a list of virtual
+// users.  The list is read from standard input.
+// Each line in the list contains the user's name and new pass phrase,
+// seperated by whitespace.
+// It will attempt to change the password for each listed user.
+// If any step fails, a warning is issued and processing continues with
+// the next line.
+// Any input folling the password is ignored.
+
 cli_option cli_options[] = {
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   {0}
 };
+
+// SEE ALSO
+//
+// vpasswd(1)
+
+// NOTES
+//
+// You must have either created the users subdirectory by hand or run the
+// F<vsetup> program before using this program.
+//
+// This program expects the environment variable C<HOME> to be set, and
+// executes a change directory to the contents of it before starting.  It
+// is also required that you change user to the domain owner before using
+// these utilities.
 
 static int errors = 0;
 

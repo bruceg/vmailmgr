@@ -1,0 +1,10 @@
+#!/bin/sh
+while IFS=: read name pass uid gid gecos home shell; do
+  echo -n "$name($uid): "
+  if ! cd "$home" 2>/dev/null; then
+    echo Skipping, has invalid home directory.
+    continue
+  fi
+  su - $name sh -c 'exec vupgrade'
+  echo Converted.
+done </etc/passwd

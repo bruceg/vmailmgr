@@ -22,13 +22,16 @@
 #include "mystring/mystring.h"
 #include "vpwentry/vpwentry.h"
 #include "vcommand.h"
+#include "misc/maildir.h"
 
-const char* cli_program = "vpasswd2db";
-const char* cli_help_prefix = "Converts text password tables to vpwtable DB format\n";
+const char* cli_program = "vupgrade";
+const char* cli_help_prefix = "Upgrades the vmailmgr data files for a virtual domain\n";
 const char* cli_help_suffix =
 "Reads in a standard virtual password table in the current directory,
-and writes it out to a table.  The file names for the input and output
-tables are determined from the configuration file.";
+and writes it out to the current table format.  The file names for the
+input and output tables are determined from the configuration file.
+In addition, a user directory is created for each account that does
+not have one.";
 const char* cli_args_usage = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
@@ -41,10 +44,11 @@ cli_option cli_options[] = {
   {0,}
 };
 
-static vpwentry* getpw(fdibuf& in)
+static fdibuf* passwd_in = 0;
+static vpwentry* getpw_passwd()
 {
   mystring buf;
-  if(!in.getline(buf))
+  if(!passwd_in->getline(buf))
     return 0;
 
   int first = buf.find_first(':');
@@ -54,24 +58,56 @@ static vpwentry* getpw(fdibuf& in)
   return vpwentry::new_from_record(buf.left(first), buf.c_str() + first);
 }
 
+static vpwtable_reader* vpwtable_in = 0;
+static vpwentry* getpw_vpwtable()
+{
+  return vpwtable_in->get();
+}
+
+static vpwentry* (*getpw)();
+
+int open_table()
+{
+  vpwtable_in = domain.table()->start_read();
+  if(vpwtable_in)
+    getpw = getpw_vpwtable;
+  else {
+    passwd_in = new fdibuf(password_file.c_str());
+    if(!*passwd_in)
+      return false;
+    getpw = getpw_passwd;
+  }
+  return true;
+}
+
 int cli_main(int, char* [])
 {
   if(!go_home())
     return 1;
 
-  fdibuf in(password_file.c_str());
-  if(!in) {
+  if(!open_table()) {
     if(!o_quiet)
-      ferr << "Can't open password table named '"
-	   << password_file << "'." << endl;
+      ferr << "Can't open password table." << endl;
     return 1;
   }
 
   vpwtable_writer* out = domain.table()->start_write();
 
   vpwentry* vpw;
-  while((vpw = getpw(in)) != 0) {
+  while((vpw = getpw()) != 0) {
+    // Create any missing directories
+    if(!vpw->directory) {
+      mystring dir = domain.userdir(vpw->name);
+      if(mkdirp(dir, 0700) == -1) {
+	out->abort();
+	if(!o_quiet)
+	  ferr << "Failed to created user directory '" << dir << "'" << endl;
+	return 1;
+      }
+      vpw->directory = dir;
+    }
     if(!out->put(*vpw)) {
+      out->abort();
       if(!o_quiet)
 	ferr << "Failed to add record to vpwtable." << endl;
       return 1;

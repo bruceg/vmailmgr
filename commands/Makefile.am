@@ -1,14 +1,14 @@
 bin_PROGRAMS = listvdomain vadduser vaddusers vchattr vchforwards \
-	vcheckquota vdeliver vdeluser vpasswd vpasswd2db vpasswds \
-	vpopbull vrehash vsetup
+	vcheckquota vdeliver vdeluser vpasswd vpasswds vpopbull \
+	vrehash vsetup vupgrade
 bin_SCRIPTS = vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
 
 noinst_PODS = \
 	listvdomain.pod vadduser.pod vadduser.pod vchattr.pod \
 	vchforwards.pod vcheckquota.pod vdeliver.pod vdeluser.pod \
-	vpasswd.pod vpasswd2db.pod vpasswds.pod vpopbull.pod \
-	vrehash.pod vsetup.pod
+	vpasswd.pod vpasswds.pod vpopbull.pod vrehash.pod vsetup.pod \
+	vupgrade.pod
 noinst_HTMLS = $(noinst_PODS:.pod=.html)
 man_MANS = $(noinst_PODS:.pod=.1)
 
@@ -16,7 +16,7 @@ CLEANFILES = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS) \
 	pod2html-dircache pod2html-itemcache
 EXTRA_DIST = $(man_MANS) $(noinst_HTMLS) $(noinst_PODS) $(bin_SCRIPTS)
 
-EXTRA_SCRIPTS = allvpasswd2db
+EXTRA_SCRIPTS = vupgrade-all
 
 all: docs
 
@@ -63,8 +63,8 @@ vpasswd_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 vpasswds_SOURCES = vpasswds.cc vcommand.cc
 vpasswds_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
-vpasswd2db_SOURCES = vpasswd2db.cc vcommand.cc
-vpasswd2db_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
+vupgrade_SOURCES = vupgrade.cc vcommand.cc
+vupgrade_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a
 
 vpopbull_SOURCES = vpopbull.cc vcommand.cc
 vpopbull_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

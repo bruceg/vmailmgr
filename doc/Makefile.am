@@ -16,7 +16,8 @@ EXTRA_DIST = ChangeLog-pre-vmailmgr ChangeLog-pre-0.70 \
 	$(noinst_HTMLS) \
 	$(noinst_TXTS)
 CLEANFILES = $(noinst_HTMLS) $(man_MANS) \
-	HOWTO.txt FAQ.txt configuration.txt vmailmgr-cgi.txt
+	HOWTO.txt FAQ.txt configuration.txt vmailmgr-cgi.txt \
+	pod2htmd.tmp pod2htmi.tmp translation.ps
 
 TEXI2HTML = texi2html -monolithic -number
 CL2HTML	= perl changelog2html.pl

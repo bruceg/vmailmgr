@@ -1,4 +1,17 @@
 -------------------------------------------------------------------------------
+Changes in version 0.96.9
+
+New Features:
+- vdeluser now has an option to prevent it from deleting users with a
+  mailbox.
+
+Internal Changes:
+- Cleaned up the vpwtable API.
+- New CLI documentation generator, should help keep the man pages and
+  the programs in sync.
+
+Bug Fixes:
+-------------------------------------------------------------------------------
 Changes in version 0.96.8
 
 New Features:

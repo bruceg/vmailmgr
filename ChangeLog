@@ -1,3 +1,30 @@
+2000-08-13  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/*.cc: Moved all the POD man page documentation into the
+	source files using a new CLI documentation generator.
+
+2000-08-11  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vdeluser.cc: Added an option to prevent vdeluser from
+	deleting a user with a mailbox.
+
+	* lib/vdomain/deluser.cc (deluser): Added a flag to make deluser
+	not delete users with a mailbox.
+
+	* daemon/main.cc: Fixed up some of the cli_* values.
+
+	* doc/FAQ.sgml: Added note regarding difference between vmailmgr
+	and vpopmail.
+
+	* lib/vpwtable/gdbm_read.cc (class gdbm_vpwtable_reader): Added
+	this new subclass of vpwtable_reader.
+
+	* lib/vpwtable/cdb_read.cc (class cdb_vpwtable_reader): Added this
+	new subclass of vpwtable_reader.
+	
+	* lib/vpwtable/vpwtable.h (class vpwtable_reader): Removed the
+	short-sighted conditional mess in this class with virtual methods.
+
 2000-08-10  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* Released version 0.96.8

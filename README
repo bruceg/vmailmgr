@@ -1,0 +1,16 @@
+checkvpw and friends
+version 0.52, beta.
+1997-09-15
+Bruce Guenter, bruceg@qcc.sk.ca
+
+checkvpw is a password checking utility designed specifically for
+use with qmail-popup and qmail-pop3d.  On a host with no virtual
+domains, it behaves much the same (in fact, it should be identical) to
+the standard checkpassword by D. J. Bernstein.
+
+See checkpassword for more details.  A link to it should be available
+from http://www.qmail.org/  The man page for each program contained in
+this package describe its operation.
+
+This program was based on checkpassword by D. J. Bernstein, which in
+turn was based on code contributed by Russ Nelson.

@@ -1,0 +1,303 @@
+-------------------------------------------------------------------------------
+Changes in version 0.96.2
+
+New Features:
+- Updated the FAQ, and added some new answers.
+- Added a Courier IMAP authentication module.  This module does not yet
+  work, unfortunately.
+- Tossed the existing non-functional PHP3 module and added a working one
+  (written in PHP3) from Mike Bell.
+- Modified vsetup to call programs before and after setting up the
+  domain.
+- Added new "vauthenticate" command.
+- Turned the small vaddalias program into a simple shell script.
+
+Internal Changes:
+- Moved the Python code into its own directory, like the PHP3 stuff.
+- Moved the checkvpw module into an "authenticate" directory.
+- Imported changes to the CLI library to make it behave more like the
+  standard getopt.
+
+Bug Fixes:
+- Fixed some bugs in the Kerberos5 configuration handling.
+-------------------------------------------------------------------------------
+Changes in version 0.96.1
+
+New Features:
+- Output of listvdomain CGI has changed slightly to reflect the change
+  in internal data structures.
+
+Internal Changes:
+- Changed listdomain daemon protocol to speed up domain listings and to
+  allow for more information (not yet present in the listdomain CGI).
+
+Bug Fixes:
+- Fixed bug in building Python code from input files with non-GNU make.
+-------------------------------------------------------------------------------
+Changes in version 0.96
+
+New Features:
+- Record data format has been enhanced to add personal information,
+  simple quotas, and expiry information, plus other extra data.
+- Messages can now be delivered to both a mailbox and a list of
+  forwarding addresses at once.
+- Programs executed from checkvpw or vdeliver will have all the above
+  data set in environment variables.
+- listvdomain can now list only users, only aliases, or selected names.
+- The listvdomain CGI has improved formatting ability.
+- Preliminary support for Kerberos5 authentication.  Please tell me if
+  this works for you if you need this, as I can't test it myself.
+- New "vchattr" command to change a virtual user's attributes.
+- New "vchforwards" command to change the forwarding addresses of a
+  user.
+- Executable configuration settings are treated as executable files
+  rather than lists of statements to execute.
+
+Internal Changes:
+- Record parsing routines will read either record format but will write
+  out new record format.
+- Daemon command dispatching now requires seperate virtual domain and
+  virtual user arguments (all the CGIs do this anyways), as opposed to
+  allowing "baseuser-virtual".
+
+Bug Fixes:
+- Fixed non-portable increment statement in vconf2dir shell script, as
+  well as a couple of other bugs.
+- Fixed bug in vdeliver that would cause it to loop without sleeping
+  when it couldn't write to the output file.
+
+NOTES:
+- I would consider this an unstable release.  Adding and deleting users,
+  delivery, and password checking have been tested, but little else.  I
+  just want to get this out.  There are so many big changes in this one
+  that there are bound to be unexpected bugs.
+- Despite the change in the record format, no password table upgrading
+  will be necessary, as this version can read in both new and old
+  records.
+- The "vaddalias" command has been superceeded by "vadduser -D".
+- The "vchalias" command has been replace with "vchforwards".
+- The "vdelalias" command has been removed since "vdeluser" does both
+  jobs.
+- Support for quota management and account expiry are not included yet.
+- The C++ CGIs are limited to adding aliases with a single forwarding
+  address.  The generic Python CGI can be used to create users with
+  multiple forwarding addresses.  I intend to remove most or all of the
+  C++ CGIs in favour of a more generic interface.
+-------------------------------------------------------------------------------
+Changes in version 0.95
+
+New Features:
+- vdeliver now has a hook to execute a list of programs before and after
+  delivering an email.  See doc/configuration.* for full details.
+- checkvpw now has a hook to execute a list of programs before and after
+  changing its uid, and after executing the subprogram
+- The bulletins facility is now a standalone program called vpopbull.
+- There is a new program showvconfig which can list the configuration
+  information.
+
+Internal Changes as above.
+
+Bug Fixes:
+- The call to execl in vdeliver when calling qmail-queue was missing a
+  parameter.
+-------------------------------------------------------------------------------
+Changes in version 0.94
+
+New Features:
+- vdeliver and checkvpw no longer call up to vmailmgrd to do user
+  lookups and authentication.  This makes them significantly faster,
+  since the daemon no longer does any useful memorization of any kind of
+  data (no password or virtualdomains caches, etc.), and the socket
+  connection and fork took significant amounts of time.
+
+Internal Changes:
+- The virtual user and virtual password table manipulation were moved
+  into a class interface.  This will be (once the password content
+  changes are integrated in the next couple of versions) the official
+  API target for building alternative database backends (like the much
+  requested MySQL interface).
+- Removed the "check" command from the daemon, since it's no longer
+  used.
+
+Bug Fixes:
+- vdeliver still used a hard coded /var/qmail instead of
+  config->qmail_root().
+
+NOTES:
+* You will no longer need to have vmailmgrd running to use checkvpw,
+  vdeliver, and the command-line tools.  You only need vmailmgrd (and
+  the vmailmgr-daemon RPM package) if you need to use the CGIs.
+-------------------------------------------------------------------------------
+Changes in version 0.93
+
+New Features:
+- New configuration system, based on individual files per configuration
+  parameter rather than one big file.  Should be more extensable this
+  way, and has been benchmarked to be faster.  The configuration files
+  are documented in the configuration.{html,texi,txt} files.
+- New configuration system also set up to allow domain-local
+  configurations by putting a directory named ".vmailmgr" in the domain
+  directory.  This IS (unlike my last attempt) read properly by the
+  daemon and all the utilities and clients.  The daemon switches over to
+  checking for local configuration items immediately after determining
+  what user/domain is being handled.
+- A new "qmail-root" configuration parameter to allow for installations
+  where qmail is not installed in /var/qmail.
+
+Internal Changes:
+- All the v* commands now do a chdir to $HOME before continuing.
+- A virtual domain class has been set up, and is used to reference each
+  domain through a user, with both a user-local and domain-local
+  configuration structure.  This will shortly be used to set up multiple
+  virtual domains per user.
+- Imported new and improved mystring and fdbuf libraries.
+
+Bug Fixes:
+- The .qmail-default file is created with mode r--r--r-- to prevent
+  qmail problems with a writable delivery file in situations where the
+  umask is less restrictive than 022.
+
+IMPORTANT NOTES:
+* This version uses a new configuration structure.  You *MUST* run the
+  included vconf2dir program.  The RPM tries to do this automatically.
+-------------------------------------------------------------------------------
+Changes in version 0.92.2
+
+Bug Fixes:
+- Delivery to partially qualified aliases was broken again in a few hard
+  to trace cases by potentially changing one character in the domain
+  address.  Fixed by rewriting the envelope building code into something
+  simpler and more efficient.
+-------------------------------------------------------------------------------
+Changes in version 0.92.1
+
+Bug Fixes:
+- Delivery to partially qualified aliases (such as the common 'root@')
+  caused vdeliver to either crash itself or to cause qmail-queue to
+  crash (since qmail-queue expects FQDN addresses).  This behavior has
+  been fixed to make such addresses use a domain name of the contents of
+  control/me.
+-------------------------------------------------------------------------------
+Changes in version 0.92
+
+New Features:
+- Aliases can now have passwords.  See the man page for vaddalias or the
+  CGI documentation for details on how to create such an alias.  The
+  intended effect is that, once set up, a virtual user could "own" an
+  alias, for the purpose of changing its destination (or password, of
+  course).
+
+Bug Fixes:
+- Delivery to aliases in vdeliver used to go through qmail-inject.  This
+  would cause qmail to reformat headers or even bounce the message.
+  vdeliver now sends aliases through qmail-queue, the same way that
+  qmail itself does it.
+-------------------------------------------------------------------------------
+Changes in version 0.91
+
+New Features:
+- Command-line and CGI programs to change an alias (to avoid the delete,
+  recreate cycle).
+
+Bug Fixes:
+- Always set the mode on created files to be read-write-only by owner.
+
+Other Changes:
+- vdeliver now uses fdbuf instead of raw I/O to deliver content.
+- Changed the default default username from '*' to '+', to avoid
+  confusion when typing '*' at a shell prompt.
+- Command-line tools now count and report the number of errors
+  encountered and exit false if any errors occurred.
+-------------------------------------------------------------------------------
+Changes in version 0.90.2
+
+New Features: None
+
+Bug Fixes:
+- Fixed compile problem on systems lacking the O_SYNC definition.
+- Fixed compile problem on systems where perror is in stdio.h, and
+  stdio.h is not included through other includes.
+
+NOTES: If you did not have a problem compiling 0.90 or 0.90.1, don't
+bother with this version.
+-------------------------------------------------------------------------------
+Changes in version 0.90.1
+
+New Features: None
+
+Bug Fixes:
+- Added definitions for MIN and MAX in md5-crypt.c if they aren't
+  defined by the included headers.
+- Removed the include of errnos.h in vpwentry_putpw.cc
+
+NOTES: If you did not have a problem compiling 0.90, don't bother with
+this version.
+-------------------------------------------------------------------------------
+Changes in version 0.90
+
+New Features:
+- Eliminated all dependance on any C++ library by incorporating my own
+  C++ I/O library.
+- Dropped the RSA MD5 library and incorporated the GNU MD5 code.
+- Added the GNU md5-crypt module which should provide compatibility with
+  all systems that do MD5-based passcodes.  The new code will read in
+  and authenticate against standard DES-crypted codes, the new standard
+  MD5-crypted '$1$' style codes, and my mistaken MD5 hashes (for
+  temporary backwards compatibility), and will write out the '$1$' style
+  MD5 codes.
+
+Bug Fixes:
+- Fixed a nearly invisible bug in the parsing of the configuration file
+  (it was too lenient in the syntax it allowed).
+- In the bulletin code, the timestamp file was named wrong
+  ("maildir/cur/.timestamp" instead of "maildir/.timestamp"), and it was
+  not created with a proper mode flag.
+
+Other Changes:
+- This package is now distributed under the GPL.
+- The daemon will now not print out any "Accepted Connection" messages
+  unless the verbose flag is set.
+- Inverted the sense of the crypt flag in configure.  There is now a
+  "--enable-crypt" flag which causes the code to revert to only using
+  crypt for password encryption and comparison (the default is to use
+  the built-in md5-crypt module).
+
+NOTES:
+- My plan to move from a fork-based daemon to a thread-based one is on
+  temporary hold until I can complete several other more important
+  reorganizations and cleanups, most importantly completing a generic DB
+  interface layer.
+-------------------------------------------------------------------------------
+Changes in version 0.89
+
+New Features:
+- Changed the file format for the virtual password tables to using CDB
+  tables.
+- The daemon now forks immediately after accepting a connection,
+  allowing for greater concurrency in the POP3 server.
+
+Bug Fixes:
+- Use a ".timestamp" file in a virtual user's maildir to determine the
+  last login time for bulletin delivery.
+
+Other Changes:
+- Removed all the cache tables in the daemon.
+- Did a major reorganization of the libraries and header files.
+
+IMPORTANT NOTES:
+* This package now uses an incompatible file format for the virtual
+  domain password tables.  You *MUST* run "vpasswd2cdb" in each
+  domain to convert your tables before starting the new daemon!
+-------------------------------------------------------------------------------
+Changes in version 0.88
+
+New Features:
+- Long passwords are now supported using MD5 hashing to create the
+  encoded version.  The code will still read the older passwords but
+  will always write out MD5 hashes.
+
+Bug Fixes:  None
+
+Other Changes:
+- I am now finally using automake to build the package.
+-------------------------------------------------------------------------------

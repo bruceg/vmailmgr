@@ -1,0 +1,9 @@
+This package is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Having said that, wherever time is used within vmailmgr (verified with
+version 0.87 and later), it is treated as the number of seconds since
+the UNIX epoch.  It is not converted into or from a textual
+representation anywhere within the package and so is exempt from all
+year 2000 issues.

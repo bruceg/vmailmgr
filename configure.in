@@ -1,0 +1,114 @@
+AC_INIT(include/configrc.h)
+AM_INIT_AUTOMAKE(vmailmgr, 0.96.2)
+AM_CONFIG_HEADER(config.h)
+AC_PROG_MAKE_SET
+
+USE_CRYPT=no
+AC_ARG_ENABLE(crypt,
+[  --enable-crypt          Use only crypt(3) for authentication instead
+                           of the built-in MD5 password hashing.],
+USE_CRYPT=$enableval)
+test "$USE_CRYPT" != no && AC_DEFINE(USE_CRYPT)
+
+AC_ARG_WITH(krb5,
+[  --with-krb5             Use Kerberos5 for authentication.],
+[test x$withval = xyes && withval=/usr/krb5
+ LIBS="$LIBS -L$withval/lib -lkrb5 -lcom_err -lcrypto"
+ CFLAGS="$CFLAGS -I${withval}/include"
+ CXXFLAGS="$CXXFLAGS -I${withval}/include"
+ AC_DEFINE(USE_KRB5)])
+AM_CONDITIONAL(KRB5, test x$with_krb5 != x -a x$with_krb5 != xno)
+
+AC_ARG_WITH(courier-imap,
+[  --with-courier-imap=DIR Build the authentication module for Courier IMAP.],
+[LIBS="$LIBS -L${withval}/authlib -lauthmod -lauth"
+ CFLAGS="$CFLAGS -I${withval}/authlib"
+ CXXFLAGS="$CXXFLAGS -I${withval}/authlib"
+])
+AM_CONDITIONAL(COURIER_IMAP, test x$with_courier_imap != x -a x$with_courier_imap != xno)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
+CXX_NO_RTTI
+CXX_NO_EXCEPTIONS
+
+CFLAGS="$CFLAGS -Wall -W"
+CXXFLAGS="$CXXFLAGS -Wall -W"
+
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+AC_PATH_PROG(STRIP, strip)
+AC_PATH_PROG(RM, rm)
+AC_PATH_PROG(MKDIR, mkdir)
+AC_PATH_PROG(LN, ln)
+
+AC_PATH_PROG(PYTHON, python)
+AC_CACHE_CHECK(Python library path, local_cv_python_lib_dir,
+[[if test "$PYTHON" != no; then
+  local_cv_python_lib_dir=`$PYTHON -c "import sys;print sys.path[1]"`
+else
+  local_cv_python_lib_dir=NONE
+fi]])
+pythonlibdir="$local_cv_python_lib_dir"
+AC_SUBST(pythonlibdir)
+
+AC_PATH_PROG(W3M, w3m)
+AC_PATH_PROG(LYNX, lynx)
+if test "x$W3M" != x; then
+  echo Using w3m to format html pages.
+  HTML2TXT="w3m -dump"
+elif test "x$LYNX" != x; then
+  echo Using lynx to format html pages.
+  HTML2TXT="lynx -dump -nolist"
+else
+  echo "Can't find either w3m or lynx."
+  exit 1
+fi
+AC_SUBST(HTML2TXT)
+
+dnl Checks for libraries.
+AC_CHECK_LIB(crypt, crypt)
+AC_CHECK_LIB(inet, socket)
+AC_CHECK_LIB(socket, socket)
+AC_CHECK_LIB(xnet, socket)
+#AC_CHECK_LIB(pthread, pthread_create)
+#AC_CHECK_LIB(thread, pthread_create)
+
+dnl Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_HEADER_TIME
+AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h shadow.h crypt.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_UID_T
+AC_TYPE_SIGNAL
+AC_C_INLINE
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(gethostname gettimeofday mkdir putenv rmdir socket)
+AC_CHECK_FUNCS(srandom random crypt)
+
+cgidir='${prefix}/cgi-bin'
+AC_SUBST(cgidir)
+
+AC_OUTPUT(Makefile
+          cgi/Makefile
+	  authenticate/Makefile
+	  commands/Makefile
+	  daemon/Makefile
+	  doc/Makefile
+          lib/Makefile
+	  lib/cdb++/Makefile
+	  lib/cgi/Makefile
+	  lib/cli/Makefile
+	  lib/config/Makefile
+	  lib/fdbuf/Makefile
+	  lib/misc/Makefile
+	  lib/mystring/Makefile
+	  python/Makefile)

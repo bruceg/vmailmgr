@@ -1,0 +1,54 @@
+=head1 NAME
+
+vmailmgr - a package to manage virtual mailboxes and aliases
+
+=head1 DESCRIPTION
+
+This document describes the vmailmgr package which contains, among other
+things, a virtualizing password
+checking interface for qmail-pop3d.
+It is intended as a drop-in replacement for the standard checkpassword
+utility with several significant enhancements.
+
+One of the goals of building this package was to provide a usable virtual
+mail interface that was efficient and as fully integrated into qmail as
+possible.
+This means that this package attempts to use the same control files that
+qmail uses to determine if a user is logging in via a virtual host.
+It also implies that all programs should be compiled for two reasons:
+
+=over 8
+
+=item 1
+
+Compiled code will be more efficient than code executed by an
+interpreter, such as perl or java
+
+=item 2
+
+There is no need for an
+interpreter to reside on the system once the code is compiled, eliminating
+concerns that such an interpreter could be used as an exploit in itself.
+
+=back
+
+=head1 SEE ALSO
+
+checkvpw(8),
+vaddalias(1),
+vadduser(1),
+vdelalias(1),
+vdeliver(1),
+vdeluser(1),
+vmailmgrd(8),
+vpasswd(1),
+vsetup(1)
+
+=head1 AUTHOR
+
+Bruce Guenter <F<bruceg@em.ca>>.
+
+=head1 HISTORY
+
+B<vmailmgr> used to be called B<checkvpw>, named for the original
+"core" of the package.

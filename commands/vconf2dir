@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+if [ $# -ne 2 ]; then
+  echo Usage: vconf2dir configuration-file configuration-dir
+  exit 1
+fi
+
+sed -e '/^#/d' -e '/^ *$/d' -e '/=/!d' -e 's/ *= */ /' <"$1" | \
+{
+  if ! cd "$2"; then
+    echo vconf2dir: "$2" is not a directory.
+    exit 1
+  fi
+  while read n v; do
+    echo "$v" > $n
+  done
+}
+
+cd "$2"
+# Post-process postmaster-aliases
+if [ -f postmaster-aliases ]; then
+  pa=`cat postmaster-aliases`
+  echo -n >postmaster-aliases
+  i=1
+  v=`echo $pa | cut -d, -f$i`
+  while [ -n "$v" ]; do
+    echo $v >>postmaster-aliases
+    i=`expr $i + 1`
+    v=`echo $pa | cut -d, -f$i`
+  done
+fi

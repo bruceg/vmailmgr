@@ -1,0 +1,79 @@
+// Copyright (C) 1999 Bruce Guenter <bruceg@em.ca>
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+#include <config.h>
+#include "fdbuf.h"
+#include <stdlib.h>
+#include "mystring.h"
+#include "passwdfn.h"
+#include "configrc.h"
+#include "cli.h"
+#include "vcommand.h"
+
+const char* cli_program = "vchattr";
+const char* cli_help_prefix =
+"Changes the attributes on one or more virtual users\n";
+const char* cli_help_suffix = "";
+const char* cli_args_usage = "VALUE USERNAME ...";
+const int cli_args_min = 2;
+const int cli_args_max = -1;
+
+int o_attr = 0;
+
+cli_option cli_options[] = {
+  { 'c', "msgcount", cli_option::flag, vdomain::ATTR_MSGCOUNT, &o_attr,
+    "Set the user's message count limit", 0 },
+  { 'e', "expiry", cli_option::flag, vdomain::ATTR_EXPIRY, &o_attr,
+    "Set the account's expiry time (in seconds)", 0 },
+  { 'q', "softquota", cli_option::flag, vdomain::ATTR_SOFTQUOTA, &o_attr,
+    "Set the user's soft quota (in KB)", 0 },
+  { 'Q', "hardquota", cli_option::flag, vdomain::ATTR_HARDQUOTA, &o_attr,
+    "Set the user's hard quota (in KB)", 0 },
+  { 'z', "msgsize", cli_option::flag, vdomain::ATTR_MSGSIZE, &o_attr,
+    "Set the user's message size limit", 0 },
+  {0}
+};
+
+int cli_main(int argc, char* argv[])
+{
+  if(!o_attr) {
+    ferr << "vchattr: Must select an attribute to change." << endl;
+    return 1;
+  }
+  
+  if(!go_home())
+    return 1;
+
+  mystring value = argv[0];
+  unsigned errors = 0;
+
+  for(int i = 1; i < argc; i++) {
+    mystring username = argv[i];
+    username = username.lower();
+    
+    response resp = domain.chattr(username, o_attr, value);
+
+    if(!resp) {
+      ferr << "vchattr: error changing the attribute for user '"
+	   << username << "':\n  " << resp.msg << endl;
+      errors++;
+    }
+    else
+      fout << "vchattr: attribute for user '" << username
+	   << "' successfully changed." << endl;
+  }
+  return errors;
+}

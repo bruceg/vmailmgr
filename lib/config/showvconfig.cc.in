@@ -1,0 +1,58 @@
+#include <config.h>
+#include <unistd.h>
+#include "pwentry.h"
+#include "vdomain.h"
+#include "configrc.h"
+
+template<class T>
+void show_val(const char* name, T value)
+{
+  fout << name << ": " << value << "\n\n";
+}
+
+void show_uns(const char* name, unsigned value)
+{
+  fout << name << ": ";
+  if(value == (unsigned)-1)
+    fout << "-1\n\n";
+  else
+    fout << value << "\n\n";
+}
+
+void show_list(const char* name, const strlist& value)
+{
+  if(!value)
+    fout << name << " is empty.\n";
+  else
+    for(mystring_iter iter(value.str()); iter; ++iter)
+      fout << name << ": " << *iter << "\n";
+  fout << "\n";
+}
+
+#define show_dir show_val
+#define show_str show_val
+
+pwentry user;
+vdomain domain(user);
+
+bool go_home()
+{
+  if(!user.home) {
+    ferr << "showvconfig: Can't determine home directory" << endl;
+    return false;
+  }
+  if(chdir(user.home.c_str()) == -1) {
+    ferr << "showvconfig: Can't change to home directory" << endl;
+    return false;
+  }
+  config = &domain.config;
+  return true;
+}
+
+int main()
+{
+  if(!go_home())
+    return 1;
+%%LIST%%
+  return 0;
+}

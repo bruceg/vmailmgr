@@ -1,0 +1,9 @@
+#include "configio.h"
+
+static %TYPE% default_%NAME%(%DEFAULT%);
+static const mystring filename_%NAME% = "%FILENAME%";
+%TYPE% configuration::%NAME%() const {
+  return read_%EXT%(filename_%NAME%,
+                    default_%NAME%,
+		    (config_cache<%TYPE%>&)%NAME%_cache);
+}

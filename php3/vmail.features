@@ -1,0 +1,26 @@
+Features of using native PHP code for vmailmgr.
+
+- No need to compile PHP module, which few find themselves able to do.
+
+- Fully up to date as of 0.96.2, able to make use of all the new
+  functionality added (multiple forwarding destinations, users with forwarding
+  destinations and mailboxes, etc.)
+
+- User parsable listdomain output. Listdomain can be arranged however the
+  admin likes, allowing fields to be left out, reordered, or new fields
+  added (like a delete button).
+
+- Multiple commands per script, and user parsable output. While the python
+  CGI allows user parsable output, only the PHP functions can call more than
+  one function from the same page.
+
+- Only the PHP functions offer proper handling of multiple forwarding
+  desinations, allowing you to expand the number of fields on the HTML form
+  depending on the number of forwarding accounts already existing.
+
+- Easy to use interface, with good input checking. PHP commands are very
+  similar to the command line commands, and can accept all sorts of bad data
+  from user forms. New conditional failures can be easily added.
+  
+- Easily modified. The PHP commands are easy to add, extend, modify,
+  combine, update, etc.

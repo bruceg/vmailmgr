@@ -1,0 +1,17 @@
+noinst_LIBRARIES = libconfig.a
+bin_PROGRAMS = showvconfig
+EXTRA_DIST = configrc.in build-config.sh \
+	configrc.h.in Makefile.am.in configvar.in showvconfig.cc.in
+
+INCLUDES = -I../../include
+
+libconfig_a_SOURCES = \
+%%LIST%%
+	configio.h config_read.cc \
+	configrc.h configrc.cc \
+	read_dir.cc read_list.cc read_str.cc read_uns.cc
+
+showvconfig_SOURCES = showvconfig.cc
+showvconfig_LDADD = libconfig.a ../fdbuf/libfdbuf.a ../misc/libmisc.a \
+	../mystring/libmystring.a
+

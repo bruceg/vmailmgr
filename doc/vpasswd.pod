@@ -1,0 +1,39 @@
+=head1 NAME
+
+vpasswd - change a virtual user's password
+
+=head1 SYNOPSIS
+
+B<vpasswd> B<username>
+
+=head1 DESCRIPTION
+
+This program is used to change a user's password within a virtual
+domain.
+
+It will read a password using the same method as vadduser
+(@pxref{vadduser})
+and then re-write the local password file using the new
+password.
+
+=head1 RETURN VALUE
+
+0 if the password was changed successfully, nonzero otherwise.
+
+=head1 SEE ALSO
+
+checkvpw(1)
+
+=head1 NOTES
+
+You must have either created the users subdirectory by hand or run the
+F<vsetup> program before using this program.
+
+This program expects the environment variable C<HOME> to be set, and
+executes a change directory to the contents of it before starting.  It
+is also required that you change user to the domain owner before using
+these utilities.
+
+=head1 AUTHOR
+
+Bruce Guenter <F<bruceg@em.ca>>.

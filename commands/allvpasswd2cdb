@@ -1,0 +1,21 @@
+#!/bin/sh
+while IFS=: read name pass uid gid gecos home shell; do
+  echo -n "$name($uid): "
+  if ! cd "$home" 2>/dev/null; then
+    echo Skipping, has invalid home directory.
+    continue
+  fi
+  if [ -f passwd -a -d users ] && \
+     fgrep vdeliver .qmail-default >/dev/null 2>&1; then
+    if [ -f passwd.cdb ]; then
+      echo Skipping, has already been converted.
+    else
+      vpasswd2cdb
+      chown $uid passwd.cdb
+      chgrp $gid passwd.cdb
+      echo Converted.
+    fi
+  else
+    echo Skipping, is missing a passwd file.
+  fi
+done </etc/passwd

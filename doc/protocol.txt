@@ -1,0 +1,39 @@
+Client-Server interaction
+-------------------------
+
+To execute a server call, the client opens the daemon's UNIX domain
+socket (as specified by SYSCONFDIR/socket-file), and sends across the
+following data:
+
+- protocol : UINT[1] = 2
+- total length of all data : UINT[2]
+- argument count : UINT[1]
+- command : STRING
+- data : STRING[argument count]
+
+It then receives the following response from the server:
+
+- response code : UINT[1]
+  - ok = 0
+  - bad = 1
+  - error = 2
+- message : string
+
+STRING is:
+- length : UINT[2]
+- data : UCHAR[length]
+
+UINT[#] is:
+- unsigned integer, # bytes long represented MSB first
+
+Example:
+0x02                   Protocol version
+0x00 0x2E              Length of everything from this point on
+0x02                   Number of arguments to command
+0x00 0x0A              Length of command name (command name will become a
+                       number later)
+listdomain             Command name
+0x00 0x15              Length of first argument
+mailtest.somesuch.dom  First argument
+0x00 0x08              Length of second argument
+mailtest               Second argument

@@ -1,0 +1,52 @@
+=head1 NAME
+
+vmailmgrd - the vmailmgr daemon
+
+=head1 SYNOPSIS
+
+B<vmailmgrd> [B<-d>] [B<-D>] [B<-v>] [B<-V>]
+
+=head1 DESCRIPTION
+
+This program is the local server that controls the operation of many
+parts of this package.
+It is currently used to handle password checking and virtual user
+lookups, but will eventually contain the functionality to handle adding
+and deleting users and aliases, and changing passwords.
+
+F<vmailmgrd> logs its activity to standard output, and as such
+requires its output to be piped through a tool to
+record those logs, such as F<accustamp> and F<cyclog> (from the
+F<daemontools> package), or
+F<splogger> (included with the F<qmail> package).
+
+=head1 OPTIONS
+
+=over 4
+
+=item d
+
+Only log the requests that cause an error of some kind.
+
+=item D
+
+(default) Log all requests and responses.
+
+=item v
+
+(default) Do not log verbose messages.
+
+=item V
+
+Log verbose messages regarding the system's status.
+Note that this flag implies C<-D>.
+
+=back
+
+=head1 SEE ALSO
+
+vdeliver(1), checkvpw(8)
+
+=head1 AUTHOR
+
+Bruce Guenter <F<bruceg@em.ca>>.

@@ -1,0 +1,442 @@
+1998-01-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vdeliver.cc (main): Added support for optionally adding
+	the From, Delivered-To:, and Return-Path: line to the start of the
+	output mail, either to a file or to qmail-inject (which omits the
+	From line).
+
+1998-01-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/checkvpw.cc (authenticate): Revised the logic to only
+	validate the password if an 'ok' code is returned (was previously
+	the default case), and to indicate bad data otherwise.
+
+	* commands/testclient.cc (main): Added a case for the new econn
+	return code.
+
+	* daemon/lookup.cc (CMD(lookup)): Wrote this routine to lookup a
+	virtual user's delivery instructions.  Returns one of: &address,
+	&address@hostname, /full/path/to/maildir, or ./maildir
+
+	* daemon/dispatch.cc (CMD(stat)): Added a new field to the
+	dispatch table, count, which is used to count the number of times
+	that function has been invoked.  The new function, stat, can be
+	used to return this count on a per-function basis.
+
+	* commands/vdeliver.cc (main): If the call caused a connection
+	error, defer the message (return 111).
+
+	* lib/server.cc (call): Return 'econn' when either building the
+	connection, sending, or receiving data fails.
+
+	* lib/server.h (struct server_response): Added another error code
+	'econn', used to denote an error with the connection itself.
+
+	* lib/mystring.h (class mystring): Changed the 'nil' constant to
+	'const char*' type from 'mystring' type.  This avoids the need for
+	a special protected constructor just for this object, and more
+	accurately reflects its purpose as a placeholder buffer for empty
+	strings.
+	(operator!=): Revised this operation to test if the string to
+	which this is being compared is a NULL pointer.
+
+	* commands/vdeliver.cc: Wrote this program to be inserted in a
+	.qmail-default file, to serve as the delivery agent for all the
+	addresses.
+
+	* lib/mystring.cc (dup): Wrote dup/5 routine for combining 5
+	strings.
+
+1998-01-22  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (main): Fixed bug in socket bind call to use
+	correct length value computed by SUN_LEN macro.  Still need to
+	actually allocate the memory for the sockaddr_un with malloc
+	instead of relying on the buffer for sun_path being long enough.
+
+	* lib/server.cc (connect): Fixed bug in socket connect call to use
+	correct length value computed by SUN_LEN macro.
+
+	* Released version 0.69pre1 pre-release.
+
+	* commands/checkvpw.cc: Moved the definitions of the FAIL_* macros
+	into this file from lib/debug.h
+
+	* daemon/check.cc (check): Fixed several logic bugs.
+
+	* src/checkvpw.cc (main): Rewrote this program to use the 'check'
+	feature of the daemon.
+
+	* daemon/main.cc (handle_connection): Print out a message when the
+	request completes as well as when it is started.
+
+	* daemon/chpass.cc: Fixed some one-off bugs in the command-line
+	handling.
+
+	* src/vpasswd.cc (main): Rewrote this program to be a simple
+	server call stub to the 'chpass' feature.
+
+	* checkvpw.texi: Started reorganizing this document for the
+	inclusion of documentation on the daemon program.
+
+	* lib/server.h (class server_call): Removed the 'msg' class -- it
+	was causing all sorts of headaches from memory deallocation, and
+	was originally implemented as a premature optimization.
+
+1998-01-21  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/debug.h: Added trace, traceptr, and tracestr functions, to
+	trace the flow of class methods.
+
+	* lib/mystring.cc: Introduced the "nil" string -- a constant
+	statically allocated empty string.  Duplicating an empty string or
+	a null pointer duplicates the pointer to this nil string, instead
+	of allocating more memory.  Freeing the nil string is not allowed.
+
+1998-01-18  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Started rewriting the protocol used to communicate between the
+	client and server to be more efficient.  See doc/protocol.txt for
+	a very sketchy protocol definition.
+	
+	* daemon/check.cc (check): Wrote this routine to do password
+	checking, copied mostly from src/checkvpw.cc.
+
+	* src/testclient.cc: Wrote this program to serve as a test client
+	to the server, to test all the data paths through the client
+	library and the server functions without depending on the
+	implementation of the other programs.
+
+	* lib/server.h (class server_call): Wrote the classes in this file
+	and lib/server.cc to encapsulate a call to the server and its
+	response.
+
+1998-01-14  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Started work on the checkvpw daemon -- a user-space server that
+	handles all the real functionality of all the other programs via a
+	UNIX domain socket.  It currently handles checking passwords (for
+	checkvpw) and changing passwords (for vpasswd).
+
+	* lib/mystring.cc (operator+): wrote a new copy of this that takes
+	a 'const char*' second parameter.
+	(*): Rewrote several of the routines that return a new mystring to
+	use the 'named return value' extension of gcc (if being compiled
+	under gcc).
+
+1998-01-13  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/mystring: Added or modified several routines that take
+	"const char*" instead of "const mystring&" as parameters, to
+	prevent the unnecessary spurious creation of temporary
+	mystring's.
+
+1998-01-11  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/passwdfn.cc (fsetpasswd): This new routine encrypts the
+	given password and sets it in the named password file.
+
+	* src/vpasswd.cc (main): Require that the new password is not the
+	same as the newly entered password.
+	(main): Use the newly written 'fssetpasswd' routine.
+
+	* lib/mystring.cc (append): Wrote this method to support string
+	concatenation using "+" and "+=" operators.
+
+	* lib/cgi-base.h (class CGI): Started this class to provide helper
+	functions for CGI applications.
+
+1998-01-10  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/cgi-base.cc (main): Wrote this main routine of all CGI
+	programs; calls cgi_main with the CGI arguments as a parameter.
+	(main): Print an error message and don't call cgi_main if there
+	was an error fetching the CGI arguments.
+
+	* lib/cgi-base.h (class CGIArgs ): Wrote this class to encapsulate
+	the list of arguments or input items on a CGI form.
+
+	* lib/mystring.h (class mystring): Wrote a default constructor.
+	Wrote operator!, returns true if the string is empty.
+
+	* Reorganized the directory structure: generic library files are
+	in "lib", program sources are in "src", and CGI sources are in
+	"CGI".
+
+	* src/*.h: Prepended "CHECKVPW__" to the file identifier macro in
+	most of the header files
+
+1998-01-06  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* vpasswd.cc (main): Changed occurences of "passwd" to use the
+	PASSWORD_FILE define.
+
+1998-01-05  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* spec (Requires): checkvpw does not really "require" qmail, it's
+	just the only thing that currently uses it, so I removed this
+	requirement.
+
+	* released version 0.65-1
+
+	* Makefile: makefile included in the distributed sources does not
+	contain the sections specific to building the distribution.
+
+	* qmail.cc (find_virtual): fixed bug in search logic
+
+1998-01-03  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* mystring.cc (operator=): written
+
+	* checkvpw.texi (checkvpw): updated the documentation to reflect
+	the changes listed below.
+
+	* qmail.cc (find_virtual): modified the logic searching for a
+	virtual domain to match that of qmail -- wildcards in the
+	virtualdomains file are not automatic, but are represented by a
+	leading '.' in the host name.  The new search is also
+	non-recursive and only reads the virtualdomains file once.
+
+1998-01-02  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* checkvpw.cc (main): If the user name contains a '@' symbol,
+	treat the string following the '@' as the host name, and the
+	string preceding the '@' as the username within that host's
+	virtual domain.
+
+	* mystring.h (class mystring): modified the subst, lower, and
+	upper methods to return a new (modified) mystring instead of
+	modifying the current string.
+	(class mystring): wrote the 'left', 'right', and 'sub' methods,
+	which return portions of the string.
+	(class mystring): wrote the 'find' method, finds a single
+	character in the string
+
+	* Makefile: patched for glibc to automatically add the separate
+	"crypt" library to the link stage if it is detected in its
+	"normal" location (/usr/lib/libcrypt.*)
+
+1997-12-26  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* mystring.cc: recoded "dup" functions to handle NULL pointers as
+	empty strings
+
+1997-12-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* checkvpw.cc (main): Changed both the normal and the virtual
+	authentication case to call the same authentication routine.  This
+	allows a user to enter "userid-virtualuser" as a pop-3 username
+	that will access user "virtualuser" in the mail domain that
+	"userid" controls.
+
+Thu Nov 27 22:07:42 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* qmail.cc (find_virtual): moved into qmail.cc from checkvpw.cc
+
+Wed Nov 26 11:52:24 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* released version 0.64-1
+
+	* vdeluser.cc (main): convert user names to lower case
+
+	* vdelalias.cc: removed routine dot_qmail_name (duplicates qmail.cc)
+
+	* vpasswd.cc (main): convert the user name to lower case
+
+	* vadduser.cc (set_password): convert the user name to lower case
+	(main): various conversions to ensure usernames are all lower case
+
+	* qmail.cc (dot_qmail_name): make the .qmail file name lowercase
+
+	* checkvpw.cc (struct auth_data): convert the name to lower case
+	on input
+
+	* mystring.cc (tolower,toupper): written, convert strings to all
+	upper or lower case
+
+Thu Nov 20 13:56:55 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* released version 0.63-1
+
+	* vdeluser.cc (dot_qmail_rm): removed the code to strip trailing
+	whitespace -- the trailing \n is already in the search string
+	(dot_qmail_rm): provide more information on what files are being
+	removed
+	(main): fixed a bug that would cause mail directory for only the
+	first user named to be removed
+
+Tue Nov 18 12:32:47 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* released version 0.62-1
+
+	* vdeluser.cc (dot_qmail_rm): added code to strip trailing
+	whitespace from the string returned by fgets
+
+	* passwdfn.cc (getpasswd_stdin): added code to strip trailing
+	whitespace from the string returned by fgets
+
+	* checkvpw.cc (auth_virtual): fixed a whole series of one-off bugs
+	that would cause authorization to fail in certain cases
+	(find_virtual_recurse): added code to strip trailing whitespace
+	from virtual prefixes
+
+Thu Nov 13 11:17:02 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* vadduser.cc (check_names): now checks for the existance of
+	.qmail files
+
+	* released version 0.61-1
+
+	* passwdfn.cc (getpasswd): split getpasswd() into two more
+	functions, getpasswd_stdin() and getpasswd_interactive(), to avoid
+	using the default mystring constructor
+
+	* mystring.h (class mystring): removed default constructor -- it
+	appears to have been causing segmentation faults
+
+Wed Nov 12 09:20:04 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* passwdfn.cc (getpasswd): fixed length of fgets from 8 to 9
+
+	* released version 0.60-1
+
+	* Updated the documentation to reflect the change in password
+	handling.
+
+	* mystring.h (class mystring): added a default constructor
+
+	* vpasswd.cc (main): changed to use getpasswd
+
+	* vadduser.cc (set_password): changed to use getpasswd
+
+	* passwdfn.cc (getpasswd): written, gets a password from the
+	user.  If stdin is a tty, then it uses the prompts and getpass()
+	function, otherwise it just reads the password with no prompts.
+
+	* released version 0.59-1
+
+	* vpasswd.cc (main): bugfix: manually duplicate all the fields of
+	pw into newpw, using strdup on strings.  This avoids future calls
+	to getpwent overwriting the existing data (the strings in the pw
+	structure are pointers to static data).
+
+Mon Sep 22 13:47:16 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* released version 0.58-1
+
+	* qmail.cc: this file will include some QMail specific functions
+	(dot_qmail_name): moved into qmail.cc from vaddalias and vadduser
+
+	* vadduser.cc (main): make sure all names are valid
+
+	* vaddalias.cc (main): make sure the aliases are valid before
+	creating them
+
+Fri Sep 19 12:01:04 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* released version 0.57-1
+
+	* checkvpw.texi: updated documentation for vaddalias and vdelalias
+
+	* vdelalias.cc: wrote vdelalias to delete aliases
+
+	* vaddalias.cc: wrote vaddalias to add a new alias to an existing
+	user
+
+	* stat_fns.h (is_file): added
+
+Thu Sep 18 09:05:46 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* tweaked root-level Makefile to clean up after building a
+	distribution
+
+	* released version 0.56-1
+
+	* stat_fns.h: written -- has some simple file testing routines
+
+	* mystring: added a 'length' member to the class to allow for
+	faster length calculations
+
+	* checkvpw.texi: updated the documentation for vdeluser
+
+	* spec: added vdeluser to list of programs
+
+	* vdeluser.cc: re-write vdeluser perl script as C++ to avoid any
+	dependancies on perl
+
+	* passwdfn.cc (fdelpwnam): wrote function to delete an entry
+
+	* checkvpw.cc (auth_virtual): use definition instead of "passwd"
+
+	* config.h: added definition for the temporary password file
+
+	* vadduser.cc (main): moved setting the password back up before
+	creating any of the rest of the account -- if a user mis-types a
+	password, none of the rest of the account will be created
+	accidentally.
+
+Wed Sep 17 10:02:58 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* vdeluser: wrote (as a perl script) to delete mail users
+
+	* released version 0.55-1
+
+	* checkvpw.texi: updated the documentation
+
+	* released version 0.54-2
+
+	* spec: added a %attr tag for the documentation files.
+
+Tue Sep 16 10:50:16 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* released version 0.54-1
+
+	* checkvpw.cc (auth_virtual): make the maildir string point to a
+	subdirectory in USER_DIR
+
+	* vadduser.cc: user mail directories are now stored in USER_DIR
+
+	* config.h: created for global defines
+
+	* mystring.cc (subst): substitute all instances of the <from>
+	character with the <to> character (new)
+
+	* vadduser.cc (main): create symlinks to the master .qmail-<user>
+	file instead of creating multiple files for aliases
+
+	* released version 0.53-1
+
+	* passwdfn.cc (fsetpwnam): fixed a bug that prevented more than
+	one entry from being added to a password file
+
+	* vadduser.cc (main): changed the default UID and GID to add to
+	the password file to the current UID and GID
+
+Mon Sep 15 16:55:09 1997  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* released version 0.52-2
+
+	* modified file structure to move sources and documentation into
+	separate directories
+
+	* released version 0.52-1
+
+	* Changed program name to checkvpw.  I never did like the long
+	name...
+
+	* Added GNU COPYING file to package.
+	
+	* vadduser.cc (make_dot_qmail): checks for the .qmail-<ext> file
+	before creating one
+	(main): checks for the user in the password file before adding one
+
+	* passwdfn.cc (fsetpwnam): modified to create the file if it
+	doesn't exist
+
+	* released version 0.51-2
+
+	* added ChangeLog and TODO to spec file
+
+	* vpasswd.cc (main): vpasswd no longer requires that the
+	administrator types in the old password to change to a new one
+

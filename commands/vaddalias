@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+if [ $# -lt 2 ]; then
+  echo "usage: vaddalias virtuser dest [dest ...]"
+  exit 1
+fi
+user="$1"
+shift 1
+args=-D
+for dest in "$@"; do
+  args="$args -f '$dest'"
+done
+eval exec vadduser $args "$user"

@@ -1,0 +1,18 @@
+Bruce Guenter <bruceg@em.ca>
+
+Mike Bell <mike@mikebell.org> has contributed the current PHP3 module
+and several patches.
+
+The CDB library was originally written by D.J.Bernstein <djb@pobox.com>.
+I have subsequently rewritten parts of it to better fit into C++ style
+accesses.  The only copyright notice I could find in the original
+package says:
+
+	If you want to incorporate cdb into your own packages, you can
+	just copy the code here.
+
+The MD5 Message-Digest Algorithm library was written by Ulrich Drepper
+<drepper@gnu.ai.mit.edu>, 1995, and was taken from the GNU C Library
+
+Kerberos5 support written by Nickolai Zeldovich <kolya@zepa.net>
+

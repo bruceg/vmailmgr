@@ -1,0 +1,38 @@
+=head1 NAME
+
+vaddusers - add a list of virtual users
+
+=head1 SYNOPSYS
+
+B<vadduser>
+
+=head1 DESCRIPTION
+
+This program is used to set up a list of users within a virtual host.
+The list is taken from standard input and is of the form:
+
+	username password [alias ...]
+
+It will attempt to add each listed user to the virtual password table
+and to create a mail directory for the new user, as well as attempting
+to add entries for each of the named aliases.
+If any step fails, the remainder of that line is ignored and
+processing continues.
+
+=head1 NOTES
+
+You must have either created the users subdirectory by hand or run the
+F<vsetup> program before using this program.
+
+This program expects the environment variable C<HOME> to be set, and
+executes a change directory to the contents of it before starting.  It
+is also required that you change user to the domain owner before using
+these utilities.
+
+=head1 SEE ALSO
+
+vadduser(1), vsetup(1)
+
+=head1 AUTHOR
+
+Bruce Guenter <F<bruceg@em.ca>>.

@@ -1,0 +1,53 @@
+=head1 NAME
+
+vpasswd - virtual password file format used by vmailmgr
+
+=head1 DESCRIPTION
+
+The virtual password table is an ASCII file which contains a list of
+users that belong to a single domain.
+Each record contains the user's name, password, and the destination
+assigned to that name.
+A destination may be a mail directory or an e-mail address.
+
+There is one entry per line, and each line has the format:
+
+	user_name:password:destination
+
+The field descriptions are:
+
+=over 8
+
+=item F<user_name>
+
+the name of the virtual user in this domain.
+
+=item F<password>
+
+the encrypted password
+
+=item F<destination>
+
+the destination to which this user name delivers.
+If the destination starts with a period (C<.>) or a forward slash
+(C</>), it is interpreted as a mail directory.
+If it starts with an ampersand (C<&>), it is interpreted as an e-mail
+address, and all mail to this name is redirected to that e-mail
+address.
+If the e-mail address does not contain a host name (separated from the
+user name portion of the address by an at sign (C<@>)), the
+destination is assumed to be within the current domain.
+
+=back
+
+=head1 FILES
+
+F<$USER/passwd>
+
+=head1 SEE ALSO
+
+vmailmgr(7), vpasswd(1), vmailmgrd(8), maildir(5)
+
+=head1 AUTHOR
+
+Bruce Guenter <F<bruceg@em.ca>>.

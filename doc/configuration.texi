@@ -1,0 +1,701 @@
+\input texinfo @c -*-texinfo-*-
+@c %**start of header
+@setfilename configuration.info
+@settitle Vmailmgr Configuration Files
+@setchapternewpage off
+@paragraphindent 5
+@footnotestyle end
+@c %**end of header
+
+@ifinfo
+Copyright @copyright{} 1998 Bruce Guenter
+@end ifinfo
+
+@titlepage
+@title Vmailmgr Configuration Files
+@author Bruce Guenter
+@subtitle @today{}
+@end titlepage
+
+@node Top, General Information, (dir), (dir)
+
+@menu
+* General Information::         
+* Configuration Files::         
+@end menu
+
+@c ****************************************************************************
+@node General Information, Configuration Files, Top, Top
+@chapter General Information
+
+@menu
+* Search Order::                
+* File Types::                  
+* Command Execution::           
+@end menu
+
+@c ============================================================================
+@node Search Order, File Types, General Information, General Information
+@section Search Order
+
+The system will look for the configuration files listed below in one of
+the following three locations, in the order they are listed:
+@enumerate
+@item The domain-local configuration directory
+@item The user-local configuration directory
+@item The global configuration directory
+@end enumerate
+The global configuration directory is set to @file{/etc/vmailmgr} by
+default.
+The user-local and domain-local configuration directories (for now, one
+and the same) are a subdirectory, named @file{.vmailmgr} by default, of
+either the user's home directory or the domain subdirectory.  
+If a file matching the configuration name is found in one of the local
+directories, the search stops and it is not searched for in any
+higher up directories.
+
+@c ============================================================================
+@node File Types, Command Execution, Search Order, General Information
+@section File Types
+
+Each of the configuration files falls into one of the following types:
+
+@table @asis
+
+@item String
+
+A single line is read from this type and used as-is with no conversion.
+All data after the first line is ignored.
+
+@item Directory
+
+A single line is read from this type.
+If it does not have a trailing slash (@samp{/}), one is appended.
+All data after the first line is ignored.
+
+@item Number
+
+A single line is read from this type and converted to an unsigned
+integer.
+If the conversion succeeds, the value is used.
+All data after the first line is ignored.
+
+@item List
+
+Each line of the file is read, stripped of leading and trailing
+whitespace, and treated as a separate value.
+Lines that contain only whitespace (ie blank lines) or lines beginning
+with a pound symbol (@samp{#}) are ignored.
+
+@item Executable
+
+If the execute bits on the file are set, it is treated as an executable
+file and is executed with no interpretation by vmailmgr.
+The the Command Execution section below for details.
+
+@end table
+
+All lines are stripped of any leading or trailing white space.
+
+Configuration files marked as @samp{(global only)} are read
+before any user-level processing occurrs, and so are not functional in
+the user-level configuration.
+
+@c ============================================================================
+@node Command Execution,  , File Types, General Information
+@section Command Execution
+
+The following rules apply to executing a single command or a list of
+commands.
+
+The executables are searched in reverse order of the configuration
+files.
+That is, the global setting is used first, and then the local settings.
+If the named file either does not exist in a directory or is not
+executable, that directory is skipped.
+
+A command exit code of @samp{99} indicates that the command completed
+successfully but no further commands should be executed.
+All other non-zero exit codes are treated as an error and will cause the
+invoking program to stop with the same error code.
+For @file{vdeliver}, an error exit of 111 will be passed up to qmail as a
+temporary error, and an error exit of 100 will be passed up as a
+permanent failure.
+See the @file{qmail-command} man page for full details on delivery error
+codes.
+For @file{checkvpw}, any non-zero exit code (except as described above)
+will cause authentication to fail.
+
+The following environment variables will be set (where applicable):
+
+@table @samp
+@item HOME
+The home directory of the real user.
+@item MAILDIR
+The mail directory of the real or virtual user.
+@item USER
+The real user's name.
+@item VUSER
+The virtual user's name.
+For base user logins, this is blank, and all the following items
+prefixed with @samp{VUSER_} are not set.
+@item VUSER_CTIME
+The virtual user's creation time (or "0" if unknown).
+@item VUSER_EXPIRY
+The virtual user's expiry time (or "-" if not applicable).
+@item VUSER_MSGCOUNT
+The virtual user's message count limit (or "-" if not applicable).
+@item VUSER_MSGSIZE
+The virtual user's message size limit (or "-" if not applicable).
+@item VUSER_PERSONAL
+The virtual user's personal data.
+@item VUSER_QUOTA
+The virtual user's total size quota (or "-" if not applicable).
+@end table
+
+@c ****************************************************************************
+@node Configuration Files,  , General Information, Top
+@chapter Configuration Files
+
+Each of the following sections identifies a single configuration file
+
+@menu
+* bulletin-dir::                
+* checkvpw-error::              
+* checkvpw-loginfail::          
+* checkvpw-postexec::           
+* checkvpw-postsetuid::         
+* checkvpw-presetuid::          
+* default-expiry::              
+* default-maildir::             
+* default-msgcount::            
+* default-msgsize::             
+* default-hardquota::           
+* default-softquota::           
+* default-username::            
+* error-maildir::               
+* global-bulletin-dir::         
+* maildir-arg-str::             
+* max-fork::                    
+* password-file::               
+* postmaster-aliases::          
+* postmaster-email::            
+* separators::                  
+* socket-file::                 
+* user-dir::                    
+* user-dir-bits::               
+* user-dir-slices::             
+* vdeliver-postdeliver::        
+* vdeliver-predeliver::         
+* vsetup-pre::
+* vsetup-post::
+@end menu
+
+@c ============================================================================
+@node bulletin-dir, checkvpw-error, Configuration Files, Configuration Files
+@section bulletin-dir
+
+@table @strong
+@item Type
+directory
+@item Default
+@samp{bulletins}
+@item Used By
+checkvpw
+@item Description
+Identifies the subdirectory of the domain directory in which bulletins
+local to a domain are stored.
+@end table
+
+@c ============================================================================
+@node checkvpw-error, checkvpw-loginfail, bulletin-dir, Configuration Files
+@section checkvpw-error
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+checkvpw
+@item Description
+This list is executed if any error occurrs other than those caught by
+@file{checkvpw-loginfail} below.
+The environment variable @code{CHECKVPW_ERROR} will contain an error
+message.
+This can be used to output logging messages about errors in checkvpw.
+@end table
+
+@c ============================================================================
+@node checkvpw-loginfail, checkvpw-postexec, checkvpw-error, Configuration Files
+@section checkvpw-loginfail
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+checkvpw
+@item Description
+This list is executed if the user's login fails.
+The environment variable @code{CHECKVPW_ERROR} will contain an error
+message.
+This can be used to output logging messages about login failures or to
+throttle hackers.
+@end table
+
+@c ============================================================================
+@node checkvpw-postexec, checkvpw-postsetuid, checkvpw-loginfail, Configuration Files
+@section checkvpw-postexec
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+checkvpw
+@item Description
+This list is executed after the subcommand successfully completes.
+@end table
+
+@c ============================================================================
+@node checkvpw-postsetuid, checkvpw-presetuid, checkvpw-postexec, Configuration Files
+@section checkvpw-postsetuid
+
+@table @strong
+@item Type
+executable
+@item Default
+@samp {vpopbull}
+@item Used By
+checkvpw
+@item Description
+This list is executed after a user is successfully authenticated.
+@end table
+
+@c ============================================================================
+@node checkvpw-presetuid, default-expiry, checkvpw-postsetuid, Configuration Files
+@section checkvpw-presetuid
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+checkvpw
+@item Description
+This list is executed before changing user away from root, and before
+authenticating a virtual user.
+Note: The environment variable @samp{MAILDIR} is not set since the
+virtual user has not yet been authenticated, or even looked up
+at this point.
+For the same reason, @samp{VUSER} is not authenticated and is under
+complete control of the invoking user.
+@end table
+
+@c ============================================================================
+@node  default-expiry, default-maildir, checkvpw-presetuid, Configuration Files
+@section default-expiry
+
+@table @strong
+@item Type
+number
+@item Default
+@samp{-1}
+@item Used By
+vadduser
+@item Description
+Sets the default expiry value for newly created users.
+Negative values indicate no expiry.
+@end table
+
+@c ============================================================================
+@node  default-maildir, default-msgcount, default-expiry, Configuration Files
+@section default-maildir
+
+@table @strong
+@item Type
+directory
+@item Default
+@samp{Maildir}
+@item Used By
+checkvpw
+@item Description
+Sets the name of the directory to be used as a non-virtual user's maildir.
+@end table
+
+@c ============================================================================
+@node  default-msgcount, default-msgsize, default-maildir, Configuration Files
+@section default-msgcount
+
+@table @strong
+@item Type
+number
+@item Default
+@samp{-1}
+@item Used By
+vadduser
+@item Description
+Sets the default message count limit.
+@end table
+
+@c ============================================================================
+@node  default-msgsize, default-hardquota, default-msgcount, Configuration Files
+@section default-msgsize
+
+@table @strong
+@item Type
+number
+@item Default
+@samp{-1}
+@item Used By
+vadduser
+@item Description
+Sets the default message size limit.
+@end table
+
+@c ============================================================================
+@node  default-hardquota, default-softquota, default-msgsize, Configuration Files
+@section default-hardquota
+
+@table @strong
+@item Type
+number
+@item Default
+@samp{-1}
+@item Used By
+vadduser
+@item Description
+Sets the default hard quota.
+@end table
+
+@c ============================================================================
+@node  default-softquota, default-username, default-hardquota, Configuration Files
+@section default-softquota
+
+@table @strong
+@item Type
+number
+@item Default
+@samp{-1}
+@item Used By
+vadduser
+@item Description
+Sets the default soft quota
+@end table
+
+@c ============================================================================
+@node default-username, error-maildir, default-softquota, Configuration Files
+@section default-username
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{+}
+@item Used By
+vmailmgrd
+@item Description
+Identifies the name of the virtual user to be looked up if a lookup of
+another virtual user fails.
+@end table
+
+@c ============================================================================
+@node error-maildir, global-bulletin-dir, default-username, Configuration Files
+@section error-maildir
+
+@table @strong
+@item Type
+directory
+@item Default
+@samp{/var/lib/vmailmgr/error-maildir}
+@item Used By
+checkvpw
+@item Description
+Specifies the path of a read-only maildir containing a message to be
+sent to the user when the maildir corresponding to that user does not
+exist.
+@end table
+
+@c ============================================================================
+@node global-bulletin-dir, maildir-arg-str, error-maildir, Configuration Files
+@section global-bulletin-dir
+
+@table @strong
+@item Type
+directory
+@item Default
+@samp{/var/spool/bulletins}
+@item Used By
+checkvpw
+@item Description
+Identifies a site-wide bulletin directory.
+@end table
+
+@c ============================================================================
+@node maildir-arg-str, max-fork, global-bulletin-dir, Configuration Files
+@section maildir-arg-str
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{maildir}
+@item Used By
+checkvpw (global only)
+@item Description
+Identifies the string to search for when attempting to identify the
+maildir argument on the command line to checkvpw.
+@end table
+
+@c ============================================================================
+@node max-fork, password-file, maildir-arg-str, Configuration Files
+@section max-fork
+
+@table @strong
+@item Type
+number
+@item Default
+@samp{8}
+@item Used By
+vmailmgrd (global only)
+@item Description
+Sets the maximum number of child processes to allow in vmailmgrd.
+If max-fork processes have already been spawned, and an incoming request
+would cause a new process to be spawned, the request will fail.
+@end table
+
+@c ============================================================================
+@node password-file, postmaster-aliases, max-fork, Configuration Files
+@section password-file
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{passwd}
+@item Used By
+vmailmgrd and command-line programs
+@item Description
+Identifies the file that contains user names, passwords, and
+destinations for a virtual domain.
+Note that this has nothing to do with "real" users, for which the
+password file is determined by the system libraries.
+@end table
+
+@c ============================================================================
+@node postmaster-aliases, postmaster-email, password-file, Configuration Files
+@section postmaster-aliases
+
+@table @strong
+@item Type
+list
+@item Default
+@samp{mailer-daemon}
+@samp{postmaster}
+@samp{root}
+@item Used By
+vsetup
+@item Description
+A list of aliases to the postmaster email address to set
+up when creating a new virtual domain with the vsetup command.
+This should @emph{always} contain both @samp{postmaster} and
+@samp{mailer-daemon} (required by the RFCs), and should usually contain
+@samp{root}.
+@end table
+
+@c ============================================================================
+@node postmaster-email, separators, postmaster-aliases, Configuration Files
+@section postmaster-email
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{postmaster@@}
+@item Used By
+vsetup
+@item Description
+Identifies the email address of the entity responsible
+for the administration of the (virtual) host when building the
+postmaster aliases above.
+If this value ends with a trailing @samp{@@}, the value of
+@file{/var/qmail/control/me} is filled in for the host name.
+If no @samp{@@} is present, the current virtual host name
+is filled in by vdeliver.
+If this is set to @samp{postmaster}, a mail loop
+will result and all mail to this address will bounce.
+@end table
+
+@c ============================================================================
+@node separators, socket-file, postmaster-email, Configuration Files
+@section separators
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{@@:}
+@item Used By
+checkvpw (global only)
+@item Description
+Identifies the set of valid separators within a user login name between
+the virtual user name and virtual domain name when logging in via
+checkvpw.
+For example, if separators contains @samp{@@:} then @samp{user@@domain} and
+@samp{user:domain} are equivalent POP mailbox names.
+@end table
+
+@c ============================================================================
+@node socket-file, user-dir, separators, Configuration Files
+@section socket-file
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{/tmp/.vmailmgrd}
+@item Used By
+vmailmgrd, checkvpw, vdeliver, and the CGI programs
+@item Description
+Identifies the file name of the local socket used to
+communicate between the vmailmgr daemon and the other programs.
+@emph{Warning:} Changing this in the local configuration directories
+will cause vdeliver to fail.
+@end table
+
+@c ============================================================================
+@node user-dir, user-dir-bits, socket-file, Configuration Files
+@section user-dir
+
+@table @strong
+@item Type
+directory
+@item Default
+@samp{users}
+@item Used By
+vmailmgrd and command-line programs
+@item Description
+Identifies the subdirectory from the virtual domain directory in which a
+virtual user's maildir will be created.
+Since this maildir is recorded in the password table, it does not have
+to be the same for each user within a domain.
+This is prefixed with @samp{./} before it is used in the password table.
+@end table
+
+@c ============================================================================
+@node user-dir-bits, user-dir-slices, user-dir, Configuration Files
+@section user-dir-bits
+
+@table @strong
+@item Type
+@item Default
+@samp{0}
+@item Used By
+vmailmgrd and command-line programs when creating new users.
+@item Description
+@xref{user-dir-slices}
+@end table
+
+@c ============================================================================
+@node user-dir-slices, vdeliver-postdeliver, user-dir-bits, Configuration Files
+@section user-dir-slices
+
+@table @strong
+@item Type
+@item Default
+@samp{0}
+@item Used By
+vmailmgrd and command-line programs when creating new users.
+@item Description
+@file{user-dir-bits} and @file{user-dir-slices} work together.  When creating a
+new user directory name, a hash code is generated on the name of the
+new user.  This hash code is split into @file{user-dir-slices} pieces, each
+@file{user-dir-bits} bits long.  Each of these pieces is translated to an
+ASCII string by converting the binary code to hexadecimal.  The
+resulting user directory name is then composed of:
+@itemize @bullet
+@item the base users directory, followed by a @samp{/}
+@item each of the string pieces, each followed by a @samp{/}
+@item the user's name
+@end itemize
+For example, with @file{user-dir-bits} set to 6 and
+@file{user-dir-slices} set to 1, a user
+named @samp{c} maps to a directory name of @samp{users/2f/c/}.
+@end table
+
+@c ============================================================================
+@node vdeliver-postdeliver, vdeliver-predeliver, user-dir-slices, Configuration Files
+@section vdeliver-postdeliver
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+vdeliver
+@item Description
+This list is executed after the delivery is successfully
+completed.
+Since vdeliver expects @samp{USER} and @samp{HOME} to be set, it does
+not set them itself.
+@end table
+
+@c ============================================================================
+@node vdeliver-predeliver,  , vdeliver-postdeliver, Configuration Files
+@section vdeliver-predeliver
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+vdeliver
+@item Description
+This list is executed before the delivery is attempted, but
+after the virtual user information is looked up.
+Since vdeliver expects @samp{USER} and @samp{HOME} to be set, it does
+not set them itself.
+@end table
+
+@c ============================================================================
+@node vsetup-post,  , vsetup-pre, Configuration Files
+@section vsetup-pre
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+vsetup
+@item Description
+This list is executed after the vsetup command has sucessfully done
+everything else.
+@end table
+
+
+@c ============================================================================
+@node vsetup-pre,  , vsetup-post, Configuration Files
+@section vsetup-pre
+
+@table @strong
+@item Type
+executable
+@item Default
+Empty
+@item Used By
+vsetup
+@item Description
+This list is executed before the vsetup command makes any changes.
+@end table
+
+
+@contents
+
+@bye

@@ -1,0 +1,68 @@
+=head1 NAME
+
+vpopbull - Deliver bulletins to email users.
+
+=head1 SYNOPSIS
+
+B<vpopbull>
+
+=head1 DESCRIPTION
+
+Scans bulletin directories for any which are newer than the
+F<.timestamp> file in the specified maildir.
+For each bulletin that it finds, it adds a symlink to that bulletin to
+the specified maildir.
+Since no reformatting is done, these bulletins must be fully formatted
+email messages, including full headers.
+
+This program is designed to be run from C<checkvpw-postsetuid>.
+
+=head1 OPTIONS
+
+None
+
+=head1 RETURN VALUE
+
+Exits false if an error occurred during startup, true otherwise.
+
+=head1 ENVIRONMENT
+
+This program expects the environment variable C<HOME> to be set, and
+executes a change directory to the contents of it before starting.
+
+This program expects C<MAILDIR> to be set, and delivers any bulletins
+that it finds into this maildir.
+
+If C<VUSER> is set, a local bulletin directory is searched as above.
+
+=head1 FILES
+
+The following control files are used:
+
+=over 4
+
+=item F<global-bulletin-dir>
+
+This specifies the bulletin directory for all domains.
+
+=item F<bulletin-dir>
+
+This specifies the bulletin (sub)directory for virtual domains.
+
+=back
+
+=head1 SEE ALSO
+
+vmailmgr(7),
+checkvpw(8),
+configuration.html
+
+=head1 NOTES
+
+If either the global or local bulletin directories do not exist, they
+are silently ignored without failing.
+
+=head1 AUTHOR
+
+Bruce Guenter <bruceg@em.ca>
+

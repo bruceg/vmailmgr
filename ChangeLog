@@ -1,0 +1,2457 @@
+2000-04-01  Bruce Guenter  <bruceg@daedalus.bfsmedia.com>
+
+	* daemon/state.cc: Since the daemon always forks, remove all of
+	the uid/gid saved state, and never restore it.  This class should
+	be renamed, since it does not really "save" any significant state.
+
+	* commands/vaddalias: Fixed quoting bug in this script.
+
+2000-03-21  Bruce Guenter  <bruceg@daedalus.bfsmedia.com>
+
+	* authenticate/vauthenticate.cc (main): Authenticate as virtual
+	only, and print out the user data if authentication succeeds.
+
+	* authenticate/authvlib.cc (authenticate): Fixed typo declaring
+	"baseuser" twice, preventing authentication from working.
+
+2000-03-07  Bruce Guenter  <bruceg@daedalus.bfsmedia.com>
+
+	* authenticate/vauthenticate.cc: Added this simple module that
+	accepts domain name, user name, and pass phrase on stdin, and
+	exits successfully if they can be authenticated.
+
+2000-02-12  Bruce Guenter  <bruceg@daedalus.bfsmedia.com>
+
+	* commands/vaddalias: Made this mini-program into a shell script.
+
+	* daemon/chattr.cc (CMD): Translate multiple values into a single
+	NUL-delimited list.
+
+	* commands/vsetup.cc (cli_main): Added error messages if execution
+	of vsetup-pre or vsetup-post fails.
+
+	* Removed old php3 support and placed Mike Bell's PHP3 code in.
+
+	* Applied patches by Mike Bell to allow vsetup to run a command
+	before and after executing.
+
+2000-02-03  Bruce Guenter  <bruceg@daedalus.bfsmedia.com>
+
+	* doc/FAQ.texi: Fixed typo reversing virtuser and baseuser.
+
+2000-01-12  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* authenticate/authvmailmgr.cc: Completed initial coding of this
+	module, still needs testing.
+
+	* authenticate/checkvpw.cc (fail): Removed unused string "r".
+
+2000-01-05  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* authenticate/authvmailmgr.cc: Started authentication module for
+	Courier IMAP.
+
+	* authenticate/authvlib.cc: Moved some of the functions out of
+	checkvpw.cc and generalized them here.
+
+	* authenticate: Moved checkvpw directory here.
+
+1999-10-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* checkvpw/checkvpw.cc (authenticate): Changed logic here to
+	assume a missing entry in both locals and virtualdomains is
+	intended to be local.
+
+1999-10-08  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/*.cc: Modified to use new validate_forward.
+
+	* lib/misc/vdomain_chattr.cc (chdest): Modified to use new
+	validate_forward.
+
+	* lib/misc/vdomain_validate.cc (validate_forward): Renamed
+	validate_redirect to this, and removed the handling for a
+	comma-seperated list of addresses.
+
+	* commands/vchforwards.cc (cli_main): Added code to validate the
+	forwarding addresses.
+
+	* commands/vadduser.cc (make_user): Validate the forwarding
+	addresses before creating the user.
+
+1999-10-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/chattr.cc (CMD): Changed call to strtol to strtoul.
+
+	* lib/config/read_uns.cc (read_uns): Modified this routine to
+	treat all negative numbers as -1, and changed the call from strtol
+	to strtoul.
+
+1999-10-04  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/FAQ.texi: Updated the answers and added information about
+	how mail gets delivered.
+
+	* lib/misc/vdomain_add.cc: Removed both vdomain::addalias and
+	vdomain::adduser.
+
+	* commands/vsetup.cc (setup_alias): Removed the use of
+	vdomain::addalias.
+
+	* commands/vadduser.cc (add_alias): Removed the use of
+	vdomain::addalias.
+
+	* commands/vaddusers.cc (add_one): Removed the use of
+	vdomain::adduser and vdomain::addalias.
+
+1999-10-03  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.96.1
+
+	* doc/vmailmgr-cgi.texi: Updated listvdomain documentation.
+
+	* cgi/listvdomain.cc (show_user): Merged show_mbox and show_alias
+	into this one routine.
+	(load_users): Fixed length of incoming code.
+	(show_user): Changed formatting of aliases.
+
+1999-10-01  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/listvdomain.cc: Recoded to use modified listdomain protocol
+	interface.
+
+	* lib/misc/vdomain_add.cc (addalias, adduser): Call set_defaults
+	on new vpwentry.
+
+	* lib/misc/vpwentry_from_old.cc (from_old_record): Call
+	set_defaults on resulting vpwentry.
+
+	* commands/vadduser.cc (make_user): Call set_defaults on new
+	vpwentry.
+
+	* daemon/lookup.cc (lookup_and_validate): Call set_defaults on new
+	vpwentry.
+
+	* lib/misc/vpwentry.cc: Moved vpwentry::set_defaults into its own
+	module, and removed the call to set_defaults from the constructors.
+
+	* lib/misc/vpwentry_from.cc: Made the from_old_record and
+	from_ver1_record public, and moved them into their own modules.
+
+	* daemon/listdomain.cc (CMD_FD): Changed the protocol to strip the
+	count from the initial message, to output each entry as a seperate
+	response (with length and all), and to include full vpwentry
+	details in each entry rather than requiring seperate lookups.
+
+1999-09-30  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.96
+	
+	* checkvpw/checkvpw.cc (main): Removed extraneous ; causing bug.
+
+	* lib/misc/exec.cc (execute): Skip over directories with identical
+	parents, to prevent double execution.
+
+	* checkvpw/checkvpw.cc (check): Fixed inverted "nodefault" flag to
+	domain->lookup.
+
+	* lib/misc/vpwentry_from.cc (from_record): Turned the if/else
+	block into a switch statement.
+
+	* commands/vadduser.cc (set_defaults): Turn off creation of a
+	mailbox if the base command name is "vaddalias".
+	Also, use argv0base instead of "vadduser" for the command name.
+
+	* lib/misc/vpwentry_from.cc (from_ver1_record): Fixed bug in
+	importing version 1 records.
+
+	* commands/vdeliver.cc (dump): The input needs to be rewound here
+	the second time through, so rewind it always.
+
+1999-09-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/listvdomain.cc (cli_main): Print out a banner before
+	the listing.
+
+1999-09-27  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/configuration.texi: Updated the configuration documentation
+	to match current implementation aspects.
+
+	* lib/misc/exec.cc (execute): Changed behavior of execute to
+	execute the global before the local directories, and to abort on
+	any error, but translate 99 to 0 (no error).
+
+1999-09-23  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/vaddalias.cc (CGI_MAIN ): Adjusted for changed parameter
+	ordering.
+
+	* daemon/log.cc: Added several password-obscuring constants,
+	rather than repeating them in each command.
+
+	* daemon/lookup.cc (CMD): Changed format of result.
+
+	* daemon/check.cc (CMD): Changed format of result to seperate
+	parts with a NUL.
+
+	* daemon/addalias.cc (CMD): Now takes multiple destinations.
+
+	* daemon/addaliasp.cc (CMD): Changed order of parameters to allow
+	for multiple destination parameters.
+
+	* daemon/log.cc (logcommand): Removed all varieties of this
+	function except the one that takes a single "command" argument.
+
+	* daemon/adduser.cc (CMD): Added handling for a list of forwards.
+
+	* daemon/dispatch.cc (dispatch_cmd): Changed handling of commands:
+	there is now a minimum and a maximum number of arguments, and the
+	"decode_virtual" is a manditory -- if set, the "baseuser-virtual"
+	format is not allowed.  This means all the server commands now
+	require seperate domain name and virtual user name arguments (all
+	the CGIs do this anyways).
+
+	* daemon/check.cc (CMD): Added handling for mailbox and multiple
+	forwards of virtual users.
+
+	* daemon/dispatch.cc: Added check back into the list of commands.
+
+	* cgi/vcommand.py (main): Adapted to new interface.
+
+	* cgi/vmailmgr.py: Revised the interface to be somewhat more
+	object based, and tested minimally.
+
+1999-09-22  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/listvdomain.cc (setup_format): Added handling for cell and
+	title prefix and suffix strings, as well as cell, paragraph, and
+	table alignment.
+
+1999-09-20  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/vmailmgr.py: Split off most of the generic functionality
+	from vcommand.py into this module, completed base CGI
+	functionality.
+
+1999-09-19  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/vcommand.py: Started this generic Python vmailmgr command
+	CGI.
+
+1999-09-16  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vdeliver.cc (cli_main): Adapted to the new execution
+	framework.
+
+	* checkvpw/checkvpw.cc (check): Adapted to the new execution
+	framework.
+
+	* lib/misc/exec.cc (execute): Removed the old "exec" framework in
+	favour of this function, which traverses through the configuration
+	directories and tries to execute the named file.
+
+	* doc/vadduser.pod: Updated this documentation.
+
+	* commands/vadduser.cc: Added an option to not create a mailbox
+	for this user, allowing this program to be used in place of
+	vaddalias.
+	(add_user): Modified logic to optionally ask for a password.
+
+	* commands/vconf2dir: Fixed quoting when creating the new config
+	files, and removed the "set -x" flag at the top.
+
+	* commands/vchforwards.cc (cli_main): Adapted this program from
+	vchalias, and removed vchalias from the distribution.
+
+	* commands/vchattr.cc: Wrote this command to change a virtual
+	user or users' attributes.
+
+1999-09-15  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* checkvpw/checkvpw.cc: Login failures cause execution of
+	"config/checkvpw-loginfail", and other failures cause execution of
+	"config/checkvpw-error", both with an error message in
+	$CHECKVPW_ERROR.
+
+	* commands/vdeliver.cc (deliver_partial): Rewrote loop so that
+	looping will always sleep.  If the file creation failed, it would
+	previously loop immediately.
+
+1999-09-14  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/FAQ.texi: Replaced references to vmailmgr.conf with
+	vmailmgr/
+
+1999-09-11  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/vpopbull.pod: Wrote a man page for vpopbull.
+
+1999-09-10  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vpwentry_auth.cc (authenticate): Wrote this new
+	routine, to replace the use of crypt_cmp when authenticating
+	virtual users.
+
+	* lib/misc/pwentry_auth.cc (authenticate): Wrote this new routine,
+	to replace the use of crypt_cmp when authenticating users.
+
+1999-09-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/listvdomain.cc: Added options to list only users, only
+	aliases, or selected names listed on the command line.
+
+	* lib/misc/vpwentry_from.cc (from_ver1_record): Fixed off-by-one
+	bug.
+
+	* lib/misc/vpwentry_to.cc (to_record): Fixed problem in creating
+	records without any forwarding addresses.
+
+	* commands/vadduser.cc: Commented out extra-data handling.
+
+	* lib/misc/exec.cc (setenv): Commented out
+
+	* lib/misc/vpwentry.h (struct vpwentry ): Commented out the extra
+	data string.
+
+	* cgi/vchattr.cc (CGI_MAIN ): Wrote this simple modification to
+	vchalias, which can change any attribute.
+
+	* daemon/chattr.cc (CMD): Convert the attr string to an integer
+	before running domain.chattr.
+
+	* lib/misc/vdomain_chattr.cc (chattr): Added attribute handlers
+	for message size/count and account expiry.
+
+	* lib/misc/vdomain.h (class vdomain): Changed attribute name
+	constants from strings to integers.
+
+1999-08-23  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/configuration.texi (Search Order): Corrected a typo: the
+	local directory is named ".vmailmgr", not "vmailmgr".
+
+1999-08-21  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vadduser.cc: Added hard/soft quota options, and a
+	password option for vaddalias.
+
+	* lib/misc/vpwentry.h (struct vpwentry ): Added hard/soft quota
+	values.
+
+1999-08-18  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vpasswd.cc (cli_main): Modified to call
+	vdomain::chattr.
+
+	* commands/vpasswds.cc (change_one): Modified to call
+	vdomain::chattr.
+
+	* cgi/vchalias.cc (CGI_MAIN ): Use ATTR_DEST instead of a
+	hard-coded string.
+
+	* cgi/vpasswd.cc (CGI_MAIN ): Use ATTR_PASS instead of a
+	hard-coded string.
+
+	* daemon/chattr.cc (CMD): Modified to call vdomain::chattr.
+
+1999-08-16  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vdomain_chattr.cc (chattr): Created this new routine to
+	generalize attribute modification.
+
+1999-08-15  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/exec.cc (exec_list): Takes a strlist parameter instead
+	of a string.
+
+	* lib/misc/strlist.h (class strlist ): Removed the NUL constant.
+
+	* lib/misc/vpwentry.h (struct vpwentry ): Removed the NUL constant
+	in favour of the new one in mystring.
+
+	* lib/config/read_list.cc (read_list): Adapted to use
+	strlist::read instead of a custom list reading function.
+
+1999-08-14  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/strlist.h (class keystrlist): Split off the
+	functionality to handle keyed strings ("key=value" format) into a
+	seperate class.
+
+	* lib/misc/vpwentry.h (struct vpwentry ): Adapted to using strlist
+	functions.
+
+	* lib/misc/strlist.h (class strlist ): Moved the string list
+	management into its own class.
+
+	* commands/vquota.cc: Started writing this quota management
+	utility.
+
+	* commands/vdeliver.cc (cli_main): Fixed invocation of exec*
+	functions.
+
+	* commands/vadduser.cc: Added code to set the default values of
+	the new data items, and to set them when creating the user.
+
+	* checkvpw/checkvpw.cc (main): Fixed invocation of exec*
+	functions.
+
+1999-08-13  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/configuration.texi: Did some minor re-organization, and
+	added a higher level note regarding environment variables and
+	return codes for executed programs.
+
+1999-08-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/exec.cc (setenv): Set environment variables for quota,
+	message size, message count, creation time, expiry time, personal
+	data, and all the extra data.
+	(exec_list): Changed interface to all the exec_* routines: the
+	error message string is passed as a parameter, and the return
+	value is the error return code or zero.
+
+	* lib/misc/vpwentry_from.cc (from_uint): Modified to accept "-*"
+	as the negative pattern.
+
+	* lib/misc/utoa.cc (utoa): Moved this routine into its own module.
+
+1999-08-10  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/vpasswd.cc (CGI_MAIN ): Modified to call "chattr".
+
+	* cgi/vchalias.cc (CGI_MAIN ): Modified to call "chattr".
+
+	* daemon/dispatch.cc: Removed entries for chpass, chalias, and
+	delalias.
+
+	* daemon/chattr.cc (CMD): Merged the functions of chalias and
+	chpass into this new command.
+
+	* lib/misc/vdomain.h (class vdomain): Removed delalias command.
+
+	* lib/misc/vdomain_deluser.cc (deluser): Removed mailbox test to
+	see if the named entry was a "user".
+
+	* commands/vdeliver.cc (inject): Handle failure properly here.
+
+1999-08-09  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vdeliver.cc (deliver_partial): Rewrote the delivery
+	mechanism to do partial file delivery.
+	(write_envelope): Rewrote the envelope handling code to use
+	mystring_iter (big simplification).
+
+	* commands/vconf2dir: Fixed non-portable increment statement.
+
+	* commands/vadduser.cc: Added options for the extra virtual user
+	data, but not the code to handle the options.
+
+1999-08-08  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vpasswd2cdb.cc (getpw): Call vpwentry::from_record,
+	since the original text file format is compatible with its import
+	routine.
+
+	* lib/misc/vdomain_validate.cc (validate_redirect): Call exists
+	instead of lookup.
+
+	* lib/misc/vdomain_lookup.cc (exists): Wrote this routine to test
+	if a name exists in a virtual domain.
+
+	* lib/misc/vpwtable_exists.cc (exists): Added this routine to do a
+	simple check if a user exists, without doing any format
+	translations.
+
+	* lib/misc/vpwentry.h (class vpwtable): Turned the "cdb" pointer
+	into a void pointer to allow for easier extension to non-CDB
+	formats.
+
+	* lib/config/*: Added new default configuration items for the
+	quota and expiry items.
+
+	* lib/misc/vdomain_*.cc: Adpoted to the new vpwentry conventions.
+
+	* lib/misc/exec.cc (setenv): Always set MAILDIR to vpw->mailbox,
+	which will be empty for an alias user.
+
+	* lib/misc/vpwentry.cc (set_defaults): Added this new routine to
+	set the defaults on a vpwentry from the current configuration.
+
+	* lib/misc/vpwentry_from.cc (from_record): Moved this routine into
+	its own module, and added parsing for the new fields.
+
+	* lib/misc/vpwentry_to.cc (to_record): Moved this routine into its
+	own module.
+
+	* lib/misc/vpwentry.h (struct vpwentry ): Added new fixed fields
+	to the structure: personal, quota, msgsize, msgcount, ctime, and
+	expiry.
+
+1999-08-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vpwentry_getset.cc (get): Added this routine to get the
+	value of a data variable.
+	(set): Added this routine to add a variable to the data set,
+	replacing its value if it already exists.
+
+	* lib/misc/vpwentry.cc (to_record): Rewrote this routine to output
+	the new "version 1" record format.
+
+	* lib/misc/vpwentry.h (struct vpwentry ): Expanded this structure,
+	replacing the "dest" field with "mailbox" and "forwards" items,
+	and added a "datastr" field.
+	
+	* lib/misc/vpwentry.cc (from_old_record): Adapted this code from
+	the old vpwentry::from_record routine.
+
+	* Released version 0.95
+
+1999-08-06  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vpopbull.cc (scan_bulletins): Modified the logic here
+	to not fail if one of the bulletin scans fails.
+
+	* commands/vdeliver.cc (inject): Fixed missing argv[0] in call to
+	execl here.
+
+1999-08-05  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vpopbull.cc: Moved this program into the commands
+	directory.
+	(scan_bulletins): Added specific information to error messages.
+
+	* lib/misc/exec.cc (setenv): Moved the common code to set up the
+	environment for virtual users into a common routine here from
+	checkvpw.cc and vdeliver.cc.
+
+1999-08-04  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/configuration.texi: Added sections for the new execution
+	hooks.
+
+	* checkvpw/checkvpw.cc (check): Fixed this to set the VUSER
+	environment variable immediately after looking up the base user.
+
+1999-08-03  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* checkvpw/checkvpw.cc (main): Modified to execute the contents of
+	checkvpw-postexec.
+
+	* lib/config/showvconfig.cc.in: Built this new program template to
+	show the config parameters.
+
+	* commands/vdeliver.cc (cli_main): Make vdeliver execute a list of
+	commands before and after doing the delivery.  Will set $MAILDIR
+	and $VUSER.
+
+	* checkvpw/vpopbull.cc: Moved bulletins.cc into this file, built a
+	main routine, and added error logging.
+
+	* lib/misc/exec.cc (exec_list): Created this routine to execute a
+	list of commands, returning the first error as a string.
+	(exec_one): Created this routine to shell and execute a single
+	command using "/bin/sh -c '<command>'".
+
+	* checkvpw/checkvpw.cc: Added a hook to execute a list of programs
+	before and after running setuid.  The "before" programs are read
+	from the global config to avoid security holes.  $HOME and $USER
+	are set for both, and $MAILDIR and $VUSER are set for the "after"
+	programs.
+
+1999-08-02  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.94
+
+	* daemon/dispatch.cc: Commented out the "stat" and "statall"
+	commands, that no longer do anything useful (the forking daemon
+	causes the statistics to be meaningless).  Also removed the code
+	in "dispatch" to count invocations of a particular method.
+
+	* daemon/lookup.cc (lookup_and_validate): Fixed a false negation
+	in the logic when checking for an existing virtual user.
+
+	* lib/misc/maildir.cc (mkdirp): Fixed off-by-one bug in recursive
+	case.
+
+	* commands/vdeliver.cc: Fixed bug caused by assigning from an int
+	to a bool through a pointer (since bools are only a single byte).
+
+	* checkvpw/checkvpw.cc: Rewrote this code to do the password
+	checking directly without calling up to the daemon.
+
+	* daemon: moved lookup_baseuser into lib/misc, removed the call to
+	setup a saved_state from it, and adjusted all the calls to
+	lookup_baseuser in the daemon to fit.
+
+1999-07-30  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vdeliver.cc: Moved this program from clients into
+	commands, and made it work the the CLI library.
+	(cli_main): Does a call to domain.lookup now instead of a server
+	call.
+	(read_me): Rewrote to use config->qmail_root() instead of a
+	hard-coded /var/qmail.  This is the last place (verified with
+	grep) that has a hard-coded /var/qmail.
+
+1999-07-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/config/config_read.cc (config_read): Fixed a typo: I had
+	typed '=' instead of '+' to create the full name.
+
+1999-07-27  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/chpass.cc (CMD): Calls the vdomain::chpass routine
+	instead of doing it by hand through the vpwtable code.
+
+	* commands/vpasswd2cdb.cc (cli_main): Removed an extraneous call
+	to end_getpw.
+
+	* lib/misc/vpwentry.h (class vpwtable): Added this new
+	abstraction, a virtual password table, that contains all the
+	low-level table manipulation routines.  All other code has been
+	adjusted to fit this model.
+
+1999-07-26  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/lookup_domain.cc: Moved is_local and find_virtual into
+	this file from daemon/lookup.cc.
+
+	* daemon/lookup.cc (CMD): Converted to using vdomain::lookup.
+
+	* daemon/check.cc (CMD): Converted to using vdomain::lookup.
+
+	* lib/misc/vdomain_lookup.cc (lookup): Moved the daemon function
+	lookup_virtuser into this method.
+
+	* Inserted the latest cli library and adapted all the command line
+	programs to handle the changes.
+	
+	* Inserted the latest mystring class and adapted all the code to
+	handle it.
+
+	* Rewrote the virtual user manipulation code from lib/misc/vuser*,
+	and moved it all into the vdomain class (was struct).  Adjusted
+	all other references to use this new code.
+
+1999-07-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.93
+
+	* daemon/adduser.cc (CMD): Prefix the user dir destination with
+	"./".
+
+	* lib/misc/vuser_set.cc (vuser_set): Allow leading '/' in
+	destination string, in addition to leading '.' and '&'.
+
+1999-07-22  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vsetup.cc (setup_passwd): Modified to use the new
+	string iterator class.
+
+	* lib/misc/stringiter.h (class mystring_iter): Wrote this class to
+	provide an iterator over a newline (or NUL, even) seperated list
+	within a string.
+
+1999-07-20  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vsetup.cc (setup_passwd): Changed the alias seperator
+	character from ',' to '\n'.
+
+	* lib/config/read_list.cc (read_list): Wrote this routine to read
+	a config item containing a list of values.
+
+	* lib/config/config_readlist.cc (config_readlist): Wrote this new
+	routine to read a list of values from a file, newline seperated.
+
+1999-07-19  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/configuration.texi: Wrote this new document describing the
+	new configuration structure, adapted from the now obsolete
+	vmailmgr.conf.sample.
+
+1999-07-18  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/config/read_*.cc: Moved the overhead for maintaining the
+	cache into these read functions instead of duplicating it in each
+	config variable function.
+
+	* lib/config/build-config.sh: Create a cache for each config
+	variable in order to eliminate duplicate readings of a single
+	variable.
+
+	* daemon/pwentry_table.cc (operator[]): Replaced the previous
+	implementation (a cache) with one that just calls getpwnam.  This
+	avoids creating extra dynamic data in the form of many pwentry
+	structures.
+
+	* daemon/lookup.cc (lookup_baseuser): Removed an extraneous
+	re-creation of the pwentry returned from the pwentry_table.
+
+	* lib/config/read_*.cc: Removed the translation from '_' to '-'
+	for filenames from the code and moved it into the build-config.sh
+	script.  This moves the constant conversion from run-time to
+	build-time.
+
+	* lib/config/configrc.cc (configuration): Made the constructor
+	take a pointer instead of a reference, which was probably the
+	saner thing to do from the start.
+
+	* lib/config/read_dir.cc (read_dir): Modified the logic here so
+	that the macros for creating the config reading routines can be
+	completely uniform.
+
+	* daemon/state.cc (saved_state): Since the saved state is never
+	un-saved, don't try to establish what the previous state is with
+	getuid and getegid.
+
+	* daemon/state.h: Turned the CHANGE_STATE macro into a no-op,
+	since the state is already saved when doing any lookup.
+
+	* daemon/lookup.cc (lookup_baseuser): Set up the saved state
+	immediately upon successfully doing a base user lookup.
+
+	* daemon/state.h (class saved_state): Removed the pwentry pointer
+	and made the domain a non-pointer as well.
+
+1999-07-17  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/state.cc: Modified these routines to set up a pwentry
+	before setting up the vdomain, as well as properly restoring the
+	old config pointer.
+
+	* commands/*.cc: Replaced all instances of "domain->" with
+	"domain.", since "domain" is no longer a pointer.
+
+	* clients/vdeliver.cc (main): Modified to set up a pwentry before
+	setting up the vdomain.
+
+	* clients/checkvpw.cc (set_user): Modified to set up a pwentry
+	before setting up the vdomain.
+
+	* commands/vcommand.cc (go_home): Modified to create a global
+	pwentry named "user", and build the domain and config based on
+	that.
+
+	* lib/misc/vdomain.cc (vdomain): Modified the constructors to take
+	a pwentry parameter to build the domain config from.
+
+	* lib/misc/pwentry.cc: Moved this file here from daemon, added a
+	"config" structure entry, and added a default constructor.
+	(pwfile): Removed the pwfile_cache member, which was a kluge for
+	what I thought was a bug somewhere else.
+
+1999-07-15  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Forwarded-ported envelope delivery re-write from 0.92.2 for
+	clients/vdeliver.cc.
+
+1999-07-13  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/lookup.cc: Converted is_local and find_virtual to use the
+	qmail_root config item.
+
+	* Forwarded-ported logic fix from 0.92.1 for clients/vdeliver.cc.
+
+	* clients/vdeliver.cc (inject): Use the new qmail_root config item
+	to locate the qmail-queue binary.
+
+1999-06-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/hash_table.h: Fixed a typo in the hash table prime list
+	(the last numbers were truncated).
+
+1999-06-14  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/FAQ.texi: Added a "troubleshooting" section, to be filled in
+	as questions arrive.
+
+1999-06-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Modified all the sources to use the new configuration class
+	members.
+
+	* commands/vcommand.cc (go_home): Initialize the password_file
+	global from config->password_file() here.
+
+	* lib/config/configrc.cc: Totally re-wrote the configuration
+	system to use a subdirectory style config, with individual files
+	containing the configuration values on their first line.  The
+	configuration modules are also built by a script, and broken down
+	into individual object modules to reduce the size of programs that
+	don't use all the options.
+
+1999-06-05  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/*.cc: Moved the calls to CHANGE_STATE to immediately
+	after validating the user, to allow the config set up by the
+	saved_state to be used immediately.
+
+	* clients/checkvpw.cc (set_user): Set up a vdomain here and set
+	the config to allow for locally-configured bulletin directories.
+	(main): Moved the call to set_user higher, to allow the config to
+	be used earlier to set the error maildir.
+
+	* clients/vdeliver.cc (main): Set up a vdomain and set the config
+	to its config, to load a local configuration when doing
+	deliveries.
+
+	* daemon/pwentry.cc: Removed the definitions for user_dir_rel and
+	user_dir_abs, since vdomain::userdir will do the job now (it seems
+	that user_dir_abs wasn't even used, too).
+
+	* daemon/state.cc: Moved the constructor and desctuctor for
+	saved_state into this object, and added a call to push a new
+	configuration if state was changed successfully.
+
+	* commands/vcommand.cc: Moved the go_home routine into here, and
+	added a global "domain" pointer that will point to the current
+	virtual domain.
+	(go_home): Push the domain config onto the config stack.  Now all
+	the command programs will use a local configuration.  This routine
+	will eventually be rewritten to handle multiple domains in the
+	same user.
+
+	* commands/vadduser.cc: Converted to using a vdomain object.
+
+	* Converted all instances of "config." to "config->" where
+	appropriate (the vdomain class has a non-pointer config member, so
+	it doesn't count).
+
+	* lib/misc/server.cc: Rewrote call and connect to take as a
+	parameter the socket filename to use.  server_call::call has a
+	default argument now of config->socket_file to prevent having to
+	change any code, but this might disappear, too.
+
+	* lib/misc/configrc.cc: Turned the global 'config' item into a
+	pointer, to allow other code to essentially push down local
+	configurations onto it.  Wrote config_push and config_pop to
+	assist with this.
+
+	* commands/vaddusers.cc (add_one): Make the alias name lower case
+	before using it, call vuser_adduser with the maildir argument set.
+
+	* lib/misc/vuser_add.cc (vuser_adduser): Modified this routine to
+	remove the call to userdir, forcing the maildir name to be created
+	at a higher level.
+
+1999-06-04  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/configrc.cc (configuration): Eliminated the #defined
+	default constants, as they are used only once, and moved them
+	directly into the default configuration constructor.
+
+	* lib/misc/configrc.h (class configuration ): Added a "parent"
+	member item that points to the object from which the defaults for
+	this configuration was set (set to NULL in the default object).
+
+	* lib/misc/vdomain.cc: Created this construct to represent a
+	virtual domain.  Copied the functionality from userdir.cc into
+	here (with the plan of removing userdir.cc in the future).  This
+	will become the status-holder for multiple domains within a single
+	real user.
+
+	* lib/misc/configrc.cc (configuration): Added a new constructor
+	that copies the values from a set of defaults and reads in a
+	config file to override those defaults.  To be used for local
+	configuration handling.  Relegated the default constructor to only
+	setting the default values, and added a new global const object
+	config_defaults to hold these.
+
+	* commands/*: Added a call to go_home in every cli_main.
+
+	* commands/go_home.cc (go_home): Wrote this routine to chdir to
+	the user's HOME directory.
+
+1999-06-03  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/listvdomain.cc (cli_main): I forgot to check the return
+	value of start_getpw here, leading to a core dump when the
+	password table can't be opened.  Fixed.
+
+1999-06-01  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vsetup.cc (setup_qmail_default): Changed the mode of
+	the created .qmail-default file to 0444 (minus umask) instead of
+	0666 to prevent qmail from complaining on systems where umask
+	defaults to 002 instead of 022, and to prevent inadvertent editing
+	of the .qmail-default file.
+
+1999-05-30  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.92
+
+1999-05-28  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/vdeliver.cc: Rewrote the alias delivery routines to send
+	the email to qmail-queue instead of qmail-inject, since
+	qmail-inject will attempt to reformat the message.
+
+1999-05-27  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/check.cc (CMD): Added a check to ensure that checking the
+	password for an alias fails.
+
+	* doc/*: Changed references from qcc.sk.ca to em.ca.
+
+1999-05-26  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/addaliasp.cc (CMD): Added this new command to add an
+	alias with a password.
+
+	* doc/vmailmgr-cgi.texi: Updated the documentation for vaddalias.
+	Changed all instances of "necessary" to "required".
+
+	* cgi/vaddalias.cc (CGI_MAIN ): Now allows for an optional new
+	password field pair, and calls addaliasp if they are not empty.
+
+	* lib/misc/server.cc (server_call): Added a new server_call for 5
+	parameters.
+
+	* daemon/log.cc (logcommand): Added a new logcommand routine to
+	handle 5 parameters.
+
+	* daemon/dispatch.cc: Modified the dispatch entry for addalias.
+
+	* daemon/chpass.cc (CMD): Removed the custom password checking
+	since it is now merged into lookup_and_validate.
+
+	* daemon/chalias.cc (CMD): Call lookup_and_validate with the
+	"userpass" flag set to true to allow owners of virtual aliases set
+	up with a password to change their alias.
+
+	* daemon/lookup.cc (lookup_and_validate): Modified to optionally
+	do comparisons against the virtual user's password if the
+	comparison against the administrator's password fails.  Removed
+	the allowance for empty passwords.  Made all the password
+	mis-match messages the same.  The admin password check is done
+	before the virtual user check to avoid giving away information
+	about virtual users.
+
+	* commands/vaddalias.cc (cli_main): Set passwords on aliases by
+	passing in a '-p' or '--password' flag.
+
+	* lib/misc/vuser_add.cc (vuser_addalias): Modified to allow
+	passwords on aliases.
+
+1999-05-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.91
+
+1999-05-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/chalias.cc (CMD): Bug fix: was passing "false" for
+	"mustexist" to lookup_and_validate, when it should have been
+	"true".
+
+	* commands/vdelalias.cc, commands/vdeluser.cc,
+	commands/vaddusers.cc, commands/vaddalias.cc,
+	commands/vpasswds.cc, commands/vchalias.cc: Added a mechanism to
+	count and report the number of errors encountered.
+
+	* doc/vmailmgr-cgi.texi: Added a chapter for the chalias command.
+	Also added sections for vdelalias and vdeluser, as well as sorting
+	the sections into alphabetical order.
+
+	* cgi/vchalias.cc: Wrote the CGI program to call the chalias
+	command.
+
+	* doc/vchalias.pod: Wrote the documentation page for the vchalias
+	command.
+
+1999-05-15  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/configrc.cc (DEFAULT_DEFAULT_USERNAME): Changed the
+	default default username from '*' to '+', to avoid shell
+	screwups.  Updated documentation.
+
+1999-05-04  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/checkvpw.pod: Fixed filename glitch -- replaced all
+	instances of virtualhosts with virtualdomains.
+
+1999-05-01  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vpwentry_putpw.cc (putpw): Changed logic of "onlyadd"
+	parameter.  If set, will fail if the name already existed.  If not
+	set, will fail if the name did not already exist.
+
+	* daemon/dispatch.cc: Added a dispatch entry for chalias.
+
+	* daemon/chalias.cc (CMD): Created this server command to change
+	an existing alias to a new destination, using the new vuser_set.
+
+	* daemon/adduser.cc (CMD): Changed to use vuser_set.
+
+	* daemon/addalias.cc (CMD): Changed to use vuser_set.
+
+	* lib/misc/vuser_add.cc: Changed to use vuser_set.
+
+	* commands/vadduser.cc (add_user): Changed to use vuser_set.
+
+	* lib/misc/vuser_set.cc (vuser_set): Renamed vuser_add to
+	vuser_set, and moved it into this file.  vuser_set can be used to
+	change existing entries as well as to add new entries.
+
+	* commands/vrehash.cc (lock_dir): Set permissions on created CDB
+	file to 0600.
+
+	* commands/vpasswd2cdb.cc (cli_main): Set permissions on created
+	CDB file to 0600.
+
+	* lib/misc/vpwentry_putpw.cc (putpw): Set permissions on created
+	CDB file to 0600.
+
+	* lib/misc/vpwentry_delpw.cc (delpw): Set permissions on created
+	CDB file to 0600.
+
+	* clients/vdeliver.cc: Changed all I/O to use fdbuf primitives.
+	(deliver): Changed permissions on created file to 0666 to 0600
+	(mail should be private).
+
+1999-04-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.90.2
+
+1999-04-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/userdir.cc (userdir): Use the multiple-argument
+	mystring constructor to make pasting the slices together more
+	efficient.
+
+	* daemon/main.cc: Added include of <stdio.h> to pull in perror
+	properly.
+
+1999-04-08  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.90.1
+
+1999-04-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vpwentry_putpw.cc: Removed include of errnos.h
+
+	* lib/misc/md5-crypt.c: Added definitions for MIN and MAX if they
+	aren't defined.
+
+1999-04-05  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/vmailmgr.conf.sample: Removed the entry for
+	cdb-password-file, as that variable is not used.
+
+1999-04-04  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.90
+
+	* doc/FAQ.texi: Noted that the C++ libraries are no longer
+	needed.
+
+	* clients/bulletins.cc (stat_maildir): Fixed two bugs: timestamp
+	file was named "maildir/cur/.timestamp" instead of just
+	"maildir/.timestamp"; timestamp file was opened for writing
+	without a mode, causing the resulting file to have an
+	indeterminate mode.
+
+	* doc/FAQ.texi: Added an answer regarding IMAP support.
+
+1999-04-03  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (handle_connection): Only print out the "Accepted
+	connection" message if the verbose flag is set.
+
+1999-04-01  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/md5-crypt.c (md5_crypt_r): This routine depended on the
+	result of "strncpy" pointing to the end of the destination
+	string.  This is non-standard behavior.  Fixed such that the "cp"
+	pointer tracks its position manually.
+
+	* cgi/listvdomain.cc: Converted to fdbuf.
+
+	* daemon/main.cc (usage): Converted to fdbuf.
+
+	* daemon/log.cc: Converted to fdbuf.
+
+	* daemon/map_table.cc (map_table): Converted to fdbuf.
+
+	* daemon/list_table.cc (list_table): Converted to fdbuf.
+
+	* commands/*: Converted from iostream to fdbuf.
+
+	* lib/cli/main.cc: Use the new "operator<<" methods of fdobuf.
+
+	* lib/misc/validate.cc (validate_redirect): Converted from using
+	ostrstream to mystring for growing error messages.
+
+	* lib/misc/configrc.cc (read_config): Use the new "operator<<"
+	methods of fdobuf for writing messages.
+
+	* lib/misc/passwdfn.cc: Converted to using fdbuf objects.
+
+1999-03-31  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/pwcrypt.cc: Adapted these routines to using the GNU MD5
+	library and the md5_crypt routine.
+	(crypt_cmp): Revised the algorithm here to use the old MD5 routine
+	only for old passcodes, md5_crypt for hashes starting with "$1$",
+	and crypt otherwise.  This should be compatible with all
+	implementations.
+
+	* lib/misc/configrc.cc (read_config): Modified to use fdibuf
+	instead of ifstream.
+	(cmp): Fixed logic to properly parse "STR *= *STR" instead of
+	"STR *(=+ *)+STR".
+
+	* Changed the copying policy to GPL.
+
+1999-03-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.89.1
+
+	* configure.in: Add a --enable-md5 flag to set USE_MD5.
+
+	* lib/misc/pwcrypt.cc: Imported implementation of crypt_cmp and
+	pwcrypt from 0.87, using USE_MD5 as a selector.
+
+1999-03-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.89
+
+	* daemon/main.cc (handle_connection): Move the exit(0) out of the
+	if block so that the child always exits.
+
+	* daemon/fork.cc (do_fork): Bump up the fork counters in the child
+	as well as the parent so that the accounting commands work
+	properly.
+
+	* clients/bulletins.cc (stat_maildir): Fixed type: open the
+	timestamp file for output, not the maildir.
+
+1999-03-20  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/bulletins.cc (stat_maildir): The timestamp on the "cur"
+	directory is unreliable.  Create a zero-length ".timestamp" file
+	and use its modification mode for last-login information.
+
+1999-03-18  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/listdomain.cc (CMD): Fixed a non-incrementing loop
+	counter.
+
+	* daemon/fork.cc (handle_children): Now checks for both pid == -1
+	and pid == 0 to terminate the wait loop.
+
+	* lib/misc/vpwentry_putpw.cc (putpw): If the input file does not
+	exist, skip the loop and add the record to a new output file.
+
+	* lib/cdb++/cdb_reader.cc (cdb_reader): Set the failed flag to the
+	result of opening the file.
+
+	* lib/misc/vpwentry_putpw.cc (putpw): Fixed inverted boolean bug.
+
+	* daemon/lookup.cc (lookup_baseuser): Fixed bug: the pwentry
+	pointer returned by operator[] on the pwentry_table gets deleted
+	when the pwentry_table goes out of scope (and all kinds of weird
+	things happen to the data).
+
+	* daemon/pwentry.cc (pwfile): Cache the value of pwfile for future
+	calls.
+
+	* daemon/lookup.cc (lookup_baseuser): Use "right" instead of the
+	silly pointer increment logic to get the virtual name substring.
+
+1999-03-17  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/dispatch.cc (dispatch_cmd): Remove all fork handling from
+	this routine.
+
+	* daemon/main.cc (handle_connection): Call do_fork immediately
+	after accepting the connection.
+
+1999-03-16  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vsetup.cc (setup_qmail_default): Set the initial value
+	of .qmail-default to "|@BINDIR@/vdeliver".
+
+	* commands/vrehash.cc: Rewrote to use CDB functions.
+
+	* daemon/listdomain.cc (CMD): Send output to 'fd' instead of
+	hard-coded file descriptor 2.
+
+	* daemon/dispatch.cc (dispatch_cmd): Pass the file descriptor to
+	the dispatched function.
+
+	* daemon/main.cc (handle_connection): Modified logic to better
+	suit the always-fork mentality.
+
+	* daemon/dispatch.cc (dispatch_cmd): Changed logic to always
+	fork.
+
+	* At this point, all cache support in vmailmgrd has been removed,
+	and all virtual password table functions will read CDBs.
+
+	* daemon/lookup.cc: Converted the functions here to using the
+	tables instead of the caches.
+
+	* daemon/pwentry_table.cc (pwentry_table): Converted the
+	implementation of pwentry_reader into this class.
+
+	* daemon/hash_table.h (class hash_table): Fixed a long-standing
+	const method issue.
+
+	* daemon/list_table.cc (list_table): Converted the implementation
+	of list_reader into this class.
+
+	* daemon/map_table.cc (map_table): Converted the implementation of
+	map_reader into this class.
+
+	* daemon/listdomain.cc (CMD): Removed the use of the vpwentry
+	cache table.
+
+	* lib/misc/vpwentry_get.cc (rewind_getpw): Wrote this routine to
+	rewind an open cdb table witout re-opening it.
+	(getpw): Converted to using autodelete.
+
+	* daemon/chpass.cc (CMD): Removed the use of the vpwentry cache
+	table.
+
+	* daemon/lookup.cc (lookup_virtuser): Removed the use of the
+	vpwentry cache table.
+
+	* daemon/pwentry.h (struct pwentry): Removed the vpwtable entry.
+
+1999-03-15  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vpwentry_*.cc: Append ".cdb" to the filename for the
+	CDB file name.
+
+	* lib/misc/configrc.cc: Removed the cdb_password_file entry.
+
+1999-03-13  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vpwentry_putpw.cc (putpw): Converted to using CDB
+	functions.
+
+	* commands/passwd2cdb.cc (cli_main): Converted to use to_record.
+
+	* lib/misc/vpwentry.cc (to_record): Wrote this one-liner to build
+	a CDB record from the entry.
+
+	* lib/misc/vpwentry_delpw.cc (delpw): Converted to using CDB
+	functions.
+
+	* lib/misc/vpwentry_get.cc (start_getpw): Rewrote to use
+	vpwentry::from_record.
+
+	* lib/misc/vpwentry_getpw.cc (getpw_byname): Rewrote to use
+	vpwentry::from_record.
+
+	* lib/misc/vpwentry.cc (from_record): Wrote this routine to build
+	a vpwentry from a CDB record.
+
+1999-03-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/misc/vpwentry_getpw.cc (getpw_byname): Converted to using
+	CDB functions.
+
+	* lib/misc/vpwentry_get.cc: Converted to using CDB functions.
+
+	* lib/misc/configrc.cc: Added support for configuring the CDB
+	password table name.
+
+	* commands/passwd2cdb.cc: Wrote this program to convert a standard
+	virtual password table into a CDB table.  The initial record
+	format is identical to the old to reduce library conversion
+	issues.
+
+	* lib/misc/vpwentry_get.cc (start_getpw): This routine now returns
+	bool to indicate if the table was opened successfully.
+
+	* Major reorganization of the libraries and header files.  All the
+	libraries are in subdirectories under "lib", and the headers under
+	"include" (with a pile of symlinks).
+
+1999-03-11  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.88
+
+	* configure.in: Check for libinet and libsocket.
+
+1999-03-10  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/vmailmgr-cgi.texi (Top): Removed warning about passwords
+	being limited to eight characters.
+
+	* commands/vpasswds.cc (change_one): Removed warning about
+	passwords being truncated to eight characters.
+
+	* lib/passwdfn.cc (getpasswd_interactive): Removed warning about
+	passwords being truncated to eight characters.
+	(getpasswd_stdin): Removed another eight character warning.
+
+1999-03-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/pwcrypt.cc: Add a passcode type digit to the MD5 hashes on
+	output, and check for this digit on comparison to determine what
+	type of hashing to use.
+
+1999-03-04  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/check.cc (CMD): Tidied up result string creation code.
+
+	* lib/vpwentry_getpw.cc (getpw_byname): Copied logic from getpw.
+
+	* lib/vpwentry_get.cc (getpw): Fixed minor logic flaws.
+
+	* lib-dbi/passcode.cc: Added a stub for MD5 authentication.
+
+	* daemon/chpass.cc (CMD): Use renamed pwcrypt.
+
+	* daemon/adduser.cc (CMD): Use renamed pwcrypt.
+
+	* commands/vadduser.cc (add_user): Use renamed pwcrypt.
+
+	* lib/vuser_add.cc (vuser_adduser): Use renamed pwcrypt.
+
+	* lib/vuser_chpass.cc (vuser_chpass): Use renamed pwcrypt.
+
+	* lib/pwcrypt.cc (crypt_cmp): Modified to automatically handle MD5
+	hashed passcodes.
+	Renamed encrypt to pwcrypt, which calls encrypt_md5 to produce MD5
+	hashed passcodes.
+
+	* Completed conversion of source packaging from custom makefiles
+	to automake.
+
+1999-02-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.87
+	
+	* Removed my kludged handling for building shared libraries.  This
+	greatly simplifies the process of moving to both automake and
+	libtool.  The executables are somewhat larger, but still come in
+	under about 25K each (on i386 Linux).
+
+	* clients/bulletins.cc (scan_bulletins): Skip scanning the local
+	bulletin directory if the user is non-virtual.
+
+	* clients/checkvpw.cc (struct user_data): Added a non_virtual flag
+	to this data, indicating that the user is not a virtual user.
+	(main): Pass the non_virtual flag into scan_bulletins.
+
+	* lib/ac-wait.h: Moved the #include ladder that is required to use
+	wait(2) functions here.
+
+	* lib/ac-dirent.h: Moved the #include ladder that is required to
+	use dirent functions here.
+
+	* lib/ac-time.h: Moved the #include ladder that is required to use
+	time functions here, and rewrote all the files that include either
+	<time.h> or <sys/time.h> to instead include "ac-time.h"
+
+	* commands/vpasswds.cc (cli_main): Removed call to srandom.
+
+	* commands/vpasswd.cc (cli_main): Removed call to srandom.
+
+	* commands/vaddusers.cc (cli_main): Removed call to srandom.
+
+	* commands/vadduser.cc (cli_main): Removed call to srandom.
+
+	* lib-cli/main.cc (main): Call srandom here to give all the CLI
+	programs a properly initialized random function automatically.
+
+1999-02-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc: All signal handlers call signal to re-enable
+	signal handling on systems that reset signals.
+
+	* daemon/fork.cc (handle_children): Re-assert the SIGCHLD signal
+	handler after a signal is received, since some systems will reset
+	the behavior of signals after they've been received.
+
+1999-02-22  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib-cgi/cgi-base.cc (main): Eliminated the timezone setup since
+	it is totally unnecessary.
+
+1999-02-09  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib-dbi/user.h: Moved the password validation method out of the
+	ruser/vuser classes into struct passcode.  This class may
+	eventually be split into multiple classes, one per passcode type.
+
+1999-02-06  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.86
+
+	* clients/bulletins.cc: Changed logic in all routines to not fail
+	if an error occurrs.
+	(link_file): Fixed several logic flaws.
+
+1999-01-30  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/bulletins.cc: Completed prototype code.
+
+1999-01-28  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/bulletins.cc (scan_bulletins): Roughed-in bulletin
+	scanning support.
+
+	* clients/checkvpw.cc (main): Added call to scan bulletins.
+
+	* lib/configrc.h (class configuration ): Added variables to be
+	used to set up bulletin directories.
+
+1999-01-26  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vadduser.cc: Modified to accept a "directory" argument
+	of where to put the user's mailbox.
+
+1999-01-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Rewrote various sources to take advantage of new mystring
+	library constructor functions.
+
+	* Inserted revised mystring library.
+
+1999-01-09  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.85
+
+	* daemon/vpwentry_cache.cc (dirname): Fixed stupid bug -- used
+	"right" instead of "left" to get the directory part of the
+	filename.  This bug was introduced by the following change.
+
+	* All files: reworked code to remove cases where an automatic
+	conversion from type mystring to "const char*' was expected.
+	Instead, all the code uses the c_str() function in mystring.
+
+	* Added a note in the FAQ regarding the default username.
+
+	* lib-cli/main.cc: Rewrote the CLI library to remove dependance on
+	the GNU libiberty getopts.
+
+1998-12-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/vdeliver.cc (main): Changed the default for adding the
+	leading "From " line to false.
+
+	* Released version 0.84
+
+1998-12-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/response_read.cc (read): Removed the __GNUG__ cruft here
+	that was only really necessary to optimize on old "mystring" use
+	(and probably only added nearly useless complexity even then).
+
+	* lib/userdir.cc (userdir): Added a work-around for the apparent
+	egcs inlining bug to fix those core dumps when running vadduser
+	and friends.  Using egcs -finline-functions causes them to core
+	dump, without inlining everything works OK.
+
+1998-12-09  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vadduser.cc (cli_main): Fixed off-by-one error
+	introduced by the use of lib-cli.
+
+1998-12-08  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* configure.in: Added a check to determine if the C++ compiler is
+	buggy and abort if so.
+
+1998-12-03  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* configure.in: Modified the tests for -fno-exceptions and
+	-fno-rtti to actually run the C++ compiler and check its result.
+
+1998-12-02  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/*.cc: Refitted all the command programs to use lib-cli.
+
+1998-11-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vaddalias.cc: Refitted to use lib-cli.
+
+	* lib-cli/main.cc: Wrote a top-level command-line interface
+	helper, which handles automatic help-screen generation, short and
+	long argument parsing, and will eventually handle switching
+	between "standard" command use and server-call usages.
+
+1998-11-28  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/listvdomain.cc: Wrote this program to list the contents
+	of a virtual domain.
+
+	* configure.in: Added a somewhat poor hack to handle support for
+	static vs shared libraries.
+
+	* lib/vpwentry_get.cc: added start_getpw, end_getpw, and getpw
+	routines.
+
+1998-11-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc: Fixed handling of aborted and timed out
+	requests.  A timed out request will result in two error messages,
+	one from the alarm, and one from the failed read.
+
+1998-11-07  Bruce Guenter  <bguenter@hal.qcc.sk.ca>
+
+	* Released version 0.83
+
+	* doc/vmailmgr-cgi.texi: Added a section to describe the use of
+	the listvdomain CGI.
+	
+	* cgi/listvdomain.cc (show_dest): Split original show_user into
+	show_dest which calls show_mbox or show_alias.
+	(show_mbox): Modified output to show mailbox destination.
+	(CGI_MAIN ): Accepts form inputs mboxlink and aliaslink, which are
+	links inserted on each mailbox or alias name, with '%' replaced by
+	the mailbox or alias name.
+
+1998-10-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (handle_connection): It appears that accept may
+	return with an error if a signal occurred while the accept was
+	being processed.  So, loop around accept until a valid fd is
+	returned.
+
+1998-10-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/cgi-*: Moved these files into lib-cgi.
+
+1998-10-01  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* */*.cc, */*.h: Changed all remaining instances of "const
+	mystring&" to "mystring".
+
+1998-09-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/server.cc, lib/response*.cc: Changed all instances of "const
+	mystring&" to "mystring".
+
+	* cgi/listvdomain.cc (CGI_MAIN ): Forgot to output a content type
+	before the HTML content.  Fixed.
+	(show_domain): The user list is now sorted on output.
+
+	* lib/cgi-args.cc: Changed all instances of "const mystring&" to
+	"mystring".
+
+	* lib/cgi-base.cc: Exported content_type function.
+	Changed all instances of "const mystring&" to "mystring".
+
+1998-09-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.82
+
+1998-09-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (exit_fn): Check the count of active forked
+	processes and sleep until they are all no longer active.
+
+	* daemon/daemon.h: Moved parts of this file into command.h and
+	log.h.
+
+	* daemon/*.cc: Replaced all instances of "cout" that produce log
+	messages with "log()" or "log(msg)".
+
+	* daemon/log.cc (log): Added new routine that prefixes log lines
+	with "[pid] " if the log is being output from a child process.
+
+	* cgi/listvdomain.cc (show_domain): Fixed loop logic to properly
+	truncate the buffer when repeating.  Set up the output to display
+	a table instead of a list.
+	(show_user): Added this routine to output a single user, doing a
+	lookup to determine if the name is a mailbox or alias.
+
+	* daemon/dispatch.cc: Changed all the entries that would modify a
+	user to be "forked" methods.
+
+1998-09-23  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/listdomain.cc (CMD): write_buf returns true on success,
+	not false.  Fixed.
+
+	* lib/response_message.cc (message): Fixed a minor bug: the "msg"
+	portion of the response was treated as a NUL-terminated C string
+	instead of as binary data, causing potential truncation when used
+	with the listdomain facility.
+
+1998-09-21  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/checkvpw.cc (authenticate): Modified to handle extra
+	maildir value in string, eliminating an extra lookup.
+
+	* daemon/check.cc (CMD): Modified return string to include a
+	maildir for virtual users.
+
+	* daemon/fork.cc: Removed all the code that dealt with process
+	slots to fix a race condition: the forked process could exit
+	before the parent registers it as a child, causing the active
+	process counts to become incorrect and eventually prevent any
+	further forks.
+
+1998-09-20  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (handle_connection): Modified to use new fork
+	logic.
+	(usage): Added -v/-V option to usage message.
+
+	* daemon/dispatch.cc (dispatch_cmd): Fixed logic of "did_fork"
+	flag to become two flags: needs_write and needs_exit.
+
+	* daemon/main.cc (main): Removed use of atexit(exit_fn) to
+	automatically remove the socket file, since it must not be removed
+	when exiting from a forked routine.
+
+	* daemon/dispatch.cc (dispatch_cmd): dup2 returns -1, not
+	non-zero, on error.  Fixed.
+
+	* doc/vmailmgr.pod: Added the full list of programs that are part
+	of this package to a "SEE ALSO" list.
+
+1998-09-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/checkvpw.cc (main): Fixed design flaw in the "missing
+	maildir" design caused by setting the MAILDIR environment variable
+	before checking for the existance of the maildir.
+	(find_maildir): Changed search logic -- if no matching string is
+	found, indicate that the last argument is the "maildir" argument.
+	(main): Removed several redundant checks that were a result of the
+	above change.
+
+1998-09-09  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/response_read.cc (read_response): Fixed the missing "break"
+	in the switch statement.
+
+1998-09-08  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (handle_intr): Ignore PIPE signals while exiting,
+	as there is a potential for an infinite loop to occur if stdout is
+	a pipe that closes before this program exits.
+
+1998-09-05  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/response_read.cc (receive_string): Moved this routine here
+	from lib/server.cc.
+	(read): Moved the former implementation of response::response(int)
+	into a static read_response routine, and renamed it response::read.
+
+	* lib/server.cc: Fixed several compile bugs.
+
+	* cgi/listvdomain.cc: Fixed compile bugs, still not tested.
+
+1998-08-21  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/listvdomain.cc (CGI_MAIN ): Completed the preliminary
+	implementation of this CGI.
+
+	* lib/server.cc (call): Modified to use the new response
+	constructor to read the response from the client.
+
+	* lib/response.h (struct response): Added a constructor to read
+	the data from a file descriptor.
+
+1998-08-13  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/lookup.cc (lookup_and_validate): Fixed the behavior when
+	the password table contains a "default" user, the requested user
+	does not exist, and the "mustexist" flag is set.
+
+1998-07-31  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/listvdomain.cc: Started this CGI program to list the users
+	in a virtualdomain, using the new "listdomain" server function.
+
+	* lib/server.h (class server_call): Added a routine 'socket' to
+	return the open socket.
+
+	* lib/server.cc (call): Modified to record the file descriptor for
+	the connection and to close it when the server_call is destructed.
+
+1998-07-26  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/dispatch.cc (dispatch_cmd): In the case of a forked
+	dispatch, move the output to fd #2 (usually stderr), to give it a
+	constant location.
+
+	* lib/response.h (struct response): Added the 'maxsize' constant
+	representing the maximum size of any one transmitted message.
+
+	* daemon/listdomain.cc (CMD(listdomain)): Completed implementation
+	of this command.
+
+	* daemon/lookup.cc: Moved the functions is_local and find_virtual
+	into this file from dispatch.cc.
+
+1998-07-21  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/listdomain.cc (CMD(listdomain)): Started building this
+	routine to list the users in a virtual domain.
+
+1998-07-20  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (parse_options): Added support for a "verbose"
+	flag.
+
+	* daemon/fork.cc (do_fork): Wrote this new routine to fork a new
+	process and record its pid in a table (if slots are available in
+	the table).
+	(handle_children): Wrote this new routine to handle any children
+	that were forked and have exited.
+
+	* daemon/main.cc (handle_connection): Added support for commands
+	that cause forked connections.
+
+	* lib/configrc.h (class configuration ): Added new configuration
+	variable "max_fork" -- the maximum number of forked processes to
+	handle.
+
+	* daemon/main.cc (handle_connection): Modified this routine to
+	simply close the socket fd and continue if the previous operation
+	forked (the other "half" of the fork will handle the output).
+
+	* daemon/dispatch.cc (struct dispatch ): Added a field to this
+	structure to indicate that the operation needs to fork.
+
+1998-07-09  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.80
+
+	* clients/checkvpw.cc (getdata): Fixed a longstanding error in
+	setting the password/stamp fields.  Fortunately, this error had no
+	impact at all on the data we use, but would have been immediately
+	visible if we were to try to use the timestamp.
+
+	* daemon/lookup.cc (lookup_virtuser): Added code to look up a
+	default user if the lookup of a named user fails.
+
+	* lib/configrc.h (class configuration ): Added a new configuration
+	variable "default_username".
+
+	* clients/vdeliver.cc (build_command): Fixed a bug that would
+	cause an infinite loop when delivering to multiple destinations.
+	(build_command): Moved the appending of the hostname from enqueue
+	into here, to allow it to be added on each recipient.
+
+1998-06-17  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* doc/vrehash.pod: Started man page for vrehash.
+
+	* commands/vrehash.cc: Wrote this program to move all users
+	directories around into the proper hashed directory (see the man
+	page).
+
+	* commands/vpasswds.cc (change_one): Fixed incorrect status
+	message (was "vpasswd:" should be "vpasswds:").
+
+1998-06-15  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/maildir.cc (make_maildir): Modified this routine to make all
+	the directories leading up to the named directory.
+
+	* lib/configrc.h (class configuration ): Added the fields
+	user_dir_bits and user_dir_slices to support userdir.
+
+	* lib/vuser_add.cc (vuser_add): Modified an error message to make
+	it more informative.
+
+	* daemon/pwentry.cc (user_dir_abs): Modified to use userdir.
+	(user_dir_rel): Modified to use userdir.
+
+	* lib/vuser_add.cc (vuser_adduser): Modified to use userdir.
+
+	* lib/userdir.cc (userdir): Wrote this routine, which produces a
+	relative user directory name, including a hashed-out path and
+	subdirectories, from a username.
+
+1998-06-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/checkvpw.cc (main): Added a test to check if the user's
+	maildir exists and, if not, set the maildir to the configured
+	"error_maildir" string.
+
+	* daemon/main.cc (handle_intr): Fixed shutdown logic to handle
+	both cases: interrupted while handing a connection, or while
+	waiting for a connection.
+
+	* lib/configrc.h (class configuration ): Added new configuration
+	variable "error_maildir", which is a read-only maildir that
+	contains an error mail message.
+
+1998-06-11  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/configrc.cc (configuration): Commented out the code to read
+	a local configuration file.
+
+	* lib/configrc.h: Moved the DEFAULT_* definitions out of here and
+	into configrc.cc again.
+
+	* Backed out all the vdomain and configuration patches, in order
+	to fix all the confusion I had been generating.
+
+	* daemon/main.cc (main): Changed the "interrupt" logic to exit
+	after the current request instead of potentially exiting during
+	the request (and leaving files in a indeterminate state).
+
+1998-06-09  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/vdomain.h (struct vdomain): Added a "config" item to this
+	class.
+
+1998-06-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/state.h (class saved_state): Added code to effectively
+	push/pop a local configuration when entering a saved_state.
+
+	* */*.cc: Changed the use of the "config" variable to account for
+	it being a pointer.
+
+	* commands/*.cc: Added the line "config = local_config();" to the
+	main routine before anything else is executed.
+
+	* lib/configrc.cc (local_config): Added this routine to create a
+	local configuration based on the given home directory.
+
+	* lib/configrc.h: Moved the DEFAULT_* definitions out of here and
+	into configrc.cc (the only place they are referenced).
+	Modified the constructors to support "stacking" of configurations.
+	Made the global "config" variable into a pointer to allow it to
+	change.
+
+	* daemon/vdomain.h (struct vdomain): Wrote this new structure to
+	encapsulate a virtual domain.  These domains are stored in a hash
+	table "vdomains", indexed by base directory.
+
+	* daemon/chpass.cc, daemon/lookup.cc: Adjusted to use the new
+	vdomains global.
+
+	* daemon/pwentry.h (struct pwentry): Removed the vpwentry_cache
+	from this structure.  This will eliminate the expensive lookups at
+	startup (the file "passwd" is looked up for each real user) and a
+	significant amount of memory overhead.
+
+1998-06-05  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.79
+
+1998-06-01  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/passwdfn.cc: Got rid of __GLIBC__ ifdef for crypt.h
+
+	* lib/pwcrypt.cc: Got rid of __GLIBC__ ifdef for crypt.h
+
+1998-05-31  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/configrc.h: Removed the comment regarding DO_SHADOW.
+
+	* daemon/pwentry_cache.cc: Modified the reader to make only a
+	single pass through the password and shadow password files.
+
+	* lib/configrc.h: Renamed lib/config.h to this to avoid name
+	conflicts with the autoconf/configure-generated config.h.
+
+	* various: Fixups mandated by the use of autoconf.
+
+1998-05-29  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/dispatch.cc: Made the "echo" daemon command conditionally
+	compiled if TEST_DAEMON is defined.
+
+	* daemon/vpwentry_cache.cc: Added code to log when the virtual
+	password caches are loaded/reloaded.
+
+	* daemon/pwentry_cache.cc: Added code to log when the password
+	cache is loaded/reloaded.
+
+	* commands/vsetup.cc (setup_passwd): Modified to use the new
+	postmaster config variables.
+
+	* lib/config.cc (read_config): Changed the "postmaster"
+	configuration variable into "postmaster_email" and added
+	"postmaster_aliases".
+
+1998-05-27  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.78
+
+	* lib/vpwentry_putpw.cc (putpw): Fixed logic to deal with an
+	existant but non-readable original password file.
+
+	* lib/vuser_add.cc (vuser_add): Changed the order of creating the
+	maildir and adding the user to the passwd file.  This allows the
+	maildir to be erased if adding the user fails, since the newly
+	created maildir is guaranteed to be empty.
+
+	* lib/maildir.cc (make_maildir): Modified the code to remove any
+	newly-created directories if creation of any directory fails.
+
+	* lib/passwdfn.cc (getpasswd_stdin): Changed use of "gets" to
+	"cin.get".
+
+1998-05-26  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vpasswd.cc (main): Changed the "fprintf" to use
+	IOStreams.
+
+	* lib/passwdfn.cc (getpasswd_*): Print a warning if the password
+	is longer than 8 characters.
+
+	* commands/vpasswds.cc: Wrote this new program to change the
+	passwords of a list of users.  The input for this list is taken
+	from standard input and is of the form "name password".  Anything
+	following the password is ignored.
+
+	* lib/config.cc: Added a new configuration item: postmaster.
+
+	* commands/vadduser.cc (main): Removed the call to setup.
+
+	* commands/vaddusers.cc (main): Removed the call to setup.
+
+	* commands/vsetup.cc: Wrote this program to set up a new virtual
+	domain with the proper ".qmail-default" file and a users
+	directory, along with some useful system aliases.
+
+	* daemon/vpwentry_cache.cc (write): Use "rename" system call.
+
+	* lib/vpwentry_putpw.cc (putpw): Use "rename" sytem call.
+
+	* lib/vpwentry_delpw.cc (delpw): Use "rename" system call instead
+	of "unlink/link/unlink" combination to guarantee atomicity of the
+	operation.
+
+	* commands/_setup.cc (setup): Moved this routine out of
+	vadduser.cc so that it could be shared with vaddusers.cc.  It
+	should probably go into the shared library under a different
+	name.
+
+	* commands/vaddusers.cc: Wrote this new program that adds a list
+	of users.  The input for this list is taken from standard input
+	and is of the form "name password [alias ...]".
+
+	* lib/vpwentry_putpw.cc (putpw): Fixed a bug in the logic that
+	prevented the temporary password file from being renamed to a
+	non-existant original file.
+
+1998-05-25  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.77
+
+	* lib/vpwentry_putpw.cc (putpw): Fixed bug that would cause a
+	failed addition to leave behind a temporary file as well as merged
+	the case if the file does not already exist.
+
+1998-05-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/pwentry_cache.cc: Fixed this code to deal with shadow
+	passwords.  Thanks to Andrew Gillespie for the initial patch to
+	show the problems.  The new code properly deals with caching both
+	the contents of /etc/shadow and /etc/passwd, as well as handling
+	the case where shadow passwords don't exist.
+
+1998-05-22  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.76
+
+	* daemon/file_cache.h (write_file): Call force_valid to avoid
+	having to re-read the cached table immediately after having
+	written its contents.  Do this _before_ unlocking the directory to
+	avoid a race condition.
+
+	* daemon/file_cache.cc (force_valid): Added this routine to force
+	the cache state to indicate that the file is valid (if the file is
+	present).
+
+1998-05-15  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/dispatch.cc (find_virtual): Fixed bug preventing use of
+	wildcards in virtualdomains.
+
+1998-05-13  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/vpwentry_cache.cc (write): Set the new file mode to 0600.
+
+	* lib/vpwentry_putpw.cc (putpw): Set the new file mode to 0600,
+	not 0700 (no execute bit).
+
+1998-05-12  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/vpwentry_cache.cc (operator): Modified code to delete
+	entries that fail insertion into the table (ie duplicates).
+
+	* daemon/chpass.cc (CMD): Removed the calls to begin/end_modify.
+
+	* daemon/file_cache.h (file_cache_writer::write_file): Removed the
+	begin/end_modify routines and bundled them into this routine.
+
+1998-05-11  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/vpwentry_cache.cc (unlock): Fixed bug in unlocking the
+	directory.
+
+	* daemon/chpass.cc (CMD): Modified to use the file cache to modify
+	the password table instead of the vuser_chpass routine.
+
+1998-05-08  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.75
+
+	* daemon/main.cc (TIMEOUT): Changed the connection timeout to one
+	second, as values larger than that are useful only for debugging
+	the connection handling code.
+
+	* lib/vpwentry_putpw.cc (putpw): Modified to use '\n' instead of
+	the endl operator to mark line ends.
+
+	* lib/vpwentry_delpw.cc (delpw): Modified to use '\n' instead of
+	the endl operator to mark line ends (allows the output stream to
+	properly buffer writes).
+
+1998-05-07  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* clients/checkvpw.cc, clients/vdeliver.cc: Moved these to files
+	from "commands" to the "clients" subdirectory
+
+	* daemon/pwentry_cache.cc (operator): Convert the user names to
+	lowercase before inserting.
+
+	* daemon/vpwentry_cache.cc (operator): Fixed bug: make the
+	virtual users' names lowercase before inserting into the table.
+
+	* daemon/check.cc (CMD): Fixed bug: initialize virtpw pointer.
+
+	* daemon/lookup.cc (lookup_maildir): Removed obsolete routine.
+	(CMD): Fixed bug: must initialize the pointers that previously
+	used autodelete.
+
+	* daemon/vpwentry_cache.cc (operator): Fixed a bug that caused the
+	password and destination strings to be both stored in the password
+	field.
+
+	* daemon/file_cache.cc (validate_cache): Check both the last
+	modification time on the file and the inode number to determine if
+	the file has changed.
+
+	* daemon/*.cc: Changed all variables of type "autodelete<vpwentry>"
+	back to type "vpwentry*".
+
+	* daemon/pwentry.cc: Removed the "getpw_byname" routine, now
+	obsoleted by the pwentry_cache.
+
+	* daemon/lookup.cc (lookup_virtuser): Modified to handle the new
+	vpwtable cache in the pwentry.
+
+	* daemon/pwentry.cc (pwentry): Initialize the vpwtable on
+	creation.
+
+	* daemon/pwentry.h (struct pwentry): Added a vpwentry_cache to
+	this object.
+
+	* daemon/vpwentry_cache.cc (write): Changed the end-of-line marker
+	from endl to "\n", as endl will cause the buffer to be flushed.
+
+	* daemon/main.cc (read_data): Removed support for protocol one
+	requests (which allows me to remove one more read syscall from the
+	fast path, shrinking it down to a total of two reads).
+
+1998-05-06  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/main.cc (read_data): Modified to read messages using
+	either protocol one or two.
+
+	* lib/server.cc (build_msg): Modified to build messages using
+	protocol 2.
+
+	* daemon/qmail.*: Removed these obsolete source files.
+	
+	* daemon/dispatch.cc (find_virtual): Wrote this routine that
+	mimics the old behavior of find_virtual from qmail.cc to find a
+	mapping from a virtual domain name to a prefix, using a map_cache
+	on control/virtualdomains.
+
+	* daemon/file_cache.h (class file_cache): Modified the behavior to
+	automatically load the cache on construction, instead of waiting.
+
+	* daemon/map_cache.h: Wrote the classes for map_cache, a generic
+	qmail-style map-file cache (the key and value pair is separated by
+	a colon, one per line).
+
+	* daemon/list_cache.h: Renamed locals_cache to list_cache, as a
+	generic list-file cache class.
+
+	* daemon/dispatch.cc (is_local): Fixed to check the cached result.
+
+	* daemon/file_cache.cc: Moved the actual code for file_cache_base
+	here.
+
+	* daemon/file_cache.h (class file_cache_base): Created this class
+	to contain the common code in the file_cache template.
+
+	* daemon/lookup.cc (lookup_baseuser): fixed the lookup to only
+	read the cached "pwentries" object once per invocation, and to
+	check the result.
+
+	* daemon/qmail.cc (is_local): Removed this routine, as its
+	functionality can be duplicated with a locals cache.
+
+	* daemon/locals_cache.cc: Wrote this object to cache the "locals"
+	table used by qmail to determine what domains are "local".
+
+	* daemon/qmail.cc: Moved this object here from lib.
+
+	* daemon/*.cc: Changed all variables of type "autodelete<pwentry>"
+	back to type "pwentry*", as the lookup functions that would set
+	these variables now return non-deletable references.
+	
+	* daemon/lookup.cc: Modified the various lookup routines that look
+	up base users to use the pwentries cache.
+
+	* daemon/file_cache.h:
+	* daemon/hash_table.h:
+	* daemon/crc32.h:
+	* daemon/crc32.cc:
+	* daemon/crc_hash.h:
+	* daemon/pwentry_cache.cc: 
+	* daemon/pwentry_cache.h: 
+	* daemon/vpwentry_cache.cc: 
+	* daemon/vpwentry_cache.h: Merged from temporary development
+	tree.  Current functionality consists of a generic hash table,
+	mapping from mystring keys to generic objects; a file cache that
+	will automatically reload a cached object only when necessary; and
+	specific code for building caches of the base user password table
+	(pwentry_cache) and virtual password tables (vpwentry_cache).
+
+	* lib/vpwentry_putpw.cc (putpw): Now opens the temporary file with
+	"noreplace" to avoid races, and mode 0700.
+
+	* lib/vpwentry_delpw.cc (delpw): Now opens the temporary file with
+	"noreplace" to avoid races, and mode 0700.
+
+1998-05-04  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/pwentry.*: Moved these files here from lib, as no other
+	module uses them.
+
+	* lib/pwentry.cc (getpw_byname): Moved this function here from
+	pwentry_getpw.cc.
+
+	* lib/vpwentry_delpw.cc: Renamed this file from pwentry_delpw.cc
+
+	* lib/vpwentry_putpw.cc: Renamed this file from pwentry_putpw.cc
+
+	* lib/vpwentry_getpw.cc: Added the getpw_byname function from
+	pwentry_getpw.cc.
+
+	* lib/pwentry_getpw.cc: Removed the vpwentry function.
+
+1998-05-03  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/vuser.h: Only include "vpwentry.h", not "pwentry.h"
+
+	* lib/vpwentry.cc: Moved the vpwentry constructors and destructors
+	here.
+
+	* lib/pwentry.cc: Removed the vpwentry portions.
+
+	* lib/pwentry.h: Removed the portions that only deal with
+	vpwentry's.
+
+	* lib/vpwentry.h: Split the portions of pwentry.h that only deal
+	with vpwentry's into this file.
+
+	* spec: Forgot to add a call to "ldconfig" in %post.
+
+1998-04-24  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.74.
+
+1998-04-23  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/chpass.cc (CMD): modified to use save_state.
+
+	* daemon/deluser.cc (CMD): modified to use save_state.
+
+	* daemon/delalias.cc (CMD): modified to use save_state.
+
+	* daemon/addalias.cc (CMD): modified to use save_state and
+	lookup_and_validate.
+	
+	* daemon/adduser.cc (CMD): Modified to use save_state.
+
+	* daemon/state.h (class saved_state): Created this class from
+	saved_uidgid -- it also does a chdir to the user's home
+	directory.  By doing so, it allows the use of relative paths as if
+	operating as the given user.
+
+	* daemon/lookup.cc (lookup_and_validate): Modified to optionally
+	create a new vpwentry if the named virtual shouldn't and doesn't
+	exist yet.
+
+	* daemon/adduser.cc (CMD): Modified to use lookup_and_validate and
+	pwentry::user_dir_rel.
+
+	* lib/pwentry.cc (user_dir_rel, user_dir_abs): Created these two
+	routines that return the relative (to home) and absolute directory
+	name of a new virtual user's directory according to the configured
+	user_dir parameter.
+
+	* commands/checkvpw.cc: Added function declarations missing on
+	Solaris.
+
+	* commands/vdeliver.cc: Added function declarations missing on
+	Solaris.
+
+	* lib/cgi-base.cc: Added function declarations missing on Solaris.
+
+	* commands/vpasswd.cc: Added function declarations missing on
+	Solaris.
+
+	* commands/vadduser.cc: Added function declarations missing on
+	Solaris.
+
+	* lib/pwcrypt.cc: Added function declarations missing on Solaris.
+
+	* daemon/dispatch.cc (dispatch_cmd): Add the domain name to the
+	error message for an invalid domain name, as the request won't
+	have been printed by the time this happens.
+
+1998-04-21  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vadduser.cc (add_alias): Fixed bug: this routine
+	previously looked up the user name instead of the alias when
+	checking for the existance of the alias.
+
+	* lib/validate.cc (validate_field): Fixed bug: find_first returns
+	-1 if nothing is found, not zero.
+
+	* commands/vadduser.cc (add_alias): No longer necessary to add the
+	'&' prefix.
+
+	* commands/vaddalias.cc (main): No longer neccessary to add the
+	'&' prefix.
+
+	* lib/vuser_add.cc (vuser_addalias): Automatically prepend a '&'
+	to the destination.
+
+	* daemon/addalias.cc (CMD(addalias)): Call validate_redirect
+	before adding the alias.
+
+1998-04-17  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vaddalias.cc (main): Removed the destination validation
+	code from this program and made it call validate_redirect.
+
+	* lib/validate.cc (validate_redirect): Created this routine to
+	validate a redirect destination.
+
+1998-04-16  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/validate.cc (validate_username): Revised this to disallow
+	'/' in user names.
+
+	* vmailmgr.conf.sample: Added notes regarding which component(s)
+	uses each of the listed settings.
+
+	* lib/config.h: Removed the macro definitions that just served as
+	aliases for parts of the configuration class.
+
+1998-04-14  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/lookup.cc: Removed the 'userlookup' routine.
+
+	* lib/maildir.cc (make_maildir): Moved this routine here from
+	vuser_add.
+	(delete_maildir): Moved this routine here from vuser_deluser,
+	renamed from deltree.
+
+1998-04-13  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/vuser_add.cc (vuser_add): Use validate routines instead of
+	hard-coded checks.
+	(vuser_adduser): Renamed the simple vuser_add to vuser_adduser to
+	avoid confusion between the two vuser_add routines.
+
+	* lib/validate.cc (validate_username): Wrote this routine to
+	ensure that a username is valid; returns true if so.
+
+	* daemon/delalias.cc (CMD(delalias)): Switched from userlookup to
+	lookup_and_validate.
+
+	* daemon/addalias.cc (CMD(addalias)): Switched from userlookup to
+	lookup_{baseuser,virtuser}.  Removed check for invalid alias name
+	(already done by vuser_addalias).
+
+	* daemon/deluser.cc (CMD(deluser)): Switched from userlookup to
+	lookup_and_validate.
+
+	* daemon/adduser.cc (CMD(adduser)): Switched from userlookup to
+	lookup_{baseuser,virtuser}.  Removed check for invalid user name
+	(already done by vuser_add).  Removed duplicated code from
+	vuser_adduser.
+
+	* daemon/check.cc (CMD(check)): Switched from userlookup to
+	lookup_{baseuser,virtuser}.
+
+	* daemon/chpass.cc (CMD(chpass)): Switched from userlookup to
+	lookup_and_validate.
+
+	* daemon/lookup.cc (lookup_and_validate): Wrote this routine,
+	which looks up base and virtual users and validates them,
+	replacing several lines of common code in many of the interfaces.
+
+	* commands/checkvpw.cc (main): Use the separators configuration
+	item instead of just '@'.
+
+	* lib/config.cc (read_config): Added a new configuration option,
+	"separators", which lists valid separators between the user name
+	and virtual domain name when logging in via checkvpw.  Defaults to
+	"@:"
+
+	* lib/mystring.cc (find_first): Added this routine, finds the
+	first character that matches any one in a set.
+
+	* daemon/lookup.cc (userlookup): Split this function into its two
+	parts, lookup_baseuser and lookup_virtuser.
+
+1998-04-11  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vaddalias.cc (main): Modified this code to handle (and
+	check) multiple recipients.
+
+	* commands/vdeliver.cc (enqueue): Split this routine into three
+	parts, and added the functionality to deal with multiple
+	recipients in a destination address (separated by commas).
+
+1998-04-08  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* commands/vdeliver.cc (enqueue): Changed the calls to setenv to
+	equivalent calls to putenv, as some system's don't have setenv.
+
+	* commands/checkvpw.cc (set_environ): Changed the calls to setenv
+	to equivalent calls to putenv, as some system's don't have setenv.
+
+1998-04-05  Bruce Guenter  <bguenter@hal.qcc.sk.ca>
+
+	* Released version 0.73
+
+	* commands/vdeliver.cc (main): Fixed bug with handling of ??LINE
+	environment variables (local variables had erroneously overridden
+	previously global variables).
+
+	* vmailmgr-cgi.texi: Filled in the details for the form fields of
+	vpasswd.
+
+	* cgi/*.cc: Remove the "CGI_INPUT" lines for "vdomain" and
+	"password", as they are defined by the top-level CGI constructor.
+
+	* lib/cgi-base.cc (CGI): Add "vdomain" and "password" to the list
+	of fields that are automatically retrieved for all the CGIs, as
+	all CGIs will operate on a virtual domain, and all require a
+	password.
+
+1998-04-02  Bruce Guenter  <bguenter@hal.qcc.sk.ca>
+
+	* vmailmgr-cgi.texi: Started writing documentation on how to
+	configure the CGI programs.
+
+1998-04-01  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* HOWTO.texi: Started writing instructions on how to do certain
+	tasks with vmailmgr.
+
+1998-03-31  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/config.cc (read_config): Rewrote this routine to only go
+	through the file once (instead of once per variable), and to print
+	out errors on invalid lines.
+
+1998-03-29  Bruce Guenter  <bguenter@hal.qcc.sk.ca>
+
+	* various: Use pwentry::pwfile and pwentry::user_dir in place of
+	computing their values repeatedly.
+
+	* lib/pwentry.cc (pwentry::pwfile): Wrote this routine, returns
+	the password file name for the given base user.
+	(pwentry::user_dir): Returns the user directory for the given base
+	user.
+
+	* lib/config.cc (post_process): Wrote this routine to "tidy up"
+	some of the configuration strings, such as directories that should
+	always have a trailing slash ('/').
+
+	* lib/config.h: Change all the defined configuration macros
+	(except for DO_SHADOW) to their configuration variables.
+
+	* various: Treat the configuration defines as variables instead of
+	as constant strings.
+
+	* lib/config.cc (configuration): Initialize all the strings to
+	default values.
+
+1998-03-28  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/config.cc: Started this module, which can read a
+	configuration file for default values at runtime.  The default
+	configuration initialization will read both a global configuration
+	file and a local one.
+
+1998-03-26  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* Released version 0.72
+
+	* commands/vdeliver.cc (main): Fixed the bug that caused empty
+	environment variables (valid) to be treated as non-existant
+	environment variables.  This caused bounces to vdeliver to double
+	bounce.
+
+	* Released version 0.71
+
+1998-03-22  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* cgi/*.cc: Use "msg", not "message()" from the response as the
+	error response message.
+
+	* lib/cgi-args.cc (get_parts): Strings weren't being terminated
+	properly before being set.  Fixed.
+
+1998-03-20  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* daemon/dispatch.cc: Added entries for deluser, delalias, and
+	addalias.
+
+	* daemon/delalias.cc (CMD(delalias)): Wrote this routine to delete
+	an alias.
+
+	* daemon/addalias.cc (CMD(addalias)): Wrote this routine to add an
+	alias.
+
+	* cgi: Merged in all the code and libraries for CGI programs into
+	the standard build.  At this point, there is a basic framework
+	that all CGI programs will use, which includes a mechanism that
+	automatically pulls the inputs from a POST form, and a base class
+	that is executed on startup.  The CGI module defines the routine
+	CGI_MAIN, which is executed by the program startup code.  The CGI
+	module should call either error() or success() at the end of its
+	execution, which will handle printing out an appropriate message.
+	All of the v* programs (vpasswd, vadduser, vdeluser, vaddalias,
+	and vdelalias) have a CGI equivalent.
+
+	* daemon/deluser.cc (CMD(deluser)): Wrote this routine to delete a
+	user.
+
+1998-03-19  Bruce Guenter  <bguenter@mikhail.qcc.sk.ca>
+
+	* lib/server.cc: include un.h
+
+	* daemon/main.cc: include un.h
+
+	* lib/un.h: Wrote this header to define SUN_LEN and to include
+	necessary things for doing sockets.
+
+	* daemon/main.cc (make_socket): Split the code to create a socket
+	into this routine; fixed the permissions bug that caused the
+	socket to be created without other-write permission when launched
+	with a non-zero umask.
+
+	* Released version 0.70
+

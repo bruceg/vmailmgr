@@ -1,0 +1,30 @@
+Record Format
+-------------
+
+Syntax notes:
+- ( P )* means "zero or more of the P"
+- ( P )+ means "one or more of the P"
+- { P } means "zero or one of the P"
+  (ie P is optional and may be omitted)
+
+Old style records had the following format:
+	":" password-crypt ":" destination
+The destination was prefixed with '&' for a forward, and with either '.'
+or '/' for a mailbox.
+
+New version 1 records have the following format:
+	0x01
+	password-crypt NUL
+	{ mailbox } NUL
+	( alias NUL )* NUL
+	personal-information NUL
+	hard-quota NUL
+	soft-quota NUL
+	message-size-limit NUL
+	message-count-limit NUL
+	creation-time NUL
+	expiry-time NUL
+
+The maximum values for limits (quota, etc.) are expressed in the file as
+"-" and internally as -1.  Records with an unknown creation time have
+the creation-time set to "0".

@@ -1,0 +1,122 @@
+Here are the things that I have left to complete (roughly in order of
+personal preference).  The lines marked "RELEASE TARGET" are the point
+of development that I hope to reach before I make another release.  Some
+of the other items after the last "RELEASE TARGET" may make it into a
+release if I feel like it.  I want short and easy to define goals so I
+can keep the development periods shorter.
+
+- Seperate the "misc" library directory into modules.
+
+- Do away with "include".
+
+- Document the Python interface.
+
+- Debug the Courier IMAP auth module
+
+- Build sample HTML for the Python interface.
+
+- Better document the daemon protocol?
+
+- Update the FAQ
+  - Add a section about how checkvpw works
+
+- remove the "addalias" and "addaliasp" daemon interfaces, and move the
+  functionality into "adduser"
+
+- Add more complete tests to verify correct operation of "vaddusers"
+  command.
+
+- Completely verify the operation of vchalias, vadduser daemon operations
+
+RELEASE TARGET 0.96.3
+
+- add a "vadddomain" command that:
+  - adds a new user to /etc/passwd
+  - creates the new user directory
+  - su's to that user and runs vsetup
+  - adds entries to control/virtualdomains
+  - adds entries to control/rcpthosts
+
+- dynamic information per mailbox:
+  - total number of emails and bytes received
+  - number of emails and bytes currently
+  - time of first and last messages
+  - last access time via POP3
+  - text file named "data"
+  - one line per datum, using "key=value" format
+
+- Write library routines, interfaced through vpwentry, that can
+  get/set the dynamic data.
+
+- Per-user quotas, implemented as a program to be called by the above
+
+RELEASE TARGET 0.96.4
+
+- Set up the necessary structures to completely seperate the virtual
+  domain information and the real user information, such that each user
+  can have a list of virtual domains assigned to it.  This structure
+  will specify:
+  - a domain prefix
+  - a directory
+  In this way, the virtualdomains will contain:
+    domain.org:username-prefix
+  And the domain listing with list
+    prefix:subdirectory
+  Each domain will have a completely independant user directory and
+  password table.
+
+RELEASE TARGET 0.97
+
+- Add the necessary code for compile-time switchable support for CDB,
+  [GN]DBM, and MySQL virtual user databases
+
+RELEASE TARGET 0.98
+
+- Eliminate the "response" class, and replace with an integer index into
+  a list of messages.
+
+- Move the parsing of server commands out of dispatch and into the
+  commands themselves.
+
+- Change client-server protocol to use an integer instead of a string as
+  the command identifier, and codify the command numbers.
+
+RELEASE TARGET 0.99
+
+- Bug fixes and clean-ups, and documentation improvements
+
+RELEASE TARGET 1.00
+
+- document vchattr, vchforwards
+
+- limit the number of accounts created per virtual domain
+
+- look into interoperating with sqwebmail http://www.inter7.com/sqwebmail/
+
+- look into interoperating with qmailadmin http://www.inter7.com/qmailadmin/
+
+- add support for a streaming protocol, such that multiple commands
+  could be issued per daemon session
+
+- in all the command-line programs:
+  - if the environment variable VDOMAIN is set, read the virtual domain
+    from that variable, prompt for a password, and do a server call
+
+- write a "vlogin" program:
+  - asks user for username & password
+  - checks authentication with daemon
+  - execs a subprogram, such as vpasswd, after changing uid/gid/cwd to
+    that of the owner of the virtual domain (like checkvpw does)
+  - ?If local address of connection is not a virtual domain, exec
+    login or in.telnetd or similar?
+
+- In vmailmgrd:
+  ? add support for PAM for non-virtual users (this may be difficult,
+    requiring a change in the authentication model)
+
+- documentation
+  - write a "getting started" guide
+
+- miscelaneous
+  - code clean-ups, including internal documentation
+

@@ -1,9 +1,9 @@
 #!/bin/sh
 umask 0
 if [ -s /etc/nullmailer/socket-file ]; then
-  socket-file="`head -1 /etc/nullmailer/socket-file`"
+  socket_file="`head -1 /etc/nullmailer/socket-file`"
 else
-  socket-file=/tmp/.vmailmgrd
+  socket_file=/tmp/.vmailmgrd
 fi
 
-exec unixserver -v $socket-file vmailmgrd
+exec unixserver -v $socket_file vmailmgrd

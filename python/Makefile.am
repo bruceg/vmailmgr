@@ -12,8 +12,18 @@ CLEANFILES = local.py *.pyc *.pyo
 local.py: Makefile
 	echo "sysconfdir = '${sysconfdir}'" >$@
 
+__init__.pyc: __init__.py local.py
+__init__.pyo: __init__.py local.py
+commands.pyc: commands.py local.py
+commands.pyo: commands.py local.py
 config.pyc: config.py local.py
 config.pyo: config.py local.py
+constants.pyc: constants.py local.py
+constants.pyo: constants.py local.py
+daemon.pyc: daemon.py local.py
+daemon.pyo: daemon.py local.py
+types.pyc: types.py local.py
+types.pyo: types.py local.py
 
 .py.pyc:
 	python -c 'import $*'

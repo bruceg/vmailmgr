@@ -5,6 +5,10 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Copy in the new HOWTO and FAQ (and add note to AUTHORS)
+
+- Add note regarding configuring qmail+patches RPM to FAQ
+
 - Add CGI for new autoresponse daemon command (partially done in Python).
 
 - Document the Python interface.

@@ -44,13 +44,13 @@ cli_option cli_options[] = {
   { 'p', "personal", cli_option::flag, vdomain::ATTR_PERSONAL, &o_attr,
     "Set the user's personal information", 0 },
   { 'q', "softquota", cli_option::flag, vdomain::ATTR_SOFTQUOTA, &o_attr,
-    "Set the user's soft quota (in KB)", 0 },
+    "Set the user's soft quota (in bytes)", 0 },
   { 'Q', "hardquota", cli_option::flag, vdomain::ATTR_HARDQUOTA, &o_attr,
-    "Set the user's hard quota (in KB)", 0 },
+    "Set the user's hard quota (in bytes)", 0 },
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   { 'z', "msgsize", cli_option::flag, vdomain::ATTR_MSGSIZE, &o_attr,
-    "Set the user's message size limit", 0 },
+    "Set the user's message size limit (in bytes)", 0 },
   {0}
 };
 

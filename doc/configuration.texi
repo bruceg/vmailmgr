@@ -354,7 +354,7 @@ number
 @item Used By
 vadduser
 @item Description
-Sets the default message size limit.
+Sets the default message size limit, in bytes.
 @end table
 
 @c ============================================================================
@@ -369,7 +369,7 @@ number
 @item Used By
 vadduser
 @item Description
-Sets the default hard quota.
+Sets the default hard quota, in bytes.
 @end table
 
 @c ============================================================================
@@ -384,7 +384,7 @@ number
 @item Used By
 vadduser
 @item Description
-Sets the default soft quota
+Sets the default soft quota, in bytes.
 @end table
 
 @c ============================================================================

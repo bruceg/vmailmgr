@@ -98,7 +98,7 @@ bool setup_alias(mystring alias, const mystring& dest)
     return true;
   }
   vpwentry vpw(alias, "*", 0, dest);
-  vpw.set_defaults();
+  vpw.set_defaults(true, true);
   response resp = domain.set(&vpw, true);
   if(!resp) {
     if(!o_quiet)

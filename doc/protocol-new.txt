@@ -10,6 +10,7 @@ Size	Type	Description
 varies	string	Command name
 varies	string	Domain name
 varies	string	Pass phrase
+varies	N/A	Command-specific data, typically:
 4	int	Total length of all following data
 1	int	Number of arguments
 varies	strings	Arguments

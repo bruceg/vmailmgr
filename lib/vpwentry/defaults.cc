@@ -20,20 +20,26 @@
 #include "vpwentry.h"
 #include "config/configrc.h"
 
-void vpwentry::set_defaults()
+void vpwentry::set_defaults(bool ctime_now, bool set_flags)
 {
   softquota = config->default_softquota();
   hardquota = config->default_hardquota();
   msgsize = config->default_msgsize();
   msgcount = config->default_msgcount();
-  ctime = 0;
+  unsigned now = time(0);
+  if(ctime_now)
+    ctime = now;
+  else
+    ctime = 0;
   unsigned de = config->default_expiry();
   if(de == UINT_MAX)
     expiry = de;
   else {
-    unsigned now = time(0);
     expiry = now + de;
     if(expiry < now)
       expiry = UINT_MAX;
+  }
+  if(set_flags) {
+    is_mailbox_enabled = true;
   }
 }

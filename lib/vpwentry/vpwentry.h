@@ -40,7 +40,7 @@ public:
   //    return data.set(var, val);
   //  }
 
-  void set_defaults();
+  void set_defaults(bool ctime_now, bool set_flags);
 
   bool authenticate(const mystring& phrase) const;
   

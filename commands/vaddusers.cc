@@ -77,7 +77,7 @@ void add_one(const mystring& line)
   {
     mystring maildir = domain.userdir(user);
     vpwentry vpw(user, pwcrypt(pass), maildir, 0);
-    vpw.set_defaults();
+    vpw.set_defaults(true, true);
     response resp = domain.set(&vpw, true, maildir);
     if(!resp) {
       errors++;
@@ -103,7 +103,7 @@ void add_one(const mystring& line)
       continue;
     }
     vpwentry vpw(alias, "*", 0, user);
-    vpw.set_defaults();
+    vpw.set_defaults(true, true);
     response resp = domain.set(&vpw, true);
     if(!resp) {
       fout << endl;

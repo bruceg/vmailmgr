@@ -1,3 +1,54 @@
+2000-05-02  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* commands/vchattr.cc: Make size limits refer to bytes.
+
+	* doc/configuration.texi: Indicate that size limits are in units
+	of bytes.
+
+	* commands/vadduser.cc: Make size limits refer to bytes
+	everywhere.
+
+	* commands/vsetup.cc (setup_alias): Modified to use the new
+	set_defaults method.
+
+	* commands/vpasswd2cdb.cc (getpw): Removed set_defaults call,
+	since from_record calls set_defaults after doing conversion from
+	the old format data.
+
+	* commands/vaddusers.cc (add_one): Modified to use the new
+	set_defaults method.
+
+	* lib/vpwentry/from_old.cc (from_old_record): Modified to use the
+	new set_defaults method.
+
+	* commands/vadduser.cc: Modified to use the new set_defaults
+	method.
+
+	* lib/vpwentry/defaults.cc (set_defaults): Add a flag to set the
+	creation time to either now (true) or 0 (false -- for old
+	records), as well as a flag to set the boolean flags.
+
+	* lib/misc/strtou.c: Use UINT_MAX instead of (unsigned)-1.
+
+	* lib/config/showvconfig.cc.in: Use UINT_MAX instead of
+	(unsigned)-1.
+
+	* lib/config/configrc.in: Use UINT_MAX instead of (unsigned)-1.
+
+	* lib/misc/lookup_domain.cc (find_virtual): Use UINT_MAX instead
+	of (unsigned)-1.
+
+	* lib/vpwentry/defaults.cc (set_defaults): Use UINT_MAX instead of
+	(unsigned)-1.
+
+	* lib/misc/utoa.cc (utoa): Use UINT_MAX instead of (unsigned)-1.
+
+	* lib/vpwentry/from_ver1.cc (from_ver1_record): Set the flags
+	before returning.
+
+	* lib/vpwentry/from_old.cc (from_old_record): Set the flags before
+	returning.
+
 2000-04-19  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* doc/vchattr.pod: Added note regarding personal information.

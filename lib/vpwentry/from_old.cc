@@ -38,7 +38,6 @@ bool vpwentry::from_old_record(const mystring& text)
     forwards = end;
     forwards = forwards.subst(',', '\0');
   }
-  set_defaults();
-  is_mailbox_enabled = true;
+  set_defaults(false, true);
   return true;
 }

@@ -25,8 +25,6 @@
 #include "vcommand.h"
 #include "cli/cli.h"
 
-time_t now = time(0);
-
 const char* cli_program = "vadduser";
 const char* cli_help_prefix = "Add a user to a virtual domain\n";
 const char* cli_help_suffix = "";
@@ -64,15 +62,15 @@ cli_option cli_options[] = {
   { 'p', "personal", cli_option::string, 0, &o_personal,
     "Set the user's personal information", 0 },
   { 'Q', "hardquota", cli_option::integer, 0, &o_hardquota,
-    "Set the user's hard quota (in KBytes)", 0 },
+    "Set the user's hard quota (in bytes)", 0 },
   { 'q', "softquota", cli_option::integer, 0, &o_softquota,
-    "Set the user's soft quota (in KBytes)", 0 },
+    "Set the user's soft quota (in bytes)", 0 },
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   //{ 'x', "extra", cli_option::stringlist, 0, &o_extra,
   //  "Add extra data for the user", 0 },
   { 'z', "msgsize", cli_option::integer, 0, &o_msgsize,
-    "Set the user's message size limit (in KBytes)", 0 },
+    "Set the user's message size limit (in bytes)", 0 },
   {0}
 };
 
@@ -112,14 +110,13 @@ vpwentry* make_user(const mystring& name, const mystring& passcode)
   
   vpwentry* vpw = new vpwentry(name.lower(), passcode, dir,
 			       list2str(o_forwards));
-  vpw->set_defaults();
+  vpw->set_defaults(true, true);
   
   vpw->personal = o_personal;
   vpw->hardquota = o_hardquota;
   vpw->softquota = o_softquota;
   vpw->msgcount = o_msgcount;
   vpw->msgsize = o_msgsize;
-  vpw->ctime = now;
   vpw->expiry = o_expiry;
   //vpw->data = list2str(o_extra);
   
@@ -159,7 +156,7 @@ void add_alias(mystring user, mystring alias)
   user = user.lower();
   if(!domain.exists(alias)) {
     vpwentry vpw(alias, "*", 0, user);
-    vpw.set_defaults();
+    vpw.set_defaults(true, true);
     response resp = domain.set(&vpw, true);
     if(!resp)
       if(!o_quiet)
@@ -193,7 +190,7 @@ void set_defaults()
   if(!o_expiry)
     o_expiry = config->default_expiry();
   if(o_expiry != -1)
-    o_expiry += now;
+    o_expiry += time(0);
 }
 
 int cli_main(int argc, char* argv[])

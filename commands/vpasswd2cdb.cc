@@ -51,7 +51,6 @@ static bool getpw(fdibuf& in, vpwentry& out)
   int first = buf.find_first(':');
   if(first < 0) return false;
 
-  out.set_defaults();
   return out.from_record(buf.left(first), buf.c_str() + first);
 }
 

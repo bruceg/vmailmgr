@@ -10,13 +10,6 @@ FOR VERSION 0.97:
 - Revert vdomain::lookup back to the single-argument case, and yank the
   dead code.
 
-- Fix problem with MD5 hashes being different than crypt on Sparc.
-  ref "Michael M. Dwyer" <kalif@innersanctum.cx>
-  - Waiting for response on MD5 test results.
-
-- Fix embeded documentation for vaddalias -- it's a shell script
-  wrapper, and doesn't handle "-f".
-
 - Add tests for:
   - proper handling of creating paths with a trailing '/'
   - authvmailmgr

@@ -1,5 +1,7 @@
 2002-05-03  Bruce Guenter  <bruce@lorien.untroubled.org>
 
+	* commands/vadduser.cc: Fixed incorrect usage note for vaddalias.
+
 	* lib/config/Makefile.am (noinst_LIBRARIES): Fixed the use of
 	libstdc++ in showvconfig.
 

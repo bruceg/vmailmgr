@@ -29,7 +29,7 @@ const char* cli_program = "vadduser";
 const char* cli_help_prefix = "Add a user to a virtual domain\n";
 const char* cli_help_suffix = "";
 const char* cli_args_usage = "USERNAME [ALIAS1 ...]\n"
-"or vaddalias [-f ADDRESS] USERNAME [ALIAS1 ...]";
+"or vaddalias USERNAME [ALIAS1 ...]";
 const int cli_args_min = 1;
 const int cli_args_max = -1;
 

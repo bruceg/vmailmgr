@@ -1,3 +1,21 @@
+2001-03-07  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* Moved from old "cli" library to renamed "cli++" library.
+
+2000-11-20  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* lib/vpwentry/to.cc (to_record): Fixed typo -- flags is now 5
+	bytes, not 3.
+
+2000-10-30  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vdeliver.cc (cli_main): Make 99 return codes from
+	executed programs cause vdeliver to exit (with code 99) without
+	delivering the message.
+
+	* lib/misc/exec.cc (execute): Don't silently ignore the 99 error
+	code.
+
 2000-10-27  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* commands/vchforwards.cc (cli_main): Fixed the same bug here as

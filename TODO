@@ -5,11 +5,21 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Fix problem with MD5 hashes being different than crypt on Sparc.
+  ref "Michael M. Dwyer" <kalif@innersanctum.cx>
+
+- Fix embeded documentation for vaddalias -- it's a shell script
+  wrapper, and doesn't handle "-f".
+
+- Add note to FAQ:
+  - Can't have system users in a virtual domain.
+
 - Add tests for:
   - authvmailmgr
   - execution of presetuid and postsetuid hooks in authvmailmgr
   - daemon "stat" command
   - daemon adduser3 command
+  - vupgrade command
 
 - Make sure that exit 99 from vdeliver-predeliver causes delivery to be
   skipped.

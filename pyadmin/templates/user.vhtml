@@ -2,7 +2,7 @@
 <p>Lookup results for user '%(USERNAME)s@%(DOMAIN)s':
 <ul>
 <li>Mailbox: %(mailbox)s
-<li>Forwards: %(forwards)s
+<li>Forwards: %(string.join(forwards, ', '))s
 <li>Soft Quota: %(soft_quota)s
 <li>Hard Quota: %(hard_quota)s
 <li>Message Count Limit: %(message_count_limit)s

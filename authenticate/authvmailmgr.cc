@@ -75,9 +75,16 @@ void auth_vmailmgr()
     // case we pass the authentication on to the next module.
     authmod_fail(global_argc, global_argv);
 
+  if(execute("authvmailmgr-presetuid"))
+    fail_temporary("Execution of authvmailmgr-presetuid failed");
+  
+  // authsuccess() set ups the environment, CWD, and GID/UID
   authsuccess(udata->home.c_str(), 0, &udata->uid, &udata->gid,
 	      username.c_str(), 0);
   presetenv("MAILDIR=", udata->maildir);
+
+  if(execute("authvmailmgr-postsetuid"))
+    fail_temporary("Execution of authvmailmgr-postsetuid failed");
 }
 
 int main(int argc, char **argv)

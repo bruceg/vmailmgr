@@ -3,6 +3,9 @@ Changes in version 0.96.8
 
 New Features:
 - Added a quota checking program for use in vdeliver-predeliver.
+- The authvmailmgr Courier-IMAP auth module now executes
+  authvmailmgr-presetuid and authvmailmgr-postsetuid before and after
+  executing the setuid respectively.
 
 Internal Changes:
 

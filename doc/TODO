@@ -5,12 +5,12 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
-- Calling authvmailmgr_presetuid, etc in addition to
-  authvmailmgr_loginfail
+- Make note in configuration doc about authvmailmgr-presetuid,
+  authvmailmgr-postsetuid, VUSER in -loginfail.
 
-- Setting $VUSER in checkvpw_loginfail and authvmailmgr_loginfail
-      
 - Extending lookup to require a password and to detail more.
+
+- Add a "status" autoresponse daemon command
 
 - Complete the remainder of the commands in vmailmgr.py
 
@@ -24,8 +24,6 @@ can keep the development periods shorter.
 - Document the Python interface.
 
 - Build sample HTML for the Python interface.
-
-- Add a "status" autoresponse daemon command
 
 - Add options to the listvdomain programs to expand their output.
 

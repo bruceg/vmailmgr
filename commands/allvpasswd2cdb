@@ -10,9 +10,7 @@ while IFS=: read name pass uid gid gecos home shell; do
     if [ -f passwd.cdb ]; then
       echo Skipping, has already been converted.
     else
-      vpasswd2cdb
-      chown $uid passwd.cdb
-      chgrp $gid passwd.cdb
+      su - $name sh -c 'exec vpasswd2cdb'
       echo Converted.
     fi
   else

@@ -83,15 +83,9 @@ class Context:
 def do_exec(body, context):
     exec(body, global_context, context.dict)
 
-eval_cache = { }
-
 def do_eval(body, context):
     '''Evaluate an expression, keeping a cache of results.'''
-    if eval_cache.has_key(body):
-        return eval_cache[body]
-    result = eval(body, global_context, context.dict)
-    eval_cache[body] = result
-    return result
+    return eval(body, global_context, context.dict)
 
 ###############################################################################
 # Node types
@@ -260,7 +254,6 @@ def parse(content):
     lexer = Lexer(content)
     node = lexer.parse_node()
     while node is not None:
-        print node
         list.append(node)
         node = lexer.parse_node()
     (node,index) = parse_body(list, 0)

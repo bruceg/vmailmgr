@@ -5,26 +5,30 @@ To execute a server call, the client opens the daemon's UNIX domain
 socket (as specified by SYSCONFDIR/socket-file), and sends across the
 following data:
 
-- protocol : UINT[1] = 2
-- total length of all data : UINT[2]
-- argument count : UINT[1]
-- command : STRING
-- data : STRING[argument count]
+Size	Type	Description
+1	int	Protocol number (always 2)
+2	int	Total length of all data
+1	int	Number of arguments following the command
+varies	string	Command name
+varies	strings	Arguments
 
 It then receives the following response from the server:
 
-- response code : UINT[1]
-  - ok = 0
-  - bad = 1
-  - error = 2
-- message : string
+Size	Type	Description
+1	int	Response code: one of the following
+		0: OK -- operation succeeded
+		1: Bad -- error in format or syntax
+		2: Error -- operation failed
+varies	string	Message
 
-STRING is:
-- length : UINT[2]
-- data : UCHAR[length]
 
-UINT[#] is:
-- unsigned integer, # bytes long represented MSB first
+Strings are encoded as:
+
+Size	Type	Description
+2	int	Length of string
+length	char	String data (no trailing NUL byte)
+
+All integers are unsigned, sent MSB first.
 
 Example:
 0x02                   Protocol version

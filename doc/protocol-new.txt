@@ -1,0 +1,38 @@
+Proposed Client-Server interaction
+----------------------------------
+
+To execute a server call, the client opens the daemon's UNIX domain
+socket (as specified by SYSCONFDIR/socket-file), and sends across the
+following data:
+
+Size	Type	Description
+1	int	Protocol number (always 3)
+varies	string	Command name
+varies	string	Domain name
+varies	string	Pass phrase
+4	int	Total length of all following data
+1	int	Number of arguments
+varies	strings	Arguments
+
+The command name, domain name, and pass phrase are passed to an
+authenticating shim which executes the command only if authentication
+succeeds.  Everything following the pass phrase is passed directly to
+the command module after authentication.
+
+It then receives the following response from the server:
+
+Size	Type	Description
+1	int	Response code: one of the following
+		0: OK -- operation succeeded
+		1: Bad -- error in format or syntax
+		2: Autherr -- authentication failed
+		3: Error -- operation failed
+varies	string	Message or response data
+
+Strings are encoded as:
+
+Size	Type	Description
+4	int	Length of string
+length	char	String data (no trailing NUL byte)
+
+All integers are unsigned, sent MSB first.

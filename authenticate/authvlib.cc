@@ -52,8 +52,8 @@ static vdomain* domain = 0;
 
 void set_user(const pwentry* pw)
 {
-  setenv("USER=", pw->name);
-  setenv("HOME=", pw->home);
+  presetenv("USER=", pw->name);
+  presetenv("HOME=", pw->home);
   if(execute("checkvpw-presetuid"))
     fail_temporary("Execution of checkvpw-presetuid failed");
   if(setgid(pw->gid) == -1 ||
@@ -71,7 +71,7 @@ static user_data* check(mystring fulluser, mystring password,
   pwentry* basepw;
   if(!lookup_baseuser(fulluser, basepw, virtname))
     fail_login("Invalid or unknown base user or domain");
-  setenv("VUSER=", virtname);
+  presetenv("VUSER=", virtname);
   set_user(basepw);
   vpwentry* vpw = 0;
   if(!!virtname) {
@@ -80,7 +80,7 @@ static user_data* check(mystring fulluser, mystring password,
       fail_login("Invalid or unknown virtual user");
     if(!vpw->authenticate(password))
       fail_login("Invalid or incorrect password");
-    setenv(vpw);
+    vpw->export_env();
     return new user_data(basepw, vpw->mailbox, vpw->name);
   }
   if(virtual_only)

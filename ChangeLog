@@ -1,3 +1,15 @@
+2000-04-10  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* lib/vpwentry/export_env.cc (export_env): Moved the setenv
+	routine that exported a vpwentry to this method of vpwentry.
+
+	* lib/misc/exec.cc (presetenv): Renamed "setenv" to this, to
+	prevent confusion with any built-in "setenv" functions.
+
+	* authenticate/authvmailmgr.cc: Made the user name, pass phrase,
+	and domain name into globals, to prevent their memory from being
+	deallocated prematurely.
+
 2000-04-09  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* doc/vmailmgr-cgi.texi: Adjusted this documentation to fit the

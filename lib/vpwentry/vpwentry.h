@@ -40,6 +40,8 @@ public:
   static bool from_old_record(vpwentry& vpw, const mystring& text);
   
   mystring to_record() const;
+
+  bool export_env() const;
 };
 
 #endif

@@ -22,33 +22,12 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "exec.h"
-#include "utoa.h"
 #include "config/configrc.h"
 
-int setenv(const char* prefix, const mystring& value)
+int presetenv(const char* prefix, const mystring& value)
 {
   mystring tmp = prefix + value;
   return putenv(tmp.c_str());
-}
-
-static int setenv(const char* prefix, unsigned value)
-{
-  return setenv(prefix, utoa(value));
-}
-
-void setenv(const vpwentry* vpw)
-{
-  setenv("VUSER=", vpw->name);
-  setenv("MAILDIR=", vpw->mailbox);
-  setenv("VUSER_CTIME=", vpw->ctime);
-  setenv("VUSER_EXPIRY=", vpw->expiry);
-  setenv("VUSER_MSGCOUNT=", vpw->msgcount);
-  setenv("VUSER_MSGSIZE=", vpw->msgsize);
-  setenv("VUSER_PERSONAL=", vpw->personal);
-  setenv("VUSER_HARDQUOTA=", vpw->hardquota);
-  setenv("VUSER_SOFTQUOTA=", vpw->softquota);
-  //for(mystring_iter iter(vpw->data.str(), '\0'); iter; ++iter)
-  //  setenv("VUSER_", *iter);
 }
 
 int execute_one(const char* args[])

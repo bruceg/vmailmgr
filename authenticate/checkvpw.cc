@@ -25,7 +25,7 @@
 
 void fail(const char* msg, const char* execfile, int code)
 {
-  setenv("CHECKVPW_ERROR=", msg);
+  presetenv("CHECKVPW_ERROR=", msg);
   execute(execfile);
   exit(code);
 }
@@ -126,7 +126,7 @@ void set_maildirarg(int argc, const char* argv[], user_data* udata)
     udata->maildir = argv[maildirarg];
   if(!is_dir(udata->maildir.c_str()))
     udata->maildir = config->error_maildir();
-  setenv("MAILDIR=", udata->maildir);
+  presetenv("MAILDIR=", udata->maildir);
 
   char* str = new char[udata->maildir.length()+1];
   strcpy(str, udata->maildir.c_str());

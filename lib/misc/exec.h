@@ -4,8 +4,7 @@
 #include "vpwentry/vpwentry.h"
 #include "misc/strlist.h"
 
-int setenv(const char* prefix, const mystring& value);
-void setenv(const vpwentry*);
+int presetenv(const char* prefix, const mystring& value);
 
 int execute_one(const char* args[]);
 int execute(const mystring& name);

@@ -5,6 +5,12 @@ of the other items after the last "RELEASE TARGET" may make it into a
 release if I feel like it.  I want short and easy to define goals so I
 can keep the development periods shorter.
 
+- Look into adding the ability to disable mailbox delivery in the
+  record.  This would require a record format change, or prefixing the
+  mailbox name with a "special" character other than NUL.
+
+- Modify the vadduser CGI to take forwarding addresses.
+
 - Document the Python interface.
 
 - Build sample HTML for the Python interface.
@@ -14,6 +20,8 @@ can keep the development periods shorter.
 
 - Add more complete tests to verify correct operation of "vaddusers"
   command.
+
+- Modify vdeliver and authvlib.cc to obey account expiry information.
 
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd

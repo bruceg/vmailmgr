@@ -239,8 +239,8 @@ void enqueue(mystring recipient, mystring host, mystring sender)
 {
   int f = sender.find_first('@');
   if(f > 0) {
-    setenv("QMAILUSER=", sender.left(f));
-    setenv("QMAILHOST=", sender.right(f+1));
+    presetenv("QMAILUSER=", sender.left(f));
+    presetenv("QMAILHOST=", sender.right(f+1));
   }
   inject(sender, recipient, host);
 }
@@ -273,7 +273,7 @@ int cli_main(int, char*[])
   if(!vpw)
     die_fail(mystring("Invalid or unknown virtual user '" + ext + "'").c_str());
 
-  setenv(vpw);
+  vpw->export_env();
   mystring r;
   if(execute("vdeliver-predeliver"))
     die_temp("Execution of vdeliver-predeliver failed");

@@ -21,16 +21,15 @@
 #include "authlib/auth.h"
 #include "authlib/authmod.h"
 
-struct global_data
-{
-  int argc;
-  char** argv;
-};
-static global_data global;
+static mystring username;
+static mystring passcode;
+static mystring domain;
+static int global_argc;
+static char** global_argv;
 
 void fail(const char* msg, const char* execfile)
 {
-  setenv("AUTHVMAILMGR_ERROR=", msg);
+  presetenv("AUTHVMAILMGR_ERROR=", msg);
   execute(execfile);
 }
 
@@ -53,52 +52,46 @@ void fail_temporary(const char* msg)
 }
 
 static void parse_data(const char* /*service*/, const char* authtype,
-		       const char* authdata, int /*issession*/,
-		       mystring& user, mystring& pass, mystring& domain)
+		       const char* authdata, int /*issession*/)
 {
   mystring_iter iter(authdata, '\n');
-  user = *iter;
+  username = *iter;
   ++iter;
-  pass = *iter;
+  passcode = *iter;
 
   if(strcmp(authtype, AUTHTYPE_LOGIN))
     fail_temporary("Invalid authentication type, must be 'login'");
-  if(!user || !pass)
+  if(!username || !passcode)
     fail_baddata("Invalid authentication data");
 
-  set_domain(user, domain);
+  set_domain(username, domain);
 }
 
-static const char* auth_vmailmgr(mystring user, mystring pass, mystring domain)
+void auth_vmailmgr()
 {
-  user_data* udata = authenticate(user, pass, domain, true);
+  user_data* udata = authenticate(username, passcode, domain, true);
   if(!udata)
     // This point is only reached if the domain is not virtual, in which
     // case we pass the authentication on to the next module.
-    authmod_fail(global.argc, global.argv);
+    authmod_fail(global_argc, global_argv);
 
   authsuccess(udata->home.c_str(), 0, &udata->uid, &udata->gid,
-	      user.c_str(), 0);
-  setenv("MAILDIR=", udata->maildir);
-
-  return user.c_str();
+	      username.c_str(), 0);
+  presetenv("MAILDIR=", udata->maildir);
 }
 
 int main(int argc, char **argv)
 {
-  global.argc = argc;
-  global.argv = argv;
+  global_argc = argc;
+  global_argv = argv;
   
   const char *service, *type;
   char *authdata;
 
   authmod_init(argc, argv, &service, &type, &authdata);
-  mystring username;
-  mystring passcode;
-  mystring domain;
-  parse_data(service, type, authdata, 1, username, passcode, domain);
-  const char* user = auth_vmailmgr(username, passcode, domain);
-  authmod_success(argc, argv, user);
+  parse_data(service, type, authdata, 1);
+  auth_vmailmgr();
+  authmod_success(argc, argv, username.c_str());
   return 0;
 }
 

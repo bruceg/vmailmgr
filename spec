@@ -113,7 +113,6 @@ fi
 %config(missingok,noreplace) %verify(user,group,mode) /etc/vmailmgr/*
 /usr/bin/*
 /usr/man/man1/*
-/usr/man/man5/*
 /usr/man/man7/*
 /usr/man/man8/*
 

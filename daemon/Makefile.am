@@ -1,6 +1,6 @@
 sbin_PROGRAMS = vmailmgrd
 
-noinst_PODS = $(sbin_PROGRAMS:=.pod)
+noinst_PODS = vmailmgrd.pod
 noinst_HTMLS = $(noinst_PODS:.pod=.html)
 man_MANS = $(noinst_PODS:.pod=.8)
 

@@ -25,7 +25,6 @@ of vmailmgr systems.
 
 %package daemon
 Summary: Vmailmgr daemon for CGIs
-Requires: daemontools = 0.61
 Requires: supervise-scripts >= 2.2
 Group: Utilities/System
 %description daemon

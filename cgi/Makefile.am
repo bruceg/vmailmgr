@@ -15,6 +15,9 @@ vdeluser_LDADD = ../lib/libcgi.a ../lib/libvmailmgr.a
 vaddalias_SOURCES = vaddalias.cc
 vaddalias_LDADD = ../lib/libcgi.a ../lib/libvmailmgr.a
 
+vchalias_SOURCES = vchalias.cc
+vchalias_LDADD = ../lib/libcgi.a ../lib/libvmailmgr.a
+
 vchattr_SOURCES = vchattr.cc
 vchattr_LDADD = ../lib/libcgi.a ../lib/libvmailmgr.a
 

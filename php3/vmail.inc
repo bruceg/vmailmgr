@@ -18,6 +18,13 @@
 function vm_daemon_raw($arg)
 {
         $vmailfile = "/tmp/.vmailmgrd";
+	if (file_exists("/etc/vmailmgr/socket-file"))
+		$socketfile = (file ("/etc/vmailmgr/socket-file"));
+		$socketfile = trim($socketfile[0]);
+		if ($socketfile != "")
+			$vmailfile = $socketfile;
+		
+
         $vmailsock = fsockopen ($vmailfile, 0, $errno, $errstr, 4);
 	if (!$vmailsock) die("Failed to open socket file, is daemon running?");
 
@@ -202,8 +209,8 @@ return $temp;
 /* vchforward, takes domain name, password, username and an array of
    forwarding addresses, returns an array consisting of an integer exit code
    and message. Due to a bug in PHP when dealing with array values
-   containing NULs, vchforward will not work without a patched vmailmgrd. 
-   This patch should make it into 0.96.2 */
+   containing NULs, vchforward will not handle multiple destinations unless
+   one is using the patched vmailmgrd present in 0.96.2 and later */
 
 function vchforward($domain, $password, $username, $forwards){
 if ($domain=="") return array(1, "Empty domain");
@@ -211,12 +218,9 @@ if ($password=="") return array(1, "Empty domain password");
 if ($username=="") return array(1, "Empty username");
 	$command=array("chattr", $domain, $username, $password, "2");
 	for ($x=0; $x< sizeof($forwards); $x++)
-		if ($forwards[$x] != "") 
-			$command[]=$forwards[$x];
+		if ($forwards[$x] != "") $command[]=$forwards[$x];
 	$temp=vm_daemon_raw($command);
 return $temp;
 }
-
-
 
 ?>

@@ -68,28 +68,35 @@ bool make_maildir(const mystring& dirname)
 
 bool delete_directory(const mystring& dirname)
 {
-  DIR* dir = opendir(dirname.c_str());
-  if(!dir)
-    return false;
-  while(dirent* entry = readdir(dir)) {
-    const char* name = entry->d_name;
-    if(name[0] == '.' &&
-       (NAMLEN(entry) == 1 ||
-	(name[1] == '.' && NAMLEN(entry) == 2)))
-      continue;
-    mystring fullname = dirname + "/";
-    fullname += mystring(name, NAMLEN(entry));
-    if(is_dir(fullname.c_str())) {
-      if(!delete_directory(fullname)) {
+  int retry;
+  retry = 0;
+  do {
+    DIR* dir = opendir(dirname.c_str());
+    if(!dir)
+      return false;
+    while(dirent* entry = readdir(dir)) {
+      const char* name = entry->d_name;
+      if(name[0] == '.' &&
+	 (NAMLEN(entry) == 1 ||
+	  (name[1] == '.' && NAMLEN(entry) == 2)))
+	continue;
+      mystring fullname = dirname + "/";
+      fullname += mystring(name, NAMLEN(entry));
+      if(is_dir(fullname.c_str())) {
+	if(!delete_directory(fullname)) {
+	  closedir(dir);
+	  return false;
+	}
+      }
+      else if(unlink(fullname.c_str())) {
 	closedir(dir);
 	return false;
       }
     }
-    else if(unlink(fullname.c_str())) {
-      closedir(dir);
-      return false;
-    }
-  }
-  closedir(dir);
-  return !rmdir(dirname);
+    closedir(dir);
+    if (rmdir(dirname) == 0)
+      return true;
+    ++retry;
+  } while (retry < 3);
+  return false;
 }

@@ -96,7 +96,7 @@ bool stat_dir(const mystring& dirname, unsigned& count, unsigned long& size) {
   struct stat buf;
   DIR* dir = opendir(dirname.c_str());
   if(!dir) 
-    die_temp("Could not maildir\n");
+    die_temp("Could not open mail directory for reading\n");
 
   while(dirent* entry = readdir(dir)) {
     const char* name = entry->d_name;

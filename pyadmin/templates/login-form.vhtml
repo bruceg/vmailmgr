@@ -3,6 +3,9 @@
 <title>vmailmgr admin login</title>
 </head>
 <body>
+<? if failed ?>
+<p>Login failed: %(reason)s</p>
+<? end ?>
 <form method=post>
 Domain name: <input name=domain><br>
 User name (blank for admins): <input name=username><br>

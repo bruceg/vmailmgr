@@ -236,6 +236,23 @@ typing `<tt>/etc/rc.d/init.d/pop3d restart</tt>'.
   url="http://em.ca/~bruceg/ucspi-unix/">.
 </p>
 
+<sect>POP3 or IMAP logins take 30 seconds or longer.
+<p>
+  This is almost certainly a DNS lookup problem.  Make sure that DNS
+  lookups aren't timing out, that lookups on all your IP addresses
+  aren't failing, and that you can lookup remote addresses as well.
+</p>
+
+<p>
+  If you are using 'tcpserver' for the head end to qmail-pop3d, then you
+  may want to the following 2 switches to the command line: <tt>-R</tt>
+  and <tt>-H</tt>.  The former prevents tcpserver from attempting to
+  obtain TCPREMOTEINFO from the remote host.  This eliminates an "ident"
+  lookup that may be being blocked or silently dropped by a firewall.
+  The latter prevents tcpserver from doing a DNS lookup on the remote
+  IP.
+</p>
+
 <sect>Miscellaneous
 
 <sect1>How do I get in contact with other users?

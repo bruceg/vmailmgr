@@ -166,6 +166,13 @@ Put the string `<tt>checkvpw</tt>' into the file
 typing `<tt>/etc/rc.d/init.d/pop3d restart</tt>'.
 </p>
 
+<sect1>How do I allow clients to relay SMTP through me?
+<p>
+  Download and install relay-ctrl from <url
+  url="http://em.ca/~bruceg/relay-ctrl/">.
+  It works with vmailmgr, for both POP3 and IMAP clients.
+</p>
+
 <sect>Usage
 
 <sect1>I can only use one IP address. How do I log in as a virtual user?

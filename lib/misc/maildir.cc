@@ -36,7 +36,9 @@ int mkdirp(const mystring& dirname, mode_t mode)
     if(mkdirp(dirname.left(i), 0755))
       return -1;
   }
-  return mkdir(dirname.c_str(), mode);
+  if(i != dirname.length() - 1)
+    return mkdir(dirname.c_str(), mode);
+  return 0;
 }
 
 bool make_maildir(const mystring& dirname)

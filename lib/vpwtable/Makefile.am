@@ -3,9 +3,9 @@ INCLUDES = -I..
 EXTRA_DIST = vpwtable.h
 
 libvpwtable_a_SOURCES = \
-	vpwtable.cc \
-	del.cc \
-	exists.cc \
-	get.cc \
-	getbyname.cc \
-	put.cc
+	cdb_vpwtable.cc \
+	cdb_del.cc \
+	cdb_exists.cc \
+	cdb_get.cc \
+	cdb_getbyname.cc \
+	cdb_put.cc

@@ -18,8 +18,10 @@
 #include "vpwtable.h"
 #include "vdomain/vdomain.h"
 
+const mystring cdb_extension = ".cdb";
+
 vpwtable::vpwtable(const vdomain* d)
-  : filename(d->config.password_file() + ".cdb"),
+  : filename(d->config.password_file() + cdb_extension),
     getdata(0)
 {
 }

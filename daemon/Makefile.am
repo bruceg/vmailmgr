@@ -24,7 +24,7 @@ CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = -I../lib
 
 vmailmgrd_SOURCES = daemon.h \
-	adduser2.cc \
+	adduser.cc \
 	autoresponse.cc \
 	chattr.cc \
 	check.cc \

@@ -19,7 +19,7 @@
 #include "misc/lookup.h"
 
 // declare the commands
-extern CMD(adduser2);
+extern CMD(adduser3);
 extern CMD(autoresponse);
 extern CMD(chattr);
 extern CMD(check);
@@ -69,7 +69,7 @@ dispatch dispatch_table[] = {
   ENTRY(lookup,       3,  3, true),
   ENTRY(check,        3,  3, true),
   ENTRY(chattr,       5, -1, true),
-  ENTRY(adduser2,     5, -1, true),
+  ENTRY(adduser3,     5, -1, true),
   ENTRY(autoresponse, 4,  5, true),
   ENTRY(deluser,      3,  3, true),
   ENTRY(stat,         3,  3, true),

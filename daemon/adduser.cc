@@ -37,8 +37,8 @@ response build_forwards(const command& args, int offset,
   RETURN(ok, "");
 }
 
-CMD(adduser2)
-  // Usage: adduser2 baseuser-virtuser adminpass newpass dirname has_mailbox [forwards ...]
+CMD(adduser3)
+  // Usage: adduser3 baseuser-virtuser adminpass newpass dirname has_mailbox [forwards ...]
   // If <newpass> is empty, a null-password is used.
   // If <dirname> is empty, <virtuser> is used in its place
   // If <has_mailbox> is empty, no mailbox is created,

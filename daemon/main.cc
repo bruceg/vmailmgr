@@ -62,18 +62,17 @@ static inline void die(const char* msg)
   exit(1);
 }
 
-static void finishreq(const response& resp)
+static void finishreq()
 {
   alarm(0);
   close(fd);
   fd = -1;
-  logresponse(resp);
 }
 
 static void abortreq(const char* m)
 {
-  response tmp(response::bad, m);
-  finishreq(tmp);
+  logresponse(response(response::bad, m));
+  finishreq();
 }
 
 static RETSIGTYPE handle_hup(int)
@@ -193,10 +192,11 @@ static void handle_connection(int s)
     command* cmd = read_data();
     if(cmd) {
       response resp = dispatch_cmd(*cmd, fd);
+      logresponse(resp);
       alarm(TIMEOUT);
       if(!resp.write(fd))
 	abortreq("Error writing response");
-      finishreq(resp);
+      finishreq();
       delete cmd;
     }
     exit(0);

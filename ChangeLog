@@ -1,3 +1,9 @@
+2000-04-04  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
+
+	* daemon/main.cc (handle_connection): Log command response before
+	attempting to send data back to client.
+	(abortreq): Log abort code before closing FD.
+
 2000-04-03  Bruce Guenter  <bguenter@bguenter.pointsnorth.com>
 
 	* authenticate/vauthenticate.cc (getdata): Buffer doesn't need to

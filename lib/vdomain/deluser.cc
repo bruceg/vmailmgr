@@ -19,12 +19,14 @@
 #include "misc/autodelete.h"
 #include "misc/maildir.h"
 
-response vdomain::deluser(mystring user)
+response vdomain::deluser(mystring user, bool del_mailbox)
 {
   user = user.lower();
   autodelete<vpwentry> vpw = table()->getbyname(user);
   if(!vpw)
     RETURN(err, "User does not exist");
+  if(!del_mailbox && !!vpw->mailbox)
+    RETURN(err, "User has a mailbox");
   if(!table()->del(vpw->name))
     RETURN(err, "Couldn't delete user from the password file");
   if(!!vpw->mailbox && !delete_directory(vpw->mailbox))

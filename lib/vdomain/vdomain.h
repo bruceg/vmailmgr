@@ -35,7 +35,7 @@ public:
   response set(const vpwentry*, bool onlyadd, mystring maildir = "");
   response chattr(mystring user, unsigned attr, mystring newval);
   response chattr(const vpwentry*, unsigned attr, mystring newval);
-  response deluser(mystring name);
+  response deluser(mystring name, bool del_mailbox);
 
   // Virtual user validation functions
   response validate_forward(mystring);

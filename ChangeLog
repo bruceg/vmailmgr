@@ -1,4 +1,24 @@
+2000-08-03  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vcheckquota.cc: Changed many instances of "int" to
+	"unsigned".
+	(check_quota): Always check incoming message size, and check max
+	count even if no quotas apply.
+
+	* lib/misc/exec.cc (execute_one): Fixed a bug where this would
+	return the raw status value instead of WEXITSTATUS(status).
+
+2000-08-02  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/autoresponse.cc (autoresponse_write): Applied bugfix that
+	would allow disabled autoresponses to be written.
+
 2000-08-01  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* commands/vcheckquota.cc (exit_msg): Fixed typo (used to say
+	"vdeliver:").
+	(cli_main): Fixed another type -- VUSER_MAILDIR is not set, plain
+	MAILDIR is.
 
 	* authenticate/checkvpw.cc (main): Removed call to execute
 	checkvpw-postsetuid.

@@ -5,14 +5,18 @@ New Features:
 - Added a quota checking program for use in vdeliver-predeliver.
 - The authvmailmgr Courier-IMAP auth module now executes
   authvmailmgr-presetuid and authvmailmgr-postsetuid before and after
-  executing the setuid respectively.
+  executing the setuid respectively, just like checkvpw.
 
-Internal Changes:
+Internal Changes: None
 
 Bug Fixes:
 - Fixed a typo in the vmailmgrd run script.
 - Fixed a bug in the daemon that would cause actions to be applied to
   the default virtual user if the named virtual user did not exist.
+- Fixed a bug in the daemon that would allow disabled autoresponders to
+  be written to.
+- Fixed a bug in the subprogram execution code that would cause the
+  wrong exit status to be returned.
 -------------------------------------------------------------------------------
 Changes in version 0.96.7
 

@@ -1,3 +1,8 @@
+2004-03-16  Bruce.Guenter.dyndns.org  <bruce@lorien.untroubled.org>
+
+	* daemon/listdomain.cc: The code is internally NUL-terminated, so
+	don't add another NUL on output.
+
 2004-03-15  Bruce.Guenter.dyndns.org  <bruce@lorien.untroubled.org>
 
 	* cgi/vadduser.cc, cgi/vaddalias.cc: Fixed several one-off bugs.

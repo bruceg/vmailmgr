@@ -56,10 +56,10 @@ CMD_FD(listdomain)
   vpwentry* entry;
   while((entry = reader->get()) != 0) {
     mystring code = entry->to_record();
-    unsigned length = entry->name.length() + 1 + code.length() + 1;
+    unsigned length = entry->name.length() + 1 + code.length();
     char buf[length];
     memcpy(buf, entry->name.c_str(), entry->name.length()+1);
-    memcpy(buf+entry->name.length()+1, code.c_str(), code.length()+1);
+    memcpy(buf+entry->name.length()+1, code.c_str(), code.length());
     if(!write_buf(fd, buf, length))
       RETURN(err, "Failed while writing list entry");
     delete entry;

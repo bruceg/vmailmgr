@@ -30,5 +30,5 @@ CMD(deluser)
   pwentry* pw;
   vpwentry* vpw;
   OK_RESPONSE(lookup_and_validate(fulluser, pw, vpw, adminpass));
-  return state->domain.deluser(vpw->name);
+  return state->domain.deluser(vpw->name, true);
 }

@@ -1,5 +1,5 @@
 AC_INIT(lib/mergelib.sh)
-AM_INIT_AUTOMAKE(vmailmgr, 0.96.6)
+AM_INIT_AUTOMAKE(vmailmgr, 0.96.7)
 AM_CONFIG_HEADER(config.h)
 AC_PROG_MAKE_SET
 
@@ -44,6 +44,9 @@ else
 fi]])
 pythonlibdir="$local_cv_python_lib_dir"
 AC_SUBST(pythonlibdir)
+
+phpdir="/home/httpd/php"
+AC_SUBST(phpdir)
 
 AC_PATH_PROG(W3M, w3m)
 AC_PATH_PROG(LYNX, lynx)
@@ -105,4 +108,5 @@ AC_OUTPUT(Makefile
 	  lib/vdomain/Makefile
 	  lib/vpwentry/Makefile
 	  lib/vpwtable/Makefile
+	  php/Makefile
 	  python/Makefile)

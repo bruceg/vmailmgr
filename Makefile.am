@@ -1,7 +1,7 @@
-SUBDIRS = python lib authenticate commands daemon cgi doc
+SUBDIRS = python php lib authenticate commands daemon cgi doc
 
 dist-hook:
-	cp -dP `find php3 lib/ac -name CVS -prune -o \( -not -name '*~' -a -type f -o -type l \) -print` $(distdir)
+	cp -dP `find lib/ac -name CVS -prune -o \( -not -name '*~' -a -type f -o -type l \) -print` $(distdir)
 	sed -e s/@VERSION\@/@VERSION@/ <spec >$(distdir)/vmailmgr-@VERSION@.spec
 
 docs:

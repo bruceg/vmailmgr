@@ -5,7 +5,7 @@ New Features:
 - Contains configure-time switchable support for GDBM virtual user tables.
 - Added a new utility, vpasswd2db, to convert a plain text password
   table into whatever vpwtable format is configured.  This utility will
-  be much slower than vpasswd2cdb for cdb files (for now), so only use
+  be much slower than vpasswd2cdb for CDB files (for now), so only use
   it for other (ie GDBM) formats.
 
 Internal Changes:
@@ -15,6 +15,7 @@ Internal Changes:
 - The autoresponse is written into a new subdirectory of the virtual
   user's mailbox directory.  This makes it work better with the
   autoresponder, which requires a directory to store temporary files in.
+- Reorganized the vpwtable code somewhat.
 
 Bug Fixes:
 - The daemon now initializes its random number generator each time it

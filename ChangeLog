@@ -1,3 +1,18 @@
+2000-07-05  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* lib/vpwtable/cdb_read.cc: Added CDB support for the vpwtable
+	reader class.
+
+	* daemon/listdomain.cc (CMD_FD): Adjusted to use the new vpwtable
+	reader.
+
+	* commands/listvdomain.cc (cli_main): Adjusted to use new vpwtable
+	reader.
+
+	* lib/vpwtable/gdbm_read.cc (vpwtable_reader): Added this new
+	class to replace the stream reading support from the vpwtable
+	class.
+
 2000-07-04  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* lib/vpwtable/gdbm_getbyname.cc (getbyname): Lowercase the name

@@ -93,15 +93,16 @@ int cli_main(int argc, char* argv[])
     }
   }
   else {
-    if(!table->start()) {
+    vpwtable_reader* r = table->start_read();
+    if(!*r) {
       if(!o_quiet)
 	ferr << "listvdomain: Can't open password table" << endl;
       return 1;
     }
     vpwentry vpw;
-    while(table->get(vpw))
+    while(r->get(vpw))
       show_user(vpw);
-    table->end();
+    delete r;
   }
   return errors;
 }

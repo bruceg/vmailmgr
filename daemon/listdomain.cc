@@ -46,14 +46,15 @@ CMD_FD(listdomain)
   
   state = new saved_state(pw);
   vpwtable* table = state->domain.table();
-  if(!table->start())
+  vpwtable_reader* reader = table->start_read();
+  if(!*reader)
     RETURN(err, "Base user has no virtual password table");
 
   if(!write_buf(fd, "", 0))
     RETURN(err, "Failed while writing initial OK response");
 
   vpwentry entry;
-  while(table->get(entry)) {
+  while(reader->get(entry)) {
     mystring code = entry.to_record();
     unsigned length = entry.name.length() + 1 + code.length() + 1;
     char buf[length];
@@ -63,6 +64,6 @@ CMD_FD(listdomain)
       RETURN(err, "Failed while writing list entry");
   }
   
-  table->end();
+  delete reader;
   RETURN(ok, "");
 }

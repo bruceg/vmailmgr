@@ -1,9 +1,16 @@
+if VPWTABLE_CDB
+CDBPROGS = vpasswd2cdb vrehash
+else
+CDBPROGS =
+endif
+
 bin_PROGRAMS = listvdomain vadduser vaddusers vchattr vchforwards \
-	vdeliver vdeluser vpasswd vpasswd2cdb vpasswd2db vpasswds \
-	vpopbull vrehash vsetup
+	vdeliver vdeluser vpasswd vpasswd2db vpasswds \
+	vpopbull vsetup $(CDBPROGS)
 bin_SCRIPTS = vaddalias vconf2dir
 noinst_HEADERS = vcommand.h
-EXTRA_DIST = vaddalias vconf2dir
+EXTRA_DIST = vaddalias vconf2dir \
+	vpasswd2cdb.cc vrehash.cc
 
 CXXLINK = $(CC) $(CXXFLAGS) $(LDFLAGS) -o $@
 INCLUDES = -I../lib -DBINDIR=\"@bindir@\"

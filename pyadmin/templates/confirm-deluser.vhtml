@@ -1,5 +1,0 @@
-<p>Click here to confirm deleting user %(USERNAME)s@%(DOMAIN)s:
-<form method=post action="deluser">
-<input type=hidden name=username value="%(USERNAME)s">
-<input type=submit value="Yes">
-</form></p>

@@ -1,5 +1,0 @@
-<? if last_response ?>
-<p>Enabling the autoresponse succeeded:<br>%(last_response)s</p>
-<? else ?>
-<p>Enabling the autoresponse failed:<br>%(last_response)s</p>
-<? end ?>

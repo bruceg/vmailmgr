@@ -7,9 +7,8 @@ can keep the development periods shorter.
 
 - Add note to FAQ(?) about enforcing quotas.
 
-- Complete integrating the POD documentation into the source files.
-
-- Fix up lists in vpopbull.
+- Add note to FAQ regarding PHP error code 255 meaning the daemon is not
+  running properly (once it's been confirmed).
 
 - Add tests for:
   - new lookup command
@@ -24,7 +23,7 @@ can keep the development periods shorter.
 
 - Add a mailbox size daemon command
 
-- Document the Python interface.
+- Document the new pyadmin interface.
 
 - Build sample HTML for the Python interface.
 
@@ -46,6 +45,13 @@ can keep the development periods shorter.
   - append record (check for prior existance of record, add it)
   - stop writing (sync data and unlock the table)
 
+- Use the above to support a more efficient version of:
+  - vpasswd2db
+  - vrehash
+
+- Figure out how to make vdeliver write to both the output file and the
+  queue simultaneously, to avoid needing to do rewinds.
+
 RELEASE TARGET 0.97
 
 - Make the daemon commands stand-alone modules, using the revised daemon
@@ -62,7 +68,7 @@ RELEASE TARGET 0.97
 - Move the parsing of server commands out of dispatch and into the
   commands themselves.
 
-RELEASE TARGET 0.98
+RELEASE TARGET 1.00
 
 - Set up the necessary structures to completely seperate the virtual
   domain information and the real user information, such that each user
@@ -77,11 +83,13 @@ RELEASE TARGET 0.98
   Each domain will have a completely independant user directory and
   password table.
 
-RELEASE TARGET 0.99
+RELEASE TARGET 1.XX
 
 - Bug fixes and clean-ups, and documentation improvements
 
-RELEASE TARGET 1.00
+RELEASE TARGET 2.00
+
+- Investigate making all virtual users have a directory
 
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd

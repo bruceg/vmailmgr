@@ -2,6 +2,7 @@
 Changes in version 0.96.8
 
 New Features:
+- Added a quota checking program for use in vdeliver-predeliver.
 
 Internal Changes:
 

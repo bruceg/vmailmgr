@@ -10,7 +10,7 @@
 #include	"config.h"
 #endif
 
-static const char authwait_h_rcsid[]="$Id: authwait.h,v 1.1 2000/04/13 17:55:05 bruce Exp $";
+static const char authwait_h_rcsid[]="$Id: authwait.h,v 1.2 2000/12/18 20:20:10 bruce Exp $";
 
 #include <sys/types.h>
 #if HAVE_SYS_WAIT_H

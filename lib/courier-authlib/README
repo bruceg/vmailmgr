@@ -1,7 +1,6 @@
 The contents of this directory have been taken intact from the "authlib"
-directory of the courier-imap package, version 0.30.31pre1.  The
-courier-imap package is distributed under the GPL, included in this
-directory.
+directory of the courier-imap package, version 1.2.2.  The courier-imap
+package is distributed under the GPL, included in this directory.
 
 Courier-IMAP written by:
 

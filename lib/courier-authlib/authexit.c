@@ -5,7 +5,7 @@
 
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: authexit.c,v 1.1 2000/04/13 17:55:05 bruce Exp $";
+static const char rcsid[]="$Id: authexit.c,v 1.2 2000/12/18 20:20:10 bruce Exp $";
 
 void authexit(int rc)
 {

@@ -16,7 +16,7 @@
 extern "C" {
 #endif
 
-static const char authmod_h_rcsid[]="$Id: authmod.h,v 1.1 2000/04/13 17:55:05 bruce Exp $";
+static const char authmod_h_rcsid[]="$Id: authmod.h,v 1.2 2000/12/18 20:20:10 bruce Exp $";
 
 /*
 ** Authentication modules must call authmod_init the first thing in main.
@@ -130,6 +130,8 @@ void authmod_login(int,
 	const char *,	/* service */
 	const char *,	/* userid */
 	const char *);	/* password */
+
+/* Magic for authdaemon */
 
 #ifdef	__cplusplus
 }

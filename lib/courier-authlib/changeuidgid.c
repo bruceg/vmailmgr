@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 1999 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2000 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
@@ -12,13 +12,14 @@
 #endif
 #include	<stdio.h>
 #include	<stdlib.h>
+#include	<string.h>
 #include	<grp.h>
 #include	<pwd.h>
 #include	<errno.h>
 
 #include	"auth.h"
 
-static const char rcsid[]="$Id: changeuidgid.c,v 1.1 2000/04/13 17:55:05 bruce Exp $";
+static const char rcsid[]="$Id: changeuidgid.c,v 1.2 2000/12/18 20:20:10 bruce Exp $";
 
 void authchangegroup(gid_t gid)
 {

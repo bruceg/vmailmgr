@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-static const char auth_h_rcsid[]="$Id: auth.h,v 1.1 2000/04/13 17:55:05 bruce Exp $";
+static const char auth_h_rcsid[]="$Id: auth.h,v 1.2 2000/12/18 20:20:10 bruce Exp $";
 
 /*
 ** authcopyargv prepares the arguments to execv for a module that receives

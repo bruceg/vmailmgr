@@ -1,4 +1,18 @@
 -------------------------------------------------------------------------------
+Changes in version 0.96.7
+
+New Features:
+
+Internal Changes:
+- Updated PHP code.
+- The daemon now relies on ucspi-unix to handle connections and forking
+  instead of doing it internally.
+
+Bug Fixes:
+- The daemon now initializes its random number generator each time it
+  handles a command, which should help it generate different salts for
+  password hashes.
+-------------------------------------------------------------------------------
 Changes in version 0.96.6
 
 New Features:

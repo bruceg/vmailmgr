@@ -1,3 +1,17 @@
+2000-06-13  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
+
+	* daemon/main.cc (cli_main): Rewrote main to use the cli library.
+	This removes extra command line parsing code and incidentally
+	fixes a problem with random not being initialized.
+
+	* daemon/log.cc (log): Revised handling of printing PIDs.
+
+	* daemon/dispatch.cc: Removed "forkstat" command.
+
+	* daemon/main.cc: Removed support code needed to create and accept
+	connections on a UNIX domain socket, in favour of using the new
+	ucspi-unix package.
+
 2000-06-01  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
 	* Released version 0.96.6

@@ -35,6 +35,7 @@ Courier IMAP.
 Summary: Vmailmgr daemon for CGIs
 Requires: daemontools >= 0.61
 Requires: supervise-scripts >= 2.2
+Requires: ucspi-unix
 Group: Utilities/System
 %description daemon
 This package contains the vmailmgrd daemon that provides virtual domain

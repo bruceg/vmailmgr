@@ -1,9 +1,9 @@
 Here are the things that I have left to complete (roughly in order of
-personal preference).  The lines marked "RELEASE TARGET" are the point
-of development that I hope to reach before I make another release.  Some
-of the other items after the last "RELEASE TARGET" may make it into a
-release if I feel like it.  I want short and easy to define goals so I
-can keep the development periods shorter.
+personal preference).  I have seperated it into a series of release
+targets in order to have short quantitative goals for making new
+releases.
+-------------------------------------------------------------------------------
+FOR VERSION 0.97:
 
 - Fix problem with MD5 hashes being different than crypt on Sparc.
   ref "Michael M. Dwyer" <kalif@innersanctum.cx>
@@ -29,8 +29,13 @@ can keep the development periods shorter.
 
 - Remove vcheckquota and vpopbull, and point at the new vmailmgr-tools
   package.
+-------------------------------------------------------------------------------
+FOR VERSION 0.97.1:
 
-RELEASE TARGET 0.97
+- Make vcheckquota and daemon stat handle folders.
+
+- Always "touch" $VUSER/cur on successful authentication, to provide for
+  a "last login time".
 
 - Add a checkpassword command suitable for use with SMTP-Auth+setuid.
 
@@ -50,8 +55,8 @@ RELEASE TARGET 0.97
 
 - Make vrehash take the bits and slices values as command-line
   parameters.
-
-RELEASE TARGET 0.97.1
+-------------------------------------------------------------------------------
+FOR VERSION 0.98:
 
 - Make the TCP daemon the default usage, and drop the unixserver
   requirement.
@@ -63,8 +68,8 @@ RELEASE TARGET 0.97.1
 - The authentication module checks for a custom authentication type
   based on the command name, does authentication, does setuid, chdir,
   and executes the actual command.
-
-RELEASE TARGET 0.98
+-------------------------------------------------------------------------------
+FOR VERSION 1.00:
 
 - Make vdeliver write to both the output file and the queue
   simultaneously, to avoid needing to do rewinds:
@@ -78,29 +83,12 @@ RELEASE TARGET 0.98
   - write envelope to qmail-queue
   - catch exit from qmail-queue
   - close & sync maildir tmp file
-
-RELEASE TARGET 1.00
+-------------------------------------------------------------------------------
+AFTER VERSION 1.00:
 
 - Bug fixes and clean-ups, and documentation improvements
 
 - Add the necessary code for *DBM, MySQL, and PostgreSQL password tables.
-
-RELEASE TARGET 1.XX
-
-- Set up the necessary structures to completely seperate the virtual
-  domain information and the real user information, such that each user
-  can have a list of virtual domains assigned to it.  This structure
-  will specify:
-  - a domain prefix
-  - a directory
-  In this way, the virtualdomains will contain:
-    domain.org:username-prefix
-  And the domain listing with list
-    prefix:subdirectory
-  Each domain will have a completely independant user directory and
-  password table.
-
-RELEASE TARGET 2.00
 
 - add a "vadddomain" command that:
   - adds a new user to /etc/passwd

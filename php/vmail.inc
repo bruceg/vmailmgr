@@ -79,18 +79,12 @@ return array($value, $message);
 
 }
 
-/* Parses the lines from listdomain into fields. All fields after aliases
-   are ignored, but this is easy to fix if anybody cared about them */
-
-function listdomain_parse_line($line){
-	//Grab the user's name
-	$position = strpos($line, chr(0));
-	$username=substr($line, 0, $position);
+function listdomain_parse_userdata($line, $username){
 	//Grab the protocol version
-	$ver=ord(substr($line, $position+1, $position+2));
+	$ver=ord(substr($line, 0, 1));
 	if ($ver != 2) die("Protocol version is $ver, not the 2 as this script expects.");
-	//Thow away everything already done
-	$line=substr($line, $position+2);
+	//Chop off the version
+	$line=substr($line, 1);
 	//Grab the flags
 	while (substr($line, 0, 1) != chr(0)){
 		$flags[ord(substr($line, 0, 1))]=ord(substr($line, 1, 1));
@@ -115,6 +109,16 @@ function listdomain_parse_line($line){
 	return array($username, $password, $mailbox, $aliases,
 $PersonalInfo, $HardQuota, $SoftQuota, $SizeLimit, $CountLimit,
 $CreationTime, $ExpiryTime, $flags);
+}	
+
+/* Parses the lines from listdomain into fields. */
+
+function listdomain_parse_line($line){
+	//Grab the user's name
+	$data_position = strpos($line, chr(0));
+	$username=substr($line, 0, $data_position);
+	// Send that user's data to be parsed. The $username is nessesary because array manipulation in PHP3 is so limited.
+	return listdomain_parse_userdata(substr($line, $data_position+1), $username);
 }
 
 /* Does the ugly stuff for listdomain, and calls listdomain_parse_line once
@@ -142,6 +146,18 @@ if ($password=="") return array(1, "Empty domain password");
 	if (is_array($temp)) return $temp;
 return listdomain_parse($temp);
 }
+
+function lookup($domain, $user, $password){
+	$command=array("lookup", $domain, $user, $password);
+	$tmp = vm_daemon_raw($command);
+	return listdomain_parse_userdata($tmp[1], $user);
+}
+			
+#function lookup($domain, $user, $password){
+#	$command=array("lookup", $domain, $user, $password);
+#//return listdomain_parse_userdata(vm_daemon_raw($command), $username);
+#return vm_daemon_raw($command);
+#}
 
 /* vadduser, takes domain name, password, username, userpassword, and an
    array of forwarding desinations, returns an array consisting of an

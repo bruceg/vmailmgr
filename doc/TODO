@@ -7,15 +7,11 @@ can keep the development periods shorter.
 
 - Seperate the "misc" library directory into modules.
 
-- Do away with "include".
-
 - Document the Python interface.
 
 - Debug the Courier IMAP auth module
 
 - Build sample HTML for the Python interface.
-
-- Better document the daemon protocol?
 
 - Update the FAQ
   - Add a section about how checkvpw works

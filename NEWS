@@ -4,6 +4,8 @@ Changes in version 0.96.3
 New Features:
 
 Internal Changes:
+- Removed the "include" directory.
+- Made vpwtable & vpwentry a seperate source directory.
 
 Bug Fixes:
 -------------------------------------------------------------------------------

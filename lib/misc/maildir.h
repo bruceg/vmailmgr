@@ -6,6 +6,6 @@
 
 int mkdirp(const mystring&, mode_t);
 bool make_maildir(const mystring&);
-bool delete_maildir(const mystring&);
+bool delete_directory(const mystring&);
 
 #endif

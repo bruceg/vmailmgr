@@ -27,7 +27,7 @@ response vdomain::deluser(mystring user)
     RETURN(err, "User does not exist");
   if(!table()->del(vpw->name))
     RETURN(err, "Couldn't delete user from the password file");
-  if(!!vpw->mailbox && !delete_maildir(vpw->mailbox))
+  if(!!vpw->mailbox && !delete_directory(vpw->mailbox))
     RETURN(err, "Couldn't delete user's mail directory");
   RETURN(ok, "Deleted user.");
 }

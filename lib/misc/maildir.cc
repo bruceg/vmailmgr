@@ -64,7 +64,7 @@ bool make_maildir(const mystring& dirname)
   return true;
 }
 
-bool delete_maildir(const mystring& dirname)
+bool delete_directory(const mystring& dirname)
 {
   DIR* dir = opendir(dirname.c_str());
   if(!dir)
@@ -78,7 +78,7 @@ bool delete_maildir(const mystring& dirname)
     mystring fullname = dirname + "/";
     fullname += mystring(name, NAMLEN(entry));
     if(is_dir(fullname.c_str())) {
-      if(!delete_maildir(fullname.c_str())) {
+      if(!delete_directory(fullname)) {
 	closedir(dir);
 	return false;
       }

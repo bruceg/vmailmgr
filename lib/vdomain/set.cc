@@ -31,7 +31,7 @@ response vdomain::set(const vpwentry* vpw, bool onlyadd,
     RETURN(err, "Can't create the mail directory '" + maildir + "'");
   if(!table()->put(vpw, onlyadd)) {
     if(!!maildir)
-      delete_maildir(maildir.c_str());
+      delete_directory(maildir.c_str());
     RETURN(err, "Can't add the user to the password file");
   }
   RETURN(ok, !maildir

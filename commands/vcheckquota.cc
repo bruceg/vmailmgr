@@ -42,13 +42,13 @@ cli_option cli_options[] = {
 
 void exit_msg(const char* msg, int code)
 {
-  fout << "vdeliver: " << msg << endl;
+  fout << "vcheckquota: " << msg << endl;
   exit(code);
 }
 void die_fail(const char* msg) { exit_msg(msg, 100); }
 void die_temp(const char* msg) { exit_msg(msg, 111); }
 
-bool stat_dir(const mystring& dirname, int& count, int& size) {
+bool stat_dir(const mystring& dirname, unsigned& count, unsigned long& size) {
   struct stat buf;
   DIR* dir = opendir(dirname.c_str());
   if(!dir) 
@@ -70,7 +70,7 @@ bool stat_dir(const mystring& dirname, int& count, int& size) {
 
     if(S_ISREG(buf.st_mode)) {
       ++count;
-      size += (int) buf.st_size;
+      size += buf.st_blocks * 512;
     }
   }
   closedir(dir);
@@ -94,28 +94,29 @@ void check_quota(mystring mailbox,
    *         b) it would not put du over hard quota.
    */
 
-  /* Case 1: no quota set */
-  if(softquota == UINT_MAX && hardquota == UINT_MAX)
-    return;
 
   //compute message size
   struct stat st;
   if(fstat(0, &st) == -1)
     die_temp("Failed to stat message");
  
-  unsigned int msgsize = (unsigned int)st.st_size;
+  unsigned long msgsize = st.st_blocks * 512;
 
   if(maxsize != UINT_MAX && msgsize > maxsize)
     //message is too large
     die_fail("Sorry, this message is larger than the current maximum message size limit.\n");
 
+  /* Case 1: no quotas set */
+  if(softquota == UINT_MAX && hardquota == UINT_MAX && maxcount == UINT_MAX)
+    return;
+
   mystring dirname = mailbox;
   mystring newdir  = dirname + "/new";
   mystring curdir  = dirname + "/cur";
-  int cur_count=0;
-  int cur_size=0;
-  int new_count=0;
-  int new_size=0;
+  unsigned cur_count=0;
+  unsigned long cur_size=0;
+  unsigned new_count=0;
+  unsigned long new_size=0;
 
   //treat stat_dir failures as temp errors
   if(!stat_dir(newdir, new_count, new_size))
@@ -123,29 +124,33 @@ void check_quota(mystring mailbox,
   if(!stat_dir(curdir, cur_count, cur_size))
     die_temp("Failed to stat cur dir");
 
-  unsigned int du       = cur_size  + new_size  + msgsize;
-  unsigned int msgcount = cur_count + new_count + 1;
+  unsigned long du  = cur_size  + new_size  + msgsize;
+  unsigned msgcount = cur_count + new_count + 1;
 
   //too many messages in the mbox
-  if(maxcount != UINT_MAX && msgcount+1 > maxcount)
+  if(maxcount != UINT_MAX && msgcount > maxcount)
     die_fail("Sorry, the person you sent this message has too many messages stored in the mailbox\n");
 
-  /* Take care of Cases 2 and 3, and make everything look like Case 4 */
+  // No total size quotas are set
   if(hardquota == UINT_MAX)
-    hardquota = softquota;
-
-  //quota is blown
+    if(softquota == UINT_MAX)
+      return;
+  // Take care of Cases 2 and 3, and make everything look like Case 4
+    else
+      hardquota = softquota;
+  
+  // Check hard quota before soft quota, as it has priority
   if(du > hardquota) 
     die_fail("Message would exceed virtual user's disk quota.\n");
   
-  if(du > softquota) {
-    //between soft and hard quota
-    //allow small messages 
-    if(msgsize <= soft_maxsize)
-      return;
-
-    die_fail("Sorry, your message cannot be delivered.\nUser's disk quota exceeded.\nA small message will be delivered should you wish to inform this person.\n");
-  }
+  // Soft quota allows small (4K default) messages
+  // In other words, it only blocks large messages
+  if(du > softquota)
+    if(msgsize > soft_maxsize)
+      die_fail("Sorry, your message cannot be delivered.\n"
+	       "User's disk quota exceeded.\n"
+	       "A small message will be delivered should you wish "
+	       "to inform this person.\n");
 }
 
 int cli_main(int , char**)
@@ -154,7 +159,7 @@ int cli_main(int , char**)
 #define ENV_VAR_STR(VAR,ENV) ENV_VAR_REQ(VAR,ENV) mystring VAR = tmp__##VAR;
 #define ENV_VAR_UINT(VAR,ENV) ENV_VAR_REQ(VAR,ENV) unsigned VAR = strtou(tmp__##VAR, &tmp__##VAR); if(*tmp__##VAR) die_fail(#ENV " is not a valid number");
 
-  ENV_VAR_STR(maildir,  VUSER_MAILDIR);
+  ENV_VAR_STR(maildir,  MAILDIR);
   // Always succeed for aliases.
   if(!maildir) 
     return 0;

@@ -69,6 +69,7 @@ bool gdbm_vpwtable_writer::end()
 {
   if(!opened)
     return false;
+  gdbm_sync(out);
   opened = false;
   return gdbm_close(out) == 0;
 }

@@ -28,8 +28,9 @@ class Econn(Exception): pass
 def encode_int(i):
     return chr((i/256)%256) + chr(i%256)
 
-def encode_str(str):
-    return encode_int(len(str)) + str
+def encode_str(s):
+    s = str(s)
+    return encode_int(len(s)) + s
 
 class Command:
     def __init__(self, name, args):

@@ -36,10 +36,11 @@ def listdomain(domain, password):
         users.append(types.NamedVUser(username, types.VUser(data)))
     return users
 
-def adduser(domain, newuser, password, newpass, maildir=None, forwards=[]):
-    return daemon.execute('adduser2',
+def adduser(domain, newuser, password, newpass,
+            maildir=None, has_mailbox=None, forwards=[]):
+    return daemon.execute('adduser3',
                           (domain, newuser, password, newpass,
-                           maildir or '') + tuple(forwards))
+                           maildir or '', has_mailbox or '') + tuple(forwards))
 
 def lookup(domain, username, password):
     return types.VUser(execute('lookup', domain, username, password))

@@ -33,12 +33,13 @@ CGI_MAIN
     mystring errmsg;
     unsigned dests = destination.count(',') + 1;
 
-    server_call call("adduser2", dests + 5);
+    server_call call("adduser2", dests + 6);
     call.operand(0, vdomain);
     call.operand(1, username);
     call.operand(2, password);
     call.operand(3, newpass1);
     call.operand(4, "");
+    call.operand(5, "");
     
     unsigned i = 5;
     for(mystring_iter iter(destination, ','); iter; ++iter, ++i)

@@ -83,14 +83,14 @@ static user_data* check(mystring fulluser, mystring password,
   else {
     set_user(basepw);
     vpwentry* vpw = domain->lookup(virtname, true);
-    if(!vpw || !vpw->mailbox)
+    if(!vpw || !vpw->has_mailbox)
       fail_login("Invalid or unknown virtual user");
     if(!vpw->authenticate(password))
       fail_login("Invalid or incorrect password");
     if(vpw->expiry < (unsigned)time(0))
       fail_login("Account has expired");
     vpw->export_env();
-    return new user_data(basepw, vpw->mailbox, vpw->name);
+    return new user_data(basepw, vpw->directory, vpw->name);
   }
 }
 

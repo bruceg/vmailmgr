@@ -23,11 +23,7 @@ vpwentry* vpwtable::getbyname(const mystring& name) const
   datum* d = cdb_getrec(filename, name.lower());
   if(!d)
     return 0;
-  vpwentry v;
-  if(!v.from_record(name, d->data)) {
-    delete d;
-    return 0;
-  }
+  vpwentry* v = vpwentry::new_from_record(name, d->data);
   delete d;
-  return new vpwentry(v);
+  return v;
 }

@@ -59,23 +59,24 @@ user::user(const mystring& n, const mystring& c)
 
 void show_user(const user* user)
 {
-  vpwentry vpw;
-  vpw.from_record(user->name, user->code);
+  vpwentry* vpw = vpwentry::new_from_record(user->name, user->code);
   
   mystring link;
   mystring elink;
 
   if(!!userlink) {
-    link = "<a href=\"" + do_subst(userlink, vpw.name) + "\">";
+    link = "<a href=\"" + do_subst(userlink, vpw->name) + "\">";
     elink = "</a>";
   }
   
   fout << "<tr>"
-       << cell_pre << link << vpw.name << elink << cell_post
-       << cell_pre << vpw.mailbox << cell_post;
-  for(mystring_iter iter = vpw.forwards; iter; ++iter)
+       << cell_pre << link << vpw->name << elink << cell_post
+       << cell_pre
+       << (vpw->has_mailbox ? vpw->directory.c_str() : "") << cell_post;
+  for(mystring_iter iter = vpw->forwards; iter; ++iter)
     fout << cell_pre << *iter << cell_post;
   fout << "</tr>\n";
+  delete vpw;
 }
 
 mystring load_users(int fd, unsigned& count, user**& array)

@@ -42,7 +42,7 @@ static int o_msgsize = 0;
 static int o_msgcount = 0;
 static int o_expiry = 0;
 static int o_password = true;
-static int o_domailbox = true;
+static int o_hasmailbox = true;
 static int o_quiet = false;
 
 // This program is used to set up a user within a virtual host.
@@ -58,7 +58,7 @@ static int o_quiet = false;
 cli_option cli_options[] = {
   { 'c', "msgcount", cli_option::integer, 0, &o_msgcount,
     "Set the user's message count limit", 0 },
-  { 'D', "no-mailbox", cli_option::flag, false, &o_domailbox,
+  { 'D', "no-mailbox", cli_option::flag, false, &o_hasmailbox,
     "Do not create a mailbox for this user", "true for vaddalias" },
   { 'd', "directory", cli_option::string, 0, &o_userdir,
     "Set the path to the user's mailbox", 0 },
@@ -120,13 +120,11 @@ mystring list2str(cli_stringlist* list)
 vpwentry* make_user(const mystring& name, const mystring& passcode)
 {
   mystring dir;
-  if(o_domailbox) {
-    if(o_userdir)
-      dir = o_userdir;
-    else
-      dir = domain.userdir(name);
-    dir = "./" + dir;
-  }
+  if(o_userdir)
+    dir = o_userdir;
+  else
+    dir = domain.userdir(name);
+  dir = "./" + dir;
 
   for(cli_stringlist* node = o_forwards; node; node = node->next) {
     response r = domain.validate_forward(node->string);
@@ -139,9 +137,7 @@ vpwentry* make_user(const mystring& name, const mystring& passcode)
   }
   
   vpwentry* vpw = new vpwentry(name.lower(), passcode, dir,
-			       list2str(o_forwards));
-  vpw->set_defaults(true, true);
-  
+			       list2str(o_forwards), o_hasmailbox);
   vpw->personal = o_personal;
   vpw->hardquota = o_hardquota;
   vpw->softquota = o_softquota;
@@ -164,7 +160,7 @@ void add_user(const mystring& user)
       passcode = pwcrypt(passwd);
     }
     vpwentry* vpw = make_user(user, passcode);
-    response resp = domain.set(vpw, true, vpw->mailbox);
+    response resp = domain.set(vpw, true);
     delete vpw;
     if(!resp) {
       if(!o_quiet)
@@ -185,8 +181,7 @@ void add_alias(mystring user, mystring alias)
   alias = alias.lower();
   user = user.lower();
   if(!domain.exists(alias)) {
-    vpwentry vpw(alias, "*", 0, user);
-    vpw.set_defaults(true, true);
+    vpwentry vpw(alias, "*", 0, user, false);
     response resp = domain.set(&vpw, true);
     if(!resp)
       if(!o_quiet)
@@ -208,7 +203,7 @@ void add_alias(mystring user, mystring alias)
 void set_defaults()
 {
   if(!strcmp(argv0base, "vaddalias"))
-    o_domailbox = false;
+    o_hasmailbox = false;
   if(!o_hardquota)
     o_hardquota = config->default_hardquota();
   if(!o_softquota)

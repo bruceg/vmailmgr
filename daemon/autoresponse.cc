@@ -160,7 +160,7 @@ CMD_FD(autoresponse)
   vpwentry* vpw;
   OK_RESPONSE(lookup_and_validate(user, pw, vpw, pass, true, true));
 
-  const mystring directory = vpw->mailbox + "/" + config->autoresponse_dir();
+  const mystring directory = vpw->directory + "/" + config->autoresponse_dir();
   const mystring filename = directory + "/" + config->autoresponse_file();
   const mystring disabled = filename + ".disabled";
   

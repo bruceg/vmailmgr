@@ -28,7 +28,7 @@ public:
   cdb_vpwtable_reader(const mystring& filename);
   ~cdb_vpwtable_reader();
   bool operator!() const;
-  bool get(vpwentry& out);
+  vpwentry* get();
   bool rewind();
   bool end();
 };
@@ -63,12 +63,10 @@ bool cdb_vpwtable_reader::rewind()
   return !!cdb && cdb.firstrec();
 }
 
-bool cdb_vpwtable_reader::get(vpwentry& out)
+vpwentry* cdb_vpwtable_reader::get()
 {
   autodelete<datum> rec = cdb.nextrec();
   if(!rec)
-    return false;
-  if(!out.from_record(rec->key, rec->data))
-    return false;
-  return true;
+    return 0;
+  return vpwentry::new_from_record(rec->key, rec->data);
 }

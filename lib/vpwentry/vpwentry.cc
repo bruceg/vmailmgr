@@ -18,15 +18,16 @@
 #include "vpwentry.h"
 
 vpwentry::vpwentry()
-  : is_mailbox_enabled(true)
+  : has_mailbox(true), is_mailbox_enabled(true)
 {
 }
 
 vpwentry::vpwentry(const mystring& n, const mystring& p,
-		   const mystring& m, const mystring& f)
-  : name(n), pass(p), mailbox(m), forwards(f),
-    is_mailbox_enabled(true)
+		   const mystring& d, const mystring& f, bool m)
+  : name(n), pass(p), directory(d), forwards(f),
+    has_mailbox(m), is_mailbox_enabled(true)
 {
+  set_defaults(true, true);
 }
 
 vpwentry::~vpwentry()

@@ -38,6 +38,9 @@ const char* vpwentry::decode_flags(const char* ptr, const char* end)
       return 0;
     bool value = *(unsigned char*)ptr++;
     switch(flag) {
+    case vdomain::ATTR_HAS_MAILBOX:
+      has_mailbox = value;
+      break;
     case vdomain::ATTR_MAILBOX_ENABLED:
       is_mailbox_enabled = value;
       break;
@@ -54,8 +57,10 @@ const char* vpwentry::decode_base(const char* ptr, const char* end)
   ptr += pass.length() + 1;
   if(ptr >= end) return 0;
   
-  mailbox = ptr;
-  ptr += mailbox.length() + 1;
+  directory = ptr;
+  if(!directory)
+    has_mailbox = false;
+  ptr += directory.length() + 1;
   if(ptr >= end) return 0;
   
   const char* start = ptr;

@@ -29,6 +29,7 @@ private:
 public:
   gdbm_vpwtable_writer(const mystring& filename);
   ~gdbm_vpwtable_writer();
+  bool operator!() const;
   bool put(const vpwentry& vpw);
   bool end();
 };
@@ -48,6 +49,11 @@ gdbm_vpwtable_writer::gdbm_vpwtable_writer(const mystring& filename)
 gdbm_vpwtable_writer::~gdbm_vpwtable_writer()
 {
   end();
+}
+
+bool gdbm_vpwtable_writer::operator!() const
+{
+  return opened;
 }
 
 bool gdbm_vpwtable_writer::put(const vpwentry& vpw)

@@ -153,10 +153,10 @@ CMD(stat)
 
   OK_RESPONSE(lookup_and_validate(user, pw, vpw, pass, true, false));
 
-  if(!vpw->mailbox)
+  if(!vpw->has_mailbox)
     RETURN(err, "User is alias");
 
-  mystring dirname = pw->home + "/" + vpw->mailbox;
+  mystring dirname = pw->home + "/" + vpw->directory;
   stats stats;
   if(!stat_dir(dirname, stats))
     RETURN(err, "Failed to stat maildir");

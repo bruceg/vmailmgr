@@ -12,7 +12,7 @@ class vpwtable_reader
 public:
   virtual ~vpwtable_reader();
   virtual bool operator!() const = 0;
-  virtual bool get(vpwentry& out) = 0;
+  virtual vpwentry* get() = 0;
   virtual bool rewind() = 0;
   virtual bool end() = 0;
 };
@@ -21,6 +21,7 @@ class vpwtable_writer
 {
 public:
   virtual ~vpwtable_writer();
+  virtual bool operator!() const = 0;
   virtual bool put(const vpwentry& vpw) = 0;
   virtual bool end() = 0;
 };

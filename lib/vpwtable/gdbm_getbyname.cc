@@ -27,8 +27,5 @@ vpwentry* vpwtable::getbyname(const mystring& name) const
   datum key = { (char*)lower.c_str(), lower.length() };
   datum result = gdbm_fetch(db, key);
   gdbm_close(db);
-  vpwentry v;
-  if(!v.from_record(name, mystring(result.dptr, result.dsize)))
-    return 0;
-  return new vpwentry(v);
+  return vpwentry::new_from_record(name, mystring(result.dptr, result.dsize));
 }

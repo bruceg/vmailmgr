@@ -322,19 +322,20 @@ int cli_main(int, char*[])
     die_fail(mystring("Virtual user '" + ext + "' has expired").c_str());
   
   vpw->export_env();
-  bool enabled = vpw->is_mailbox_enabled && !!vpw->mailbox;
+  bool do_delivery = vpw->has_mailbox && vpw->is_mailbox_enabled &&
+    !!vpw->directory;
 
   int r = execute("vdeliver-predeliver");
   if(r)
     exit_msg("Execution of vdeliver-predeliver failed", r);
 
-  if(enabled) {
-    maildir = vpw->mailbox;
+  if(do_delivery) {
+    maildir = vpw->directory;
     deliver_partial();
   }
   if(!!vpw->forwards)
     enqueue(vpw->forwards, host, sender);
-  if(enabled)
+  if(do_delivery)
     deliver_final();
 
   if(!fin.rewind()) {

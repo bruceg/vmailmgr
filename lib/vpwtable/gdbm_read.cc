@@ -28,7 +28,7 @@ public:
   gdbm_vpwtable_reader(const mystring& filename);
   ~gdbm_vpwtable_reader();
   bool operator!() const;
-  bool get(vpwentry& out);
+  vpwentry* get();
   bool rewind();
   bool end();
 };
@@ -77,17 +77,16 @@ bool gdbm_vpwtable_reader::rewind()
   return false;
 }
 
-bool gdbm_vpwtable_reader::get(vpwentry& out)
+vpwentry* gdbm_vpwtable_reader::get()
 {
+  vpwentry* v = 0;
   if(key.dptr) {
     mystring name(key.dptr, key.dsize);
     datum rec = gdbm_fetch(dbf, key);
     mystring result(rec.dptr, rec.dsize);
     free(rec.dptr);
-    if(!out.from_record(name, result))
-      return false;
+    v = vpwentry::new_from_record(name, result);
     key = gdbm_nextkey(dbf, key);
-    return true;
   }
-  return false;
+  return v;
 }

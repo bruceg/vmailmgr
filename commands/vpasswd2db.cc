@@ -41,16 +41,17 @@ cli_option cli_options[] = {
   {0,}
 };
 
-static bool getpw(fdibuf& in, vpwentry& out)
+static vpwentry* getpw(fdibuf& in)
 {
   mystring buf;
   if(!in.getline(buf))
-    return false;
+    return 0;
 
   int first = buf.find_first(':');
-  if(first < 0) return false;
+  if(first < 0)
+    return 0;
 
-  return out.from_record(buf.left(first), buf.c_str() + first);
+  return vpwentry::new_from_record(buf.left(first), buf.c_str() + first);
 }
 
 int cli_main(int, char* [])
@@ -68,13 +69,14 @@ int cli_main(int, char* [])
 
   vpwtable_writer* out = domain.table()->start_write();
 
-  vpwentry vpw;
-  while(getpw(in, vpw)) {
-    if(!out->put(vpw)) {
+  vpwentry* vpw;
+  while((vpw = getpw(in)) != 0) {
+    if(!out->put(*vpw)) {
       if(!o_quiet)
 	ferr << "Failed to add record to vpwtable." << endl;
       return 1;
     }
+    delete vpw;
   }
   if(!out->end()) {
     if(!o_quiet)

@@ -27,13 +27,15 @@ mystring vpwentry::to_record() const
   if(!!forwards)
     f = forwards + mystring::NUL;
   char flagstmp[] = {
+    vdomain::ATTR_HAS_MAILBOX,
+    has_mailbox && !!directory,
     vdomain::ATTR_MAILBOX_ENABLED,
     is_mailbox_enabled,
     0
   };
   mystring flags(flagstmp, 3);
   return prefix + flags + pass + mystring::NUL +
-    mailbox + mystring::NUL +
+    directory + mystring::NUL +
     f + mystring::NUL +
     personal + mystring::NUL +
     utoa(hardquota) + mystring::NUL +

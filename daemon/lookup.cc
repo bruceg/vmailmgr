@@ -53,8 +53,7 @@ response lookup_and_validate(const mystring& fullname,
     if(vpw)
       RETURN(err, "Virtual user already exists");
     else {
-      vpw = new vpwentry(virtname, "*", 0, 0);
-      vpw->set_defaults(true, true);
+      vpw = new vpwentry(virtname, "*", 0, 0, false);
       RETURN(ok, "");
     }
   }

@@ -29,6 +29,7 @@ private:
 public:
   cdb_vpwtable_writer(const mystring& filename);
   ~cdb_vpwtable_writer();
+  bool operator!() const;
   bool put(const vpwentry& vpw);
   bool end();
 };
@@ -47,6 +48,11 @@ cdb_vpwtable_writer::cdb_vpwtable_writer(const mystring& filename)
 cdb_vpwtable_writer::~cdb_vpwtable_writer()
 {
   end();
+}
+
+bool cdb_vpwtable_writer::operator!() const
+{
+  return opened;
 }
 
 bool cdb_vpwtable_writer::put(const vpwentry& vpw)

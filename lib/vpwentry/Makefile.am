@@ -11,5 +11,6 @@ libvpwentry_a_SOURCES = \
 	from_old.cc \
 	from_ver1.cc \
 	from_ver2.cc \
+	new.cc \
 	to.cc \
 	vpwentry.cc

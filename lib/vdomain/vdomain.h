@@ -32,7 +32,7 @@ public:
   vpwentry* lookup(mystring name, bool nodefault);
   bool exists(mystring name);
   
-  response set(const vpwentry*, bool onlyadd, mystring maildir = "");
+  response set(const vpwentry*, bool onlyadd);
   response chattr(mystring user, unsigned attr, mystring newval);
   response chattr(const vpwentry*, unsigned attr, mystring newval);
   response deluser(mystring name, bool del_mailbox);
@@ -51,6 +51,7 @@ public:
   static const unsigned ATTR_EXPIRY = 7;
   static const unsigned ATTR_MAILBOX_ENABLED = 8;
   static const unsigned ATTR_PERSONAL = 9;
+  static const unsigned ATTR_HAS_MAILBOX = 10;
 };
 
 #endif // VMAILMGR__VDOMAIN__H__

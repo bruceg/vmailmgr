@@ -34,7 +34,7 @@ static int o_quiet = false;
 // This program lists all the users in a domain.
 // The listing consists of one user per line,
 // and each line has three columns:
-// the virtual user name, the mailbox directory (or C<-> if none is set),
+// the virtual user name, C<Yes> or C<No> depending if the user has a mailbox,
 // and an optional list of forwarding addresses, all seperated by a space.
 
 cli_option cli_options[] = {
@@ -49,18 +49,13 @@ cli_option cli_options[] = {
 
 void show_user(const vpwentry& vpw)
 {
-  if(o_noaliases && !vpw.mailbox)
+  if(o_noaliases && !vpw.has_mailbox)
     return;
-  if(o_nousers && !!vpw.mailbox)
+  if(o_nousers && vpw.has_mailbox)
     return;
-  fout << vpw.name;
-  if(!vpw.mailbox)
-    fout << " -";
-  else {
-    fout << ' ' << vpw.mailbox;
-    if(!vpw.is_mailbox_enabled)
-      fout << "(disabled)";
-  }
+  fout << vpw.name << (vpw.has_mailbox ? " Yes" : " No");
+  if(!vpw.is_mailbox_enabled)
+    fout << "(disabled)";
   for(mystring_iter iter(vpw.forwards, '\0'); iter; ++iter)
     fout << ' ' << *iter;
   fout << '\n';
@@ -84,9 +79,8 @@ int cli_main(int argc, char* argv[])
   fout << "User Mailbox Aliases\n";
   
   if(argc) {
-    vpwentry* vpw;
     for(int i = 0; i < argc; i++) {
-      vpw = table->getbyname(argv[i]);
+      vpwentry* vpw = table->getbyname(argv[i]);
       if(!vpw) {
 	if(!o_quiet)
 	  ferr << "listvdomain: unknown user '" << argv[i] << "'" << endl;
@@ -105,9 +99,11 @@ int cli_main(int argc, char* argv[])
 	ferr << "listvdomain: Can't open password table" << endl;
       return 1;
     }
-    vpwentry vpw;
-    while(r->get(vpw))
-      show_user(vpw);
+    vpwentry* vpw;
+    while((vpw = r->get()) != 0) {
+      show_user(*vpw);
+      delete vpw;
+    }
     delete r;
   }
   return errors;

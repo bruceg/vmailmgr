@@ -4,15 +4,17 @@ Changes in version 0.96.9
 New Features:
 - vdeluser now has an option to prevent it from deleting users with a
   mailbox.
-- Brand new Python-based web administration package, replacing all the
-  old Python code.  Between this interface and the PHP code, the C++
-  CGIs are depricated and will be removed in a future version, unless
-  somebody violently objects.
+- All the Python CGI code has been dropped.  A stand-alone vpyadmin
+  package (to be release very shortly) will replace the Python CGIs.
+  Between this new interface and the PHP code, the C++ CGIs are
+  depricated and will be removed in a future version, unless somebody
+  violently objects.
 
 Internal Changes:
 - Cleaned up the vpwtable API.
 - New CLI documentation generator, should help keep the man pages and
   the programs in sync.
+- Major overhaul to the Python library.
 
 Bug Fixes:
 - Fixed error handling in vdeliver to properly handle file-system quota

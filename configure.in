@@ -24,11 +24,14 @@ AC_ARG_WITH(vpwtable,
                            password tables.  Defaults to "cdb".],
 [case "${withval}" in
  gdbm)	AC_DEFINE(VPWTABLE_GDBM)
-	AM_CONDITIONAL(VPWTABLE_GDBM, true)
+	dbtype=gdbm
 	LIBS="$LIBS -lgdbm";;
  *)    AC_MSG_ERROR(bad value ${withval} for --with-vpwtable);;
  esac],[AC_DEFINE(VPWTABLE_CDB)
-	AM_CONDITIONAL(VPWTABLE_CDB, true)])
+	dbtype=cdb])
+
+AM_CONDITIONAL(VPWTABLE_CDB, test $dbtype = cdb)
+AM_CONDITIONAL(VPWTABLE_GDBM, test $dbtype = gdbm)
 
 AM_CONDITIONAL(FDBUF_NO_MYSTRING, false)
 
@@ -55,7 +58,7 @@ AC_CACHE_CHECK(Python library path, local_cv_python_lib_dir,
 else
   local_cv_python_lib_dir=NONE
 fi]])
-pythonlibdir="$local_cv_python_lib_dir"
+pythonlibdir="$local_cv_python_lib_dir/vmailmgr"
 AC_SUBST(pythonlibdir)
 AM_CONDITIONAL(WANTPYTHON, test x$local_cv_python_lib_dir != x)
 
@@ -80,7 +83,7 @@ AC_SUBST(HTML2TXT)
 TODAY=`date +%Y-%m-%d`
 POD2MAN="pod2man --release='vmailmgr ${VERSION}' --center='VMailMgr Tools Documentation' --date='${TODAY}'"
 POD2HTML="pod2html --noindex"
-SUFFIXES="$SUFFIXES .1 .5 .7 .8 .pod .html .texi .txt .ps .fig .sgml .py .pyc .pyo .in .py.in"
+SUFFIXES="$SUFFIXES .1 .5 .7 .8 .pod .html .texi .txt .ps .fig .sgml .py .pyc .pyo"
 AC_SUBST(POD2MAN)
 AC_SUBST(POD2HTML)
 AC_SUBST(SUFFIXES)
@@ -133,4 +136,4 @@ AC_OUTPUT(Makefile
 	  lib/vpwtable/Makefile
 	  scripts/Makefile
 	  php/Makefile
-	  pyadmin/Makefile)
+	  python/Makefile)

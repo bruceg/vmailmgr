@@ -2,9 +2,9 @@ Name: vmailmgr
 Version: @VERSION@
 Release: 1
 Group: Utilities/System
-URL: http://em.ca/~bruceg/vmailmgr/
+URL: http://www.vmailmgr.org/
 Copyright: GPL
-Source: http://em.ca/~bruceg/vmailmgr/archive/%{PACKAGE_VERSION}/vmailmgr-%{PACKAGE_VERSION}.tar.gz
+Source: http://www.vmailmgr.org/archive/%{PACKAGE_VERSION}/vmailmgr-%{PACKAGE_VERSION}.tar.gz
 Summary: Simple virtualizing POP3 password interface
 Packager: Bruce Guenter <bruceg@em.ca>
 Buildroot: /tmp/vmailmgr
@@ -62,6 +62,7 @@ LDFLAGS="-s" \
 ./configure --prefix=/usr
 
 %build
+make all
 make all
 
 %install

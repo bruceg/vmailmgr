@@ -1,15 +1,9 @@
 if VPWTABLE_CDB
 CDBPROGS = vpasswd2cdb vrehash
 CDBSCRIPTS = allvpasswd2cdb
-CDBMANS = vpasswd2cdb.1
-CDBPODS = vpasswd2cdb.pod
-CDBHTMLS = vpasswd2cdb.html
 else
 CDBPROGS =
 CDBSCRIPTS =
-CDBMANS =
-CDBPODS =
-CDBHTMLS =
 endif
 
 bin_PROGRAMS = $(CDBPROGS) \

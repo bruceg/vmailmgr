@@ -204,7 +204,7 @@ typing `<tt>/etc/rc.d/init.d/pop3d restart</tt>'.
   (which defaults to `<tt>+</tt>'). To make this deliver to you,
   simply type:
 <verb>
-  vaddalias me +
+  vaddalias + me
 </verb>
 </p>
 
@@ -236,7 +236,7 @@ typing `<tt>/etc/rc.d/init.d/pop3d restart</tt>'.
   url="http://em.ca/~bruceg/ucspi-unix/">.
 </p>
 
-<sect>POP3 or IMAP logins take 30 seconds or longer.
+<sect1>POP3 or IMAP logins take 30 seconds or longer.
 <p>
   This is almost certainly a DNS lookup problem.  Make sure that DNS
   lookups aren't timing out, that lookups on all your IP addresses

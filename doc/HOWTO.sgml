@@ -10,7 +10,7 @@
   Dan Kuykendall <url url="mailto:dan@kuykendall.org">
 </author>
 <date>
-  v1.1, 23 April 2000
+  v1.w, 2000-09-15
 </date>
 <abstract>
   This document explains how to setup VMailMgr support pop3 virtual domain 
@@ -108,7 +108,7 @@
   Simply compile the src.rpm file with the `<tt>rpm --rebuild</tt>` command.
   -Example-
 <code>
-  rpm -ivh vmailmgr-0.96.8-1.src.rpm
+  rpm -ivh vmailmgr-0.96.9-1.src.rpm
 </code>
 <sect2>Installing RPM's
 <p>
@@ -121,8 +121,8 @@
 </verb>
   -Example-
 <code>
-  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-0.96.8-1.i386.rpm
-  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-daemon-0.96.8-1.i386.rpm
+  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-0.96.9-1.i386.rpm
+  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-daemon-0.96.9-1.i386.rpm
 </code>
 
 
@@ -142,8 +142,8 @@
   -Example-
 <code>
   (As non-root user)
-  tar zxf vmailmgr-0.96.8.tar.gz
-  cd vmailmgr-0.96.8
+  tar zxf vmailmgr-0.96.9.tar.gz
+  cd vmailmgr-0.96.9
   ./configure
   make
   (As root)
@@ -153,6 +153,16 @@
 </p>
 
 <sect>Setup
+
+<p>
+  In the following setup examples, it is assumed that your binaries
+  are installed in `<tt>/usr/bin</tt>`, and configuration is in
+  `<tt>/etc/vmailmgr</tt>`, as is the case if you installed from the
+  RPMs.
+  If you installed from source, configure puts the binaries into
+  `<tt>/usr/local/bin</tt>` and the configuration into
+  `<tt>/usr/local/etc/vmailmgr</tt>` by default.
+</p>
 
 <sect1>Setting Up a Virtual Domain
 <p>
@@ -224,12 +234,12 @@
         Set up the base vmailmgr files by running `<tt>vsetup</tt>`.
       <item>
         Use the included programs to add users and aliases.
-        For our example, we would
-        <itemize>
-          <item>type: `<tt>vadduser me</tt>` (which prompts for a password)
-          <item>type: `<tt>vaddalias me myself</tt>`
-          <item>and type: `<tt>vaddalias me myname</tt>`
-        </itemize>
+        For our example, we would type the following commands:
+<verb>
+  vadduser me
+  vaddalias myself me
+  vaddalias myname me
+</verb>
      </itemize>
 </enum>
   After you have completed all these steps, you will need to kill and
@@ -241,7 +251,6 @@
 </p>
 
 <sect1>Using one IP address for mutiple domains
-<sect2>Logging in as a virtual user?
 <p>
   There are two ways to log in without using multiple IP addresses. 
 <p>
@@ -271,7 +280,7 @@
   `<tt>me:mydomain.cm</tt>', or `<tt>myuser-me</tt>'.
 <p>
 
-<sect1>Catch all misdirected mail?
+<sect1>Catching all misdirected mail in a virtual domain
 <p>
   In the `<tt>vmailmgr/</tt>' configuration directory, there is an
   entry called `<tt>default-username</tt>'. If mail to a virtual
@@ -280,18 +289,18 @@
   (which defaults to `<tt>+</tt>'). To make this deliver to you,
   simply type:
 <verb>
-  vaddalias me +
+  vaddalias + me
 </verb>
 </p>
 
-<sect1>Setup VMailMgr IMAP support?
+<sect1>VMailMgr IMAP support
 <p>
   VMailMgr supports Courier-IMAP, but Courier-IMAP does not come with
   an authentication module for VMailMgr.  This means that some minor
   work is required for making the two work together.
 <itemize>
   <item>
-    You must copy `<tt>/usr/local/bin/authvmailmgr</tt>` to
+    You must copy `<tt>/usr/bin/authvmailmgr</tt>` to
     `<tt>/usr/lib/courier-imap/libexec/authlib/authvmailmgr</tt>`.
   <item>
     Then modify the `<tt>AUTHMODULES</tt>` statement in
@@ -299,4 +308,40 @@
     `<tt>authvmailmgr</tt>` as the first authentication module.
 </itemize>
 </p>
+
+<sect1>Enabling enforcement of virtual user quotas
+<p>
+  VMailMgr supports per-virtual-user quotas, but not out of the box,
+  as it is not needed by the majority of users, and requires an extra
+  program to be run on each delivery.
+  To configure quota support, create the file
+  `<tt>/etc/vmailmgr/vdeliver-predeliver</tt>`, containing
+  the following:
+<verb>
+  #!/bin/sh
+  /usr/bin/vcheckquota
+</verb>
+  This is executed as a shell script, so you will need to make it
+  executable by running the following command:
+<verb>
+  chmod +x /etc/vmailmgr/vdeliver-predeliver
+</verb>
+</p>
+
+<sect1>Enabling processing of autoresponses
+<p>
+  Download and install the qmail-autoresponder package, found at
+  <url url="http://em.ca/~bruceg/qmail-autoresponder/">.
+  As with the above section, create a shell script
+  `<tt>/etc/vmailmgr/vdeliver-postdeliver</tt>`, containing the
+  following:
+<verb>
+  #!/bin/sh
+  if test -s $MAILDIR/autoresponse/message.txt
+  then
+    qmail-autoresponder $MAILDIR/autoresponse/message.txt $MAILDIR/autoresponse
+  fi
+</verb>
+</p>
+
 </article>

@@ -1,6 +1,6 @@
 noinst_LIBRARIES = libmisc.a
 INCLUDES = -I..
-EXTRA_DIST = krbauth.c
+EXTRA_DIST = krbauth.c hash_table.h stat_fns.h
 
 if KRB5
 KRB5_SRCS = krbauth.c
@@ -37,7 +37,6 @@ libmisc_a_SOURCES = $(KRB5_SRCS) \
 	server_call4.cc \
 	server_call5.cc \
 	server_call6.cc \
-	stat_fns.h \
 	strlist.h strlist.cc \
 	strlist_read.cc \
 	strlist_write.cc \

@@ -10,7 +10,7 @@ noinst_MISC = FAQ.info FAQ.pdf HOWTO.info HOWTO.pdf \
 	configuration.info translation.pdf translation.ps
 EXTRA_DIST = ChangeLog-pre-vmailmgr ChangeLog-pre-0.70 \
 	changelog2html.pl news2html.pl \
-	YEAR2000 translation.fig
+	YEAR2000 translation.fig \
 	$(man_MANS) \
 	$(noinst_PODS) \
 	$(noinst_TEXINFOS) \

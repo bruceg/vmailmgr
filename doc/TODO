@@ -9,8 +9,6 @@ can keep the development periods shorter.
 
 - Complete the remainder of the commands in vmailmgr.py
 
-- Add FAQ or HOWTO to mailing list FAQ response.
-
 - Convert existing TeXinfo documentation to SGML
 
 - Investigate IP-based virtual domain problem with Courier IMAP not

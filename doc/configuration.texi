@@ -162,6 +162,8 @@ The virtual user's total size soft quota (in bytes, or "-" if not applicable).
 Each of the following sections identifies a single configuration file
 
 @menu
+* autoresponse-dir::            
+* autoresponse-file::           
 * bulletin-dir::                
 * checkvpw-error::              
 * checkvpw-loginfail::          
@@ -178,13 +180,11 @@ Each of the following sections identifies a single configuration file
 * error-maildir::               
 * global-bulletin-dir::         
 * maildir-arg-str::             
-* max-fork::                    
 * password-file::               
 * postmaster-aliases::          
 * postmaster-email::            
 * qmail-root::                  
 * separators::                  
-* socket-file::                 
 * user-dir::                    
 * user-dir-bits::               
 * user-dir-slices::             
@@ -195,7 +195,39 @@ Each of the following sections identifies a single configuration file
 @end menu
 
 @c ============================================================================
-@node bulletin-dir, checkvpw-error, Configuration Files, Configuration Files
+@node autoresponse-dir, autoresponse-file, Configuration Files, Configuration Files
+@section autoresponse-dir
+
+@table @strong
+@item Type
+directory
+@item Default
+@samp{autoresponse}
+@item Used By
+vmailmgrd, autoresponder script
+@item Description
+Identifies the subdirectory of the virtual user directory in which all
+autoresponse data is stored.
+@end table
+
+@c ============================================================================
+@node autoresponse-file, bulletin-dir, autoresponse-dir, Configuration Files
+@section autoresponse-file
+
+@table @strong
+@item Type
+string
+@item Default
+@samp{message.txt}
+@item Used By
+vmailmgrd, autoresponder script
+@item Description
+Identifies the file name within the autoresponse directory that contains
+the autoresponse message.
+@end table
+
+@c ============================================================================
+@node bulletin-dir, checkvpw-error, autoresponse-file, Configuration Files
 @section bulletin-dir
 
 @table @strong
@@ -361,7 +393,7 @@ Sets the default message size limit, in bytes.
 @end table
 
 @c ============================================================================
-@node  default-hardquota, default-softquota, default-msgsize, Configuration Files
+@node default-hardquota, default-softquota, default-msgsize, Configuration Files
 @section default-hardquota
 
 @table @strong
@@ -376,7 +408,7 @@ Sets the default hard quota, in bytes.
 @end table
 
 @c ============================================================================
-@node  default-softquota, default-username, default-hardquota, Configuration Files
+@node default-softquota, default-username, default-hardquota, Configuration Files
 @section default-softquota
 
 @table @strong
@@ -439,7 +471,7 @@ Identifies a site-wide bulletin directory.
 @end table
 
 @c ============================================================================
-@node maildir-arg-str, max-fork, global-bulletin-dir, Configuration Files
+@node maildir-arg-str, password-file, global-bulletin-dir, Configuration Files
 @section maildir-arg-str
 
 @table @strong
@@ -455,24 +487,7 @@ maildir argument on the command line to checkvpw.
 @end table
 
 @c ============================================================================
-@node max-fork, password-file, maildir-arg-str, Configuration Files
-@section max-fork
-
-@table @strong
-@item Type
-number
-@item Default
-@samp{8}
-@item Used By
-vmailmgrd (global only)
-@item Description
-Sets the maximum number of child processes to allow in vmailmgrd.
-If max-fork processes have already been spawned, and an incoming request
-would cause a new process to be spawned, the request will fail.
-@end table
-
-@c ============================================================================
-@node password-file, postmaster-aliases, max-fork, Configuration Files
+@node password-file, postmaster-aliases, maildir-arg-str, Configuration Files
 @section password-file
 
 @table @strong
@@ -551,7 +566,7 @@ installed qmail.
 @end table
 
 @c ============================================================================
-@node separators, socket-file, qmail-root, Configuration Files
+@node separators, user-dir, qmail-root, Configuration Files
 @section separators
 
 @table @strong
@@ -570,25 +585,7 @@ For example, if separators contains @samp{@@:} then @samp{user@@domain} and
 @end table
 
 @c ============================================================================
-@node socket-file, user-dir, separators, Configuration Files
-@section socket-file
-
-@table @strong
-@item Type
-string
-@item Default
-@samp{/tmp/.vmailmgrd}
-@item Used By
-vmailmgrd, checkvpw, vdeliver, and the CGI programs
-@item Description
-Identifies the file name of the local socket used to
-communicate between the vmailmgr daemon and the other programs.
-@emph{Warning:} Changing this in the local configuration directories
-will cause vdeliver to fail.
-@end table
-
-@c ============================================================================
-@node user-dir, user-dir-bits, socket-file, Configuration Files
+@node user-dir, user-dir-bits, separators, Configuration Files
 @section user-dir
 
 @table @strong

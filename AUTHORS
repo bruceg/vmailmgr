@@ -3,7 +3,7 @@ Bruce Guenter <bruceg@em.ca>
 Dan Kuykendall <dan@kuykendall.org> extended the FAQ and HOWTO and
 converted them to SGML.
 
-Mike Bell <mike@mikebell.org> has contributed the current PHP3 module
+Mike Bell <mike@mikebell.org> has contributed the current PHP module
 and several patches.
 
 The CDB library was originally written by D.J.Bernstein <djb@pobox.com>.

@@ -1,5 +1,8 @@
 2001-03-07  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>
 
+	* doc/FAQ.sgml: Added note regarding mixing system and virtual
+	accounts.
+
 	* Moved from old "cli" library to renamed "cli++" library.
 
 2000-11-20  Bruce Guenter  <bruce@bruce-guenter.dyndns.org>

@@ -108,7 +108,7 @@
   Simply compile the src.rpm file with the `<tt>rpm --rebuild</tt>` command.
   -Example-
 <code>
-  rpm -ivh vmailmgr-0.96.6-1.src.rpm
+  rpm -ivh vmailmgr-0.96.8-1.src.rpm
 </code>
 <sect2>Installing RPM's
 <p>
@@ -121,8 +121,8 @@
 </verb>
   -Example-
 <code>
-  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-0.96.6-1.i386.rpm
-  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-daemon-0.96.6-1.i386.rpm
+  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-0.96.8-1.i386.rpm
+  rpm -ivh /usr/src/redhat/RPMS/i386/vmailmgr-daemon-0.96.8-1.i386.rpm
 </code>
 
 
@@ -142,8 +142,8 @@
   -Example-
 <code>
   (As non-root user)
-  tar zxf vmailmgr-0.96.6.tar.gz
-  cd vmailmgr-0.96.6
+  tar zxf vmailmgr-0.96.8.tar.gz
+  cd vmailmgr-0.96.8
   ./configure
   make
   (As root)
@@ -214,16 +214,22 @@
         /var/qmail/control/checkpassword</tt>`
     </itemize>
   <item>
-    Add users or aliases to the domain. Either change user to the user
-    you just created (for example, type `<tt>su - myuser</tt>`) or log
-    in (with either telnet or at the console) as the new user, and use
-    the included programs to add users and aliases.
-    <p>
+    Set up the vmailmgr files:
+    <itemize>
+      <item>
+        Either change user to the user you just created (for example,
+        type `<tt>su - myuser</tt>`) or log in (with either telnet or
+        at the console) as the new user.
+      <item>
+        Set up the base vmailmgr files by running `<tt>vsetup</tt>`.
+      <item>
+        Use the included programs to add users and aliases.
         For our example, we would
-     <itemize>
-        <item>type: `<tt>vadduser me</tt>` (which prompts for a password)
-        <item>type: `<tt>vaddalias me myself</tt>`
-        <item>and type: `<tt>vaddalias me myname</tt>`
+        <itemize>
+          <item>type: `<tt>vadduser me</tt>` (which prompts for a password)
+          <item>type: `<tt>vaddalias me myself</tt>`
+          <item>and type: `<tt>vaddalias me myname</tt>`
+        </itemize>
      </itemize>
 </enum>
   After you have completed all these steps, you will need to kill and

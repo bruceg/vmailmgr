@@ -5,6 +5,11 @@ releases.
 -------------------------------------------------------------------------------
 FOR VERSION 0.97:
 
+- Revert vdomain::lookup back to the single-argument case, and yank the
+  dead code.
+
+- Fix use of libstdc++ in showvconfig.
+
 - Fix problem with MD5 hashes being different than crypt on Sparc.
   ref "Michael M. Dwyer" <kalif@innersanctum.cx>
   - Waiting for response on MD5 test results.
@@ -13,6 +18,7 @@ FOR VERSION 0.97:
   wrapper, and doesn't handle "-f".
 
 - Add tests for:
+  - proper handling of creating paths with a trailing '/'
   - authvmailmgr
   - execution of presetuid and postsetuid hooks in authvmailmgr
   - daemon "stat" command
@@ -31,6 +37,8 @@ FOR VERSION 0.97:
   package.
 -------------------------------------------------------------------------------
 FOR VERSION 0.97.1:
+
+- Add a "vrenuser" tool.
 
 - Make vcheckquota and daemon stat handle folders.
 

@@ -3,6 +3,7 @@ Changes in version 0.97
 
 New Features:
 - Aliases can now have autoresponders.
+- New "stat" command in the daemon to lookup the mailbox size.
 
 Internal Changes:
 - All accounts are created with an account directory now.
@@ -18,6 +19,8 @@ Bug Fixes:
 - Fixed a bug in the PHP library that caused long listdomains to fail.
 - Exit code 99 from vdeliver-predeliver now causes vdeliver to exit
   (with code 99) without delivering the message.
+- Fixed a bug that cuased creating directories with a trailing slash to
+  fail.
 -------------------------------------------------------------------------------
 Changes in version 0.96.9
 

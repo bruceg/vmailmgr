@@ -30,33 +30,6 @@ char *crypt(const char *key, const char *salt);
 long int random(void);
 #endif
 
-#ifdef USE_CRYPT
-
-static const char passwd_table[65] =
-"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
-
-bool crypt_cmp(const mystring& pass, const mystring& stored)
-{
-  if(!stored || !pass)
-    return false;
-  const char* encrypted = crypt(pass.c_str(), stored.c_str());
-  return stored == encrypted;
-}
-
-const char* pwcrypt(const mystring& pass)
-{
-  char salt[2] = {
-    passwd_table[random() % 64],
-    passwd_table[random() % 64]
-  };
-  return crypt(pass.c_str(), salt);
-}
-
-#else // USE_CRYPT
-
-static const char passwd_table[65] =
-"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
 extern "C"
 {
 #include "md5.h"
@@ -108,6 +81,25 @@ bool crypt_cmp(const mystring& pass, const mystring& stored)
   return stored == encrypted;
 }
 
+#ifdef USE_CRYPT
+
+static const char passwd_table[65] =
+"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
+
+const char* pwcrypt(const mystring& pass)
+{
+  char salt[2] = {
+    passwd_table[random() % 64],
+    passwd_table[random() % 64]
+  };
+  return crypt(pass.c_str(), salt);
+}
+
+#else
+
+static const char passwd_table[65] =
+"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
 const char* pwcrypt(const mystring& pass)
 {
   char salt[14] = "$1$";
@@ -117,4 +109,4 @@ const char* pwcrypt(const mystring& pass)
   return md5_crypt(pass.c_str(), salt);
 }
 
-#endif // USE_MD5
+#endif

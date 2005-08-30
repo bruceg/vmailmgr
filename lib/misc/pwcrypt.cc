@@ -1,4 +1,4 @@
-// Copyright (C) 1999,2000 Bruce Guenter <bruceg@em.ca>
+// Copyright (C) 1999,2000,2005 Bruce Guenter <bruceg@em.ca>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -85,6 +85,13 @@ static const char* encrypt_old_md5(const mystring& pass)
 
 extern "C" char *md5_crypt __P ((const char *key, const char *salt));
 
+const char* null_crypt(const mystring& pass)
+{
+  static mystring s;
+  s = "$0$" + pass;
+  return s.c_str();
+}
+
 bool crypt_cmp(const mystring& pass, const mystring& stored)
 {
   if(!stored || !pass)
@@ -94,6 +101,8 @@ bool crypt_cmp(const mystring& pass, const mystring& stored)
     encrypted = encrypt_old_md5(pass.c_str());
   else if(stored[0] == '$' && stored[1] == '1' && stored[2] == '$')
     encrypted = md5_crypt(pass.c_str(), stored.c_str());
+  else if(stored[0] == '$' && stored[1] == '0' && stored[2] == '$')
+    encrypted = null_crypt(pass);
   else
     encrypted = crypt(pass.c_str(), stored.c_str());
   return stored == encrypted;

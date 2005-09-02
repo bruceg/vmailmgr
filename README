@@ -1,14 +1,14 @@
 vmailmgr
 version 0.97
-2000-09-30
-Bruce Guenter <bruceg@em.ca>
+2005-09-02
+Bruce Guenter <bruce@untroubled.org>
 
 Vmailmgr provides a virtualizing password-checking interface to
 qmail-pop3d and courier IMAP as well as both a delivery agent to
 automatically deliver mail within a virtual domain and a set of tools
 to manage such a domain from either the command line or from the web.
 
-This program is Copyright(C) 2000 Bruce Guenter, and may be copied
-according to the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 or a later
-version.  A copy of this license is included with this package.  This
-package comes with no warranty of any kind.
+This program is Copyright(C) 1999,2000,2005 Bruce Guenter, and may be
+copied according to the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 or a
+later version.  A copy of this license is included with this package.
+This package comes with no warranty of any kind.

@@ -357,7 +357,7 @@ int cli_main(int, char*[])
   }
   else {
     if (run_postdeliver) {
-      r = execute("vdeliver-postdeliver");
+      int r = execute("vdeliver-postdeliver");
       if(r && r != 99)
 	if(!o_quiet)
 	  fout << "Execution of vdeliver-postdeliver failed" << endl;

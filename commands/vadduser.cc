@@ -44,6 +44,7 @@ static int o_expiry = 0;
 static int o_password = true;
 static int o_hasmailbox = true;
 static int o_quiet = false;
+static const char* o_pwcrypt = 0;
 
 // This program is used to set up a user within a virtual host.
 // If this program is reading from a tty,
@@ -69,6 +70,8 @@ cli_option cli_options[] = {
   { 'f', "forward", cli_option::stringlist, 0, &o_forwards,
     "Add a forwarding address to this user", 0 },
   // Add a forwarding address to this user (this may be used multiple times).
+  { 0,   "password",    cli_option::string, 0, &o_pwcrypt,
+    "Encrypted password", "asking for a password" },
   { 'P', "no-password", cli_option::flag, false, &o_password,
     "Do not ask for a password", 0 },
   // Do not ask for a password,
@@ -152,13 +155,17 @@ vpwentry* make_user(const mystring& name, const mystring& passcode)
 void add_user(const mystring& user)
 {
   if(!domain.exists(user)) {
-    mystring passcode = "*";
-    if(o_password) {
+    mystring passcode;
+    if(o_pwcrypt)
+      passcode = o_pwcrypt;
+    else if(o_password) {
       mystring passwd = getpasswd(argv0base);
       if(passwd.length() == 0)
 	exit(1);
       passcode = pwcrypt(passwd);
     }
+    else
+      passcode = "*";
     vpwentry* vpw = make_user(user, passcode);
     response resp = domain.set(vpw, true);
     delete vpw;

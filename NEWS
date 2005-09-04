@@ -9,6 +9,7 @@ New Features:
 - Authentication recognizes plain text (null-crypt) passwords.
 - Added options to turn off execution of vdeliver-predeliver and
   vdeliver-postdeliver.
+- Added option to vadduser to specify the pre-encrypted password.
 
 Internal Changes:
 - All accounts are created with an account directory now.

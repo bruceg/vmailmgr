@@ -7,7 +7,7 @@ Copyright: GPL
 Source: http://www.vmailmgr.org/archive/%{PACKAGE_VERSION}/vmailmgr-%{PACKAGE_VERSION}.tar.gz
 Summary: Simple virtualizing POP3 password interface
 Packager: Bruce Guenter <bruceg@em.ca>
-Buildroot: /tmp/vmailmgr
+Buildroot: %{_tmppath}/vmailmgr
 Obsoletes: checkvpw
 
 %description
@@ -107,7 +107,7 @@ fi
 %files
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING NEWS TODO doc/ChangeLog* doc/YEAR2000
-%doc doc/*.txt */*.html doc/*.sgml
+%doc doc/*.txt doc/*.html commands/*.html authenticate/*.html daemon/*.html
 %doc scripts/autoresponder.sh
 %dir /etc/vmailmgr
 %config(missingok,noreplace) %verify(user,group,mode) /etc/vmailmgr/*

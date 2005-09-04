@@ -5,9 +5,9 @@ PKGURL=http://www.vmailmgr.org/
 
 # If LISTSUB is set, makedist will add a note regarding mailing list
 # subscription.
-LISTSUB=vmailmgr-subscribe@lists.em.ca
+LISTSUB=vmailmgr-subscribe@lists.untroubled.org
 
-LISTURL=http://lists.em.ca/?list=vmailmgr
+LISTURL=http://lists.untroubled.org/?list=vmailmgr
 
 # Set MAKERPM to non-empty if the tarball is to be built into a RPM.
 MAKERPM=true
@@ -34,15 +34,15 @@ EXTRAS_DIST=
 # will be placed.
 VERSION_BASE=archive
 
-WEBSITE=vmailmgr.org
-WEBDIR=vmailmgr.org
+WEBSITE=untroubled.org
+WEBDIR=www/vmailmgr
 
 # Set RPMUPLOAD to a list of additional "hostname/path" destinations to
 # which to upload the source and binary RPMs.
 RPMUPLOAD=
 
 # Set LIST to the mailing list(s) to send the announcement to
-LIST=vmailmgr@lists.em.ca
+LIST=vmailmgr@lists.untroubled.org
 #,qmail@list.cr.yp.to,password@list.cr.yp.to
 
 # Run any extra commands to prepare the source tree (such as making

@@ -1,4 +1,4 @@
-// Copyright (C) 1999,2000 Bruce Guenter <bruceg@em.ca>
+// Copyright (C) 1999,2000,2005 Bruce Guenter <bruceg@em.ca>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,6 +39,8 @@ static int addufline = false;
 static int addrpline = true;
 static int adddtline = true;
 static int o_quiet = false;
+static int run_predeliver = true;
+static int run_postdeliver = true;
 
 // vdeliver is the unified e-mail message delivery agent for virtual
 // domains managed by vmailmgr.
@@ -61,6 +63,10 @@ cli_option cli_options[] = {
   // Do not add the C<From> mailbox line to the top of the message.
   // Note that this line is never added when the message is being
   // re-injected into the mail stream. (default)
+  { 0, "no-predeliver", cli_option::flag, false, &run_predeliver,
+    "Do not run vdeliver-predeliver scripts", 0 },
+  { 0, "no-postdeliver", cli_option::flag, false, &run_postdeliver,
+    "Do not run vdeliver-postdeliver scripts", 0 },
   { 0, "quiet", cli_option::flag, true, &o_quiet,
     "Suppress all status messages", 0 },
   { 'r', 0, cli_option::flag, false, &addrpline,
@@ -327,12 +333,14 @@ int cli_main(int, char*[])
   bool do_delivery = vpw->has_mailbox && vpw->is_mailbox_enabled &&
     !!vpw->directory;
 
-  int r = execute("vdeliver-predeliver");
-  if(r)
-    if(r == 99)
-      return 99;
-    else
-      exit_msg("Execution of vdeliver-predeliver failed", r);
+  if (run_predeliver) {
+    int r = execute("vdeliver-predeliver");
+    if(r)
+      if(r == 99)
+	return 99;
+      else
+	exit_msg("Execution of vdeliver-predeliver failed", r);
+  }
 
   if(do_delivery) {
     maildir = vpw->directory;
@@ -348,11 +356,13 @@ int cli_main(int, char*[])
       fout << "Could not re-rewind standard input" << endl;
   }
   else {
-    r = execute("vdeliver-postdeliver");
-    if(r && r != 99)
-      if(!o_quiet)
-	fout << "Execution of vdeliver-postdeliver failed" << endl;
-    return r;
+    if (run_postdeliver) {
+      r = execute("vdeliver-postdeliver");
+      if(r && r != 99)
+	if(!o_quiet)
+	  fout << "Execution of vdeliver-postdeliver failed" << endl;
+      return r;
+    }
   }
   
   return 0;

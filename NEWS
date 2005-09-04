@@ -7,6 +7,8 @@ New Features:
 - Added a "dumpvuser" command, to output all of an account's data.
 - Renamed vpasswd2db to vupgrade and allvpasswd2db to vupgrade-all.
 - Authentication recognizes plain text (null-crypt) passwords.
+- Added options to turn off execution of vdeliver-predeliver and
+  vdeliver-postdeliver.
 
 Internal Changes:
 - All accounts are created with an account directory now.

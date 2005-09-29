@@ -1,5 +1,5 @@
 AC_INIT(lib/mergelib.sh)
-AM_INIT_AUTOMAKE(vmailmgr, 0.97)
+AM_INIT_AUTOMAKE(vmailmgr, 0.97.1)
 AM_CONFIG_HEADER(config.h)
 AC_PROG_MAKE_SET
 

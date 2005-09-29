@@ -1,6 +1,9 @@
 -------------------------------------------------------------------------------
 Changes in version 0.97.1
 
+Bug Fixes:
+- Fixed bug in making a maildir over top of an existing account.
+  Thanks Dale Woolridge.
 -------------------------------------------------------------------------------
 Changes in version 0.97
 

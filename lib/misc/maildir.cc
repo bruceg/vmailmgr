@@ -15,6 +15,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <config.h>
+#include <errno.h>
 #include "maildir.h"
 #include <unistd.h>
 #include <string.h>
@@ -46,18 +47,18 @@ bool make_maildir(const mystring& dirname)
   if(mkdirp(dirname, 0700))
     return false;
   mystring curdir = dirname + "/cur";
-  if(mkdir(curdir.c_str(), 0755)) {
+  if(mkdir(curdir.c_str(), 0755) && (errno != EEXIST)) {
     rmdir(dirname);
     return false;
   }
   mystring newdir = dirname + "/new";
-  if(mkdir(newdir.c_str(), 0755)) {
+  if(mkdir(newdir.c_str(), 0755) && (errno != EEXIST)) {
     rmdir(curdir);
     rmdir(dirname);
     return false;
   }
   mystring tmpdir = dirname + "/tmp";
-  if(mkdir(tmpdir.c_str(), 0755)) {
+  if(mkdir(tmpdir.c_str(), 0755) && (errno != EEXIST)) {
     rmdir(newdir);
     rmdir(curdir);
     rmdir(dirname);

@@ -6,7 +6,7 @@ URL: http://www.vmailmgr.org/
 Copyright: GPL
 Source: http://www.vmailmgr.org/archive/%{PACKAGE_VERSION}/vmailmgr-%{PACKAGE_VERSION}.tar.gz
 Summary: Simple virtualizing POP3 password interface
-Packager: Bruce Guenter <bruceg@em.ca>
+Packager: Bruce Guenter <bruce@untroubled.org>
 Buildroot: %{_tmppath}/vmailmgr
 Obsoletes: checkvpw
 

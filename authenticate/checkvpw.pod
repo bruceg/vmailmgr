@@ -90,5 +90,5 @@ vdeliver(1)
 
 =head1 AUTHOR
 
-Bruce Guenter <F<bruceg@em.ca>>.
+Bruce Guenter <F<bruce@untroubled.org>>.
 

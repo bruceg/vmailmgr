@@ -72,4 +72,4 @@ This program will not authenticate non-virtual users.
 
 =head1 AUTHOR
 
-Bruce Guenter <bruceg@em.ca>
+Bruce Guenter <bruce@untroubled.org>

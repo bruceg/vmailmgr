@@ -1,4 +1,4 @@
-// Copyright (C) 1999,2000 Bruce Guenter <bruceg@em.ca>
+// Copyright (C) 1999,2000,2005 Bruce Guenter <bruceg@em.ca>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ bool vdomain::validate_username(mystring user) const
 
 bool vdomain::validate_password(mystring pass) const
 {
-  return validate_field(pass, ":\n\r\t ");
+  return validate_field(pass, "\n\r");
 }
 
 response vdomain::validate_forward(mystring forward)

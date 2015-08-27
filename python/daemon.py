@@ -71,23 +71,23 @@ class Daemon:
     def read_response(self):
         (code, message) = self.read_response_noraise()
         if code == err:
-            raise Error, message
+            raise Error(message)
         if code == bad:
-            raise Bad, message
+            raise Bad(message)
         if code == econn:
-            raise Econn, message
+            raise Econn(message)
         return message
         
     def execute(self, command):
         try:
             self.connect()
         except:
-            raise Econn, "Unable to connect to the server"
+            raise Econn("Unable to connect to the server")
         data = command.encode()
         try:
             self.socket.send(data)
         except:
-            raise Econn, "Server aborted the connection"
+            raise Econn("Server aborted the connection")
         # Don't close the socket here -- it will be closed
         # as soon as it gets garbage collected, and remains
         # usable for other commands like listdomain.

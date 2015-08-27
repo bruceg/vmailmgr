@@ -1,5 +1,5 @@
 noinst_LIBRARIES = libvpwentry.a
-INCLUDES = -I..
+AM_CPPFLAGS = -I..
 EXTRA_DIST = vpwentry.h
 
 libvpwentry_a_SOURCES = \

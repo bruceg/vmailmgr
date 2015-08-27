@@ -3,7 +3,7 @@ EXTRA_DIST = listvdomain.html vaddalias.html vadduser.html vchalias.html \
 cgi_PROGRAMS = vpasswd vadduser vdeluser vaddalias vchattr vchforwards \
 	listvdomain
 
-INCLUDES = -I../lib
+AM_CPPFLAGS = -I../lib
 
 vpasswd_SOURCES = vpasswd.cc
 vpasswd_LDADD = ../lib/libcgi.a ../lib/libvmailmgr.a

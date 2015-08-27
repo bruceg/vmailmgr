@@ -28,7 +28,7 @@ dist-hook:
 %.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@
 
-INCLUDES = -I../lib -DBINDIR=\"@bindir@\"
+AM_CPPFLAGS = -I../lib -DBINDIR=\"@bindir@\"
 
 dumpvuser_SOURCES = dumpvuser.cc vcommand.cc
 dumpvuser_LDADD = ../lib/libcli.a ../lib/libvmailmgr.a

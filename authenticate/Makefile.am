@@ -20,7 +20,7 @@ dist-hook:
 %.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@
 
-INCLUDES = $(CIINCLUDES) -I../lib
+AM_CPPFLAGS = -I../lib
 
 checkvpw_SOURCES = checkvpw.cc authvlib.cc authvlib.h
 checkvpw_LDADD = ../lib/libvmailmgr.a

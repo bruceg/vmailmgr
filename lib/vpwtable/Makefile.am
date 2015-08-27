@@ -1,5 +1,5 @@
 noinst_LIBRARIES = libvpwtable.a
-INCLUDES = -I..
+AM_CPPFLAGS = -I..
 EXTRA_DIST = vpwtable.h \
 	cdb_vpwtable.cc \
 	cdb_del.cc \

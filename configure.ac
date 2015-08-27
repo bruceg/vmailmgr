@@ -1,7 +1,6 @@
-AC_INIT(lib/mergelib.sh)
-AM_INIT_AUTOMAKE(vmailmgr, 0.97.1)
-AM_CONFIG_HEADER(config.h)
-AC_PROG_MAKE_SET
+AC_INIT([vmailmgr], [0.97.1])
+AC_CONFIG_SRCDIR([lib/mergelib.sh])
+AM_INIT_AUTOMAKE
 
 USE_CRYPT=no
 AC_ARG_ENABLE(crypt,
@@ -51,7 +50,7 @@ AC_PATH_PROG(RM, rm)
 AC_PATH_PROG(MKDIR, mkdir)
 AC_PATH_PROG(LN, ln)
 
-AC_PATH_PROG(PYTHON, python)
+AC_PATH_PROG(PYTHON, python2)
 AC_CACHE_CHECK(Python library path, local_cv_python_lib_dir,
 [[if test -x "$PYTHON"; then
   local_cv_python_lib_dir=`$PYTHON -c "import sys;print sys.path[1]"`
@@ -116,24 +115,26 @@ AC_CHECK_FUNCS(srandom random crypt)
 cgidir='${prefix}/cgi-bin'
 AC_SUBST(cgidir)
 
-AC_OUTPUT(Makefile
-          cgi/Makefile
-	  authenticate/Makefile
-	  commands/Makefile
-	  daemon/Makefile
-	  doc/Makefile
-          lib/Makefile
-	  lib/cdb++/Makefile
-	  lib/cgi/Makefile
-	  lib/cli++/Makefile
-	  lib/config/Makefile
-	  lib/courier-authlib/Makefile
-	  lib/fdbuf/Makefile
-	  lib/misc/Makefile
-	  lib/mystring/Makefile
-	  lib/vdomain/Makefile
-	  lib/vpwentry/Makefile
-	  lib/vpwtable/Makefile
-	  scripts/Makefile
-	  php/Makefile
-	  python/Makefile)
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_FILES(Makefile
+	cgi/Makefile
+	authenticate/Makefile
+	commands/Makefile
+	daemon/Makefile
+	doc/Makefile
+	lib/Makefile
+	lib/cdb++/Makefile
+	lib/cgi/Makefile
+	lib/cli++/Makefile
+	lib/config/Makefile
+	lib/courier-authlib/Makefile
+	lib/fdbuf/Makefile
+	lib/misc/Makefile
+	lib/mystring/Makefile
+	lib/vdomain/Makefile
+	lib/vpwentry/Makefile
+	lib/vpwtable/Makefile
+	scripts/Makefile
+	php/Makefile
+	python/Makefile)
+AC_OUTPUT

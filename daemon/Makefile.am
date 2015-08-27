@@ -20,7 +20,7 @@ vmailmgrd.pod: main.cc ../configure.in ../lib/cli++/cli++topod.pl
 %.8: %.pod ../configure.in; $(POD2MAN) --section=8 $< >$@
 %.html: %.pod; $(POD2HTML) $< >$@
 
-INCLUDES = -I../lib
+AM_CPPFLAGS = -I../lib
 
 vmailmgrd_SOURCES = daemon.h \
 	adduser.cc \

@@ -110,7 +110,7 @@ AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS(gethostname gettimeofday mkdir putenv rmdir socket)
-AC_CHECK_FUNCS(srandom random crypt)
+AC_CHECK_FUNCS(srandom random crypt strcasestr)
 
 cgidir='${prefix}/cgi-bin'
 AC_SUBST(cgidir)

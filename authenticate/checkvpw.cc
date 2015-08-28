@@ -105,6 +105,7 @@ auth_data* getdata()
   return new auth_data(name, pass, stamp);
 }
 
+#ifndef HAVE_STRCASESTR
 char* strcasestr(const char* haystack, const char* needle)
 {
   for(size_t hlength = strlen(haystack), nlength = strlen(needle);
@@ -113,6 +114,7 @@ char* strcasestr(const char* haystack, const char* needle)
       return (char*)haystack;
   return 0;
 }
+#endif
 
 unsigned find_maildir(int argc, const char* args[])
 {

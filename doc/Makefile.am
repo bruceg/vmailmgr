@@ -21,13 +21,14 @@ CLEANFILES = $(noinst_HTMLS) $(man_MANS) $(noinst_MISC) \
 	HOWTO.txt FAQ.txt configuration.txt vmailmgr-cgi.txt \
 	pod2htmd.tmp pod2htmi.tmp
 
-TEXI2HTML = texi2html -monolithic -number
 CL2HTML	= perl changelog2html.pl
 NEWS2HTML = perl news2html.pl
 FIG2PDF = fig2dev -L pdf -c
 FIG2PS = fig2dev -L ps -c
+TEXI2HTML = texi2any --html --no-split
 TEXI2PDF = texi2pdf --clean --quiet
-TEXI2INFO = makeinfo --no-split --number-sections
+TEXI2INFO = texi2any --info --no-split --number-sections
+TEXI2TXT = texi2any --plaintext
 
 all: $(noinst_HTMLS) $(noinst_PDFS) $(noinst_TXTS) $(noinst_MISC)
 
@@ -42,15 +43,15 @@ ChangeLog.html: ../ChangeLog
 NEWS.html: ../NEWS
 	$(NEWS2HTML) $< >$@
 
-%.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
-%.5: %.pod ../configure.in; $(POD2MAN) --section=5 $< >$@
-%.7: %.pod ../configure.in; $(POD2MAN) --section=7 $< >$@
-%.8: %.pod ../configure.in; $(POD2MAN) --section=8 $< >$@
-%.html: %.pod; $(POD2HTML) $< >$@
-%.html: %.texi; $(TEXI2HTML) $< >$@
-%.txt: %.html; $(HTML2TXT) $< >$@
-%.pdf: %.texi; $(TEXI2PDF) $<
-%.info: %.texi; $(TEXI2INFO) $<
+.pod.1: ../configure.ac; $(POD2MAN) --section=1 $< >$@
+.pod.5: ../configure.ac; $(POD2MAN) --section=5 $< >$@
+.pod.7: ../configure.ac; $(POD2MAN) --section=7 $< >$@
+.pod.8: ../configure.ac; $(POD2MAN) --section=8 $< >$@
+.pod.html: ../configure.ac; $(POD2HTML) $< >$@
+.texi.html: ../configure.ac; $(TEXI2HTML) $< >$@
+.texi.txt: ../configure.ac; $(TEXI2TXT) $< >$@
+.texi.pdf: ../configure.ac; $(TEXI2PDF) $<
+.texi.info: ../configure.ac; $(TEXI2INFO) $<
 
-%.pdf: %.fig ../configure.in; $(FIG2PDF) $< $@
-%.ps: %.fig ../configure.in; $(FIG2PS) $< $@
+.fig.pdf: ../configure.ac; $(FIG2PDF) $< $@
+.fig.ps: ../configure.ac; $(FIG2PS) $< $@

@@ -15,10 +15,12 @@ docs: $(noinst_HTMLS) $(noinst_TXTS)
 dist-hook:
 	touch $(distdir)/*.html $(distdir)/*.[123456789]
 
-vmailmgrd.pod: main.cc ../configure.in ../lib/cli++/cli++topod.pl
+vmailmgrd.pod: main.cc ../configure.ac ../lib/cli++/cli++topod.pl
 	perl ../lib/cli++/cli++topod.pl $< >$@
-%.8: %.pod ../configure.in; $(POD2MAN) --section=8 $< >$@
-%.html: %.pod; $(POD2HTML) $< >$@
+.pod.8: ../configure.ac
+	$(POD2MAN) --section=8 $< >$@
+.pod.html: ../configure.ac
+	$(POD2HTML) $< >$@
 
 AM_CPPFLAGS = -I../lib
 

@@ -17,8 +17,10 @@ docs: $(noinst_HTMLS) $(man_MANS)
 dist-hook:
 	touch $(distdir)/*.html $(distdir)/*.[123456789]
 
-%.1: %.pod ../configure.in; $(POD2MAN) --section=1 $< >$@
-%.html: %.pod; $(POD2HTML) $< >$@
+.pod.1: ../configure.ac
+	$(POD2MAN) --section=1 $< >$@
+.pod.html: ../configure.ac
+	$(POD2HTML) $< >$@
 
 AM_CPPFLAGS = -I../lib
 

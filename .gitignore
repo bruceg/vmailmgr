@@ -43,16 +43,10 @@ doc/*.pdf
 doc/*.ps
 doc/*.txt
 install-sh
-lib/ac
-lib/cdb++
-lib/cgi
-lib/cli++
 lib/config/_*.cc
 lib/config/configrc.h
 lib/config/showvconfig
 lib/config/showvconfig.cc
-lib/fdbuf
-lib/mystring
 Makefile
 Makefile.in
 missing

@@ -1,8 +1,5 @@
 To get the pieces not included in this repository, you need to run:
 
-	git clone https://github.com/bruceg/bglibs.git
-	ln -s ../bglibs/{ac,cgi,cli++,cdb++,fdbuf,mystring} lib/
-
 	( cd lib/config && sh build-config.sh )
 
 	autoreconf --install

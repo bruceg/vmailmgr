@@ -1,4 +1,4 @@
-// Copyright (C) 1999,2000 Bruce Guenter <bruce@untroubled.org>
+// Copyright (C) 1999,2000,2005 Bruce Guenter <bruce@untroubled.org>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -59,6 +59,7 @@ public:
   statdir(const mystring& dirname);
   ~statdir() { close(); }
   void close();
+  bool done() const { return dir != 0 && curr != 0; }
   operator void*() const { return (void*)dir; }
   bool operator!() const { return !dir; }
   const struct stat* operator->() const { return &statbuf; }
@@ -90,12 +91,10 @@ void statdir::advance()
       break;
     }
   }
-  if(!curr)
-    close();
-  else {
+  if(curr) {
     mystring fullpath = path + "/" + curr->d_name;
     if(stat(fullpath.c_str(), &statbuf) == -1)
-      close();
+      curr = 0;
   }
 }
     
@@ -104,7 +103,7 @@ bool stat_new_dir(const mystring& basename, stats& stats)
   statdir dir(basename + "/new");
   if(!dir)
     return false;
-  while(dir) {
+  while(!dir.done()) {
     if(S_ISREG(dir->st_mode)) {
       ++stats.unseen_new.count;
       stats.unseen_new.size += dir->st_blocks * 512;
@@ -119,7 +118,7 @@ bool stat_cur_dir(const mystring& basename, stats& stats)
   statdir dir(basename + "/cur");
   if(!dir)
     return false;
-  while(dir) {
+  while(!dir.done()) {
     if(S_ISREG(dir->st_mode)) {
       count_size* stat = &stats.unseen;
       const char* colon = strchr(dir.currname(), ':');
@@ -147,6 +146,8 @@ CMD(stat)
 {
   mystring user = args[0];
   mystring pass = args[1];
+  args[1] = LOG_PASSWORD;
+  logcommand(args);
 
   pwentry* pw;
   vpwentry* vpw;

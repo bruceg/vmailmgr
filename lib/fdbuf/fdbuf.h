@@ -25,6 +25,9 @@
 #include <pthread.h>
 #endif
 
+#include <unistd.h>
+#include <sys/types.h>
+
 #ifndef FDBUF_SIZE
 #define FDBUF_SIZE 4096
 #endif

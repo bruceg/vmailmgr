@@ -2,6 +2,11 @@ AC_INIT([vmailmgr], [0.97.1])
 AC_CONFIG_SRCDIR([lib/mergelib.sh])
 AM_INIT_AUTOMAKE
 
+AH_TEMPLATE(USE_CRYPT, [Use only crypt(3) for authentication instead of the built-in MD5 password hashing.])
+AH_TEMPLATE(USE_KRB5, [Use Kerberos5 for authentication.])
+AH_TEMPLATE(VPWTABLE_CDB, [Use "cdb" database for storage of virtual password tables.])
+AH_TEMPLATE(VPWTABLE_GDBM, [Use "gdbm" database for storage of virtual password tables.])
+
 USE_CRYPT=no
 AC_ARG_ENABLE(crypt,
 [  --enable-crypt          Use only crypt(3) for authentication instead

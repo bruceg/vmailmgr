@@ -176,7 +176,7 @@ void deliver_partial()
   const mystring hostname = make_hostname();
   pid_t pid = getpid();
   for(;; sleep(2)) {
-    partname = "/" + mystring(itoa(time(0))) + "." + itoa(pid)
+    partname = "/" + mystring(itoa(time(0))) + "." + mystring(itoa(pid))
       + "." + hostname;
     
     mystring newfile = newdir + partname;

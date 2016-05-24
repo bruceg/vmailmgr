@@ -33,6 +33,7 @@ const char* cli_program = "vdeliver";
 const char* cli_help_prefix = "VMailMgr delivery agent\n";
 const char* cli_help_suffix = "";
 const char* cli_args_usage = "";
+static mystring qmailqueue = "";
 const int cli_args_min = 0;
 const int cli_args_max = 0;
 static int addufline = false;
@@ -252,7 +253,7 @@ void inject(mystring sender, mystring recip, mystring host)
   if(pipe(pipe1) || pipe(pipe2))
     deliver_fail("System call to 'pipe' failed.");
 
-  mystring qq = config->qmail_root() + "bin/qmail-queue";
+  mystring qq = qmailqueue;
   pid_t pid;
   switch(pid = fork()) {
   case -1:
@@ -313,6 +314,10 @@ int cli_main(int, char*[])
   ENV_VAR(rpline, RPLINE);
   ENV_VAR(dtline, DTLINE);
 #undef ENV_VAR
+#define ENV_VAR(VAR,ENV) VAR = getenv(#ENV);
+  // optional variables
+  ENV_VAR(qmailqueue, QMAILQUEUE);
+#undef ENV_VAR
 
   if(!addufline)
     ufline = 0;
@@ -320,6 +325,11 @@ int cli_main(int, char*[])
     rpline = 0;
   if(!adddtline)
     dtline = 0;
+
+  if(!qmailqueue)
+    qmailqueue = config->qmail_root() + "bin/qmail-queue";
+  else
+    qmailqueue = mystring(qmailqueue);
 
   vpwentry* vpw = domain.lookup(ext);
   if(!vpw)
